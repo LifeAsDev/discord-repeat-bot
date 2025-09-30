@@ -84,13 +84,9 @@ const puppeteer = require("puppeteer-core");
 			args: [
 				"--no-sandbox",
 				"--disable-setuid-sandbox",
-				"--disable-gpu", // desactiva la GPU (no se necesita en headless)
-				"--disable-dev-shm-usage", // usa /tmp en lugar de /dev/shm
-				"--disable-extensions", // desactiva extensiones
-				"--disable-background-timer-throttling",
-				"--disable-backgrounding-occluded-windows",
-				"--disable-renderer-backgrounding",
-				"--disable-software-rasterizer",
+				"--disable-gpu",
+				"--disable-dev-shm-usage",
+				"--disable-extensions",
 			],
 		});
 
