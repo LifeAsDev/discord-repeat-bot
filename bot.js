@@ -87,6 +87,8 @@ const puppeteer = require("puppeteer-core");
 				"--disable-gpu",
 				"--disable-dev-shm-usage",
 				"--disable-extensions",
+				"--disable-background-timer-throttling", // evita que pestañas inactivas se ralentizen, útil para Puppeteer
+				"--disable-software-rasterizer", // evita render innecesario si no hay GPU
 			],
 		});
 
