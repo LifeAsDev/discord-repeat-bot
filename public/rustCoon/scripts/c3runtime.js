@@ -2229,6 +2229,7 @@ self.C3_ExpressionFuncs = [
 		() => "respawn",
 		() => "ready",
 		() => "setWorld",
+		() => "Test1",
 		() => "wss://multiplayer.construct.net",
 		() => "Test",
 		() => "roomList",

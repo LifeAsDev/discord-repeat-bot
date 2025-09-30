@@ -9,6 +9,18 @@
 
 const scriptsInEvents = {
 
+	async EventConnect_Event3(runtime, localVars)
+	{
+		const params = new URLSearchParams(window.location.search);
+		const nombre = params.get("nombre"); 
+		if(nombre) {
+		runtime.globalVars.state = "host";
+		runtime.globalVars.realHost = "host";
+		runtime.globalVars.roomName = nombre;
+		
+		}
+	},
+
 	async EventWorld_Event18(runtime, localVars)
 	{
 		/**
@@ -194,18 +206,6 @@ sendInventory(result);
 		 runtime.callFunction("playerSync",data.date,data.playersArr[i].animationName,data.playersArr[i].mirror,data.playersArr[i].px,data.playersArr[i].py,data.playersArr[i].inputs,data.playersArr[i].id);
 		 }
 		
-	},
-
-	async EventConnect_Event3(runtime, localVars)
-	{
-		const params = new URLSearchParams(window.location.search);
-		const nombre = params.get("nombre"); 
-		if(nombre) {
-		runtime.globalVars.state = "host";
-		runtime.globalVars.realHost = "host";
-		runtime.globalVars.roomName = nombre;
-		
-		}
 	}
 };
 
