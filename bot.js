@@ -73,23 +73,17 @@ app.post("/send", async (req, res) => {
 });
 
 const puppeteer = require("puppeteer-core");
+require("dotenv").config();
+const puppeteer = require("puppeteer-core");
 
 (async () => {
-	const nombres = ["servidor 1", "servidor 2", "servidor de angelo"];
+	const browser = await puppeteer.launch({
+		headless: true, // obligatorio en VPS
+		executablePath: process.env.CHROME_PATH,
+	});
 
-	for (const nombre of nombres) {
-		const browser = await puppeteer.launch({
-			headless: false,
-			executablePath: process.env.CHROME_PATH,
-		});
+	const page = await browser.newPage();
+	await page.goto("http://localhost:3000/rustCoon/index.html?nombre=servidor1");
 
-		const page = await browser.newPage();
-		await page.goto(
-			`http://localhost:3000/rustCoon/index.html?nombre=${encodeURIComponent(
-				nombre
-			)}`
-		);
-
-		console.log(`✅ Abierto navegador con nombre: ${nombre}`);
-	}
+	console.log("✅ Browser lanzado. PID:", browser.process().pid);
 })();
