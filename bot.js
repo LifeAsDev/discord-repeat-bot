@@ -58,7 +58,7 @@ const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
 
-client.once("ready", () => {
+client.once("clientReady", () => {
 	console.log(`Bot conectado como ${client.user.tag}`);
 });
 
@@ -84,7 +84,6 @@ const puppeteer = require("puppeteer-core");
 			args: [
 				"--no-sandbox",
 				"--disable-setuid-sandbox",
-				"--disable-gpu",
 				"--disable-dev-shm-usage",
 				"--disable-extensions",
 				"--disable-background-timer-throttling", // evita que pestañas inactivas se ralentizen, útil para Puppeteer
