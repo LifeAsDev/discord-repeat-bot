@@ -11,14 +11,14 @@ const scriptsInEvents = {
 
 	async EventConnect_Event3(runtime, localVars)
 	{
-		const params = new URLSearchParams(window.location.search);
+		/* const params = new URLSearchParams(window.location.search);
 		const nombre = params.get("nombre"); 
-		if(nombre) {
+		if(nombre) { */
 		runtime.globalVars.state = "host";
 		runtime.globalVars.realHost = "host";
-		runtime.globalVars.roomName = nombre;
-		
-		}
+		runtime.globalVars.roomName = "nombre";
+		/* 
+		} */
 	},
 
 	async EventWorld_Event18(runtime, localVars)
