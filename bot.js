@@ -80,8 +80,7 @@ const puppeteer = require("puppeteer-core");
 	for (const nombre of nombres) {
 		const browser = await puppeteer.launch({
 			headless: false,
-			executablePath:
-				"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+			executablePath: process.env.CHROME_PATH,
 		});
 
 		const page = await browser.newPage();
