@@ -9,7 +9,7 @@
 
 const scriptsInEvents = {
 
-	async EventWorld_Event17(runtime, localVars)
+	async EventWorld_Event18(runtime, localVars)
 	{
 		/**
 		 * Generates a random terrain map.
@@ -75,68 +75,7 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event432_Act1(runtime, localVars)
-	{
-		runtime.playersArr = [];
-	},
-
-	async EventWorld_Event436(runtime, localVars)
-	{
-		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
-		runtime.playersArr.push(jsonString);
-		
-	},
-
-	async EventWorld_Event437(runtime, localVars)
-	{
-		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
-	},
-
-	async EventWorld_Event442(runtime, localVars)
-	{
-		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
-		localVars.jsonStringify = JSON.stringify(jsonString);
-	},
-
-	async EventWorld_Event448(runtime, localVars)
-	{
-
-	},
-
-	async EventWorld_Event464_Act1(runtime, localVars)
-	{
-		const data = JSON.parse(localVars.jsonStringify);
-		/* localVars.date = data.date;
-		localVars.animationName = data.animationName;
-		localVars.mirror = data.mirror;
-		localVars.px = data.x;
-		localVars.py = data.y;
-		localVars.inputs = data.inputs; */
-		if(data){
-		runtime.callFunction("playerSync",data.date,data.animationName,data.mirror,data.px,data.py,data.inputs,data.id);
-		}
-		
-		
-	},
-
-	async EventWorld_Event465_Act1(runtime, localVars)
-	{
-		const data = JSON.parse(localVars.jsonStringify);
-		/* localVars.date = data.date;
-		localVars.animationName = data.animationName;
-		localVars.mirror = data.mirror;
-		localVars.px = data.x;
-		localVars.py = data.y;
-		localVars.inputs = data.inputs;
-		 */
-		 for (let i = 0 ; i < data.playersArr.length; i++){
-		
-		 runtime.callFunction("playerSync",data.date,data.playersArr[i].animationName,data.playersArr[i].mirror,data.playersArr[i].px,data.playersArr[i].py,data.playersArr[i].inputs,data.playersArr[i].id);
-		 }
-		
-	},
-
-	async EventWorld_Event290_Act1(runtime, localVars)
+	async EventWorld_Event291_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -194,6 +133,79 @@ const resultFetch = sanitizeAndFormat(localVars.inventoryJson);
 sendInventory(result);
 
 
+	},
+
+	async EventWorld_Event433_Act1(runtime, localVars)
+	{
+		runtime.playersArr = [];
+	},
+
+	async EventWorld_Event437(runtime, localVars)
+	{
+		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
+		runtime.playersArr.push(jsonString);
+		
+	},
+
+	async EventWorld_Event438(runtime, localVars)
+	{
+		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
+	},
+
+	async EventWorld_Event443(runtime, localVars)
+	{
+		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
+		localVars.jsonStringify = JSON.stringify(jsonString);
+	},
+
+	async EventWorld_Event449(runtime, localVars)
+	{
+
+	},
+
+	async EventWorld_Event465_Act1(runtime, localVars)
+	{
+		const data = JSON.parse(localVars.jsonStringify);
+		/* localVars.date = data.date;
+		localVars.animationName = data.animationName;
+		localVars.mirror = data.mirror;
+		localVars.px = data.x;
+		localVars.py = data.y;
+		localVars.inputs = data.inputs; */
+		if(data){
+		runtime.callFunction("playerSync",data.date,data.animationName,data.mirror,data.px,data.py,data.inputs,data.id);
+		}
+		
+		
+	},
+
+	async EventWorld_Event466_Act1(runtime, localVars)
+	{
+		const data = JSON.parse(localVars.jsonStringify);
+		/* localVars.date = data.date;
+		localVars.animationName = data.animationName;
+		localVars.mirror = data.mirror;
+		localVars.px = data.x;
+		localVars.py = data.y;
+		localVars.inputs = data.inputs;
+		 */
+		 for (let i = 0 ; i < data.playersArr.length; i++){
+		
+		 runtime.callFunction("playerSync",data.date,data.playersArr[i].animationName,data.playersArr[i].mirror,data.playersArr[i].px,data.playersArr[i].py,data.playersArr[i].inputs,data.playersArr[i].id);
+		 }
+		
+	},
+
+	async EventConnect_Event3(runtime, localVars)
+	{
+		const params = new URLSearchParams(window.location.search);
+		const nombre = params.get("nombre"); 
+		if(nombre) {
+		runtime.globalVars.state = "host";
+		runtime.globalVars.realHost = "host";
+		runtime.globalVars.roomName = nombre;
+		
+		}
 	}
 };
 

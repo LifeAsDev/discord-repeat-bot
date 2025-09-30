@@ -1447,6 +1447,11 @@ self.C3_ExpressionFuncs = [
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(100, 200);
 		},
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => v0.GetValue();
+		},
+		() => "host",
 		() => "floor",
 		p => {
 			const n0 = p._GetNode(0);
@@ -1539,10 +1544,6 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() - 3);
-		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => v0.GetValue();
 		},
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -1887,7 +1888,6 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() / 2);
 		},
-		() => "host",
 		() => "setObjectHP",
 		p => {
 			const n0 = p._GetNode(0);
@@ -2231,10 +2231,14 @@ self.C3_ExpressionFuncs = [
 		() => "setWorld",
 		() => "wss://multiplayer.construct.net",
 		() => "Test",
-		() => "Login...",
-		() => "Rust2LifeAsDevTest",
-		() => "default",
-		() => "room1",
+		() => "roomList",
+		() => "roomName",
+		() => 480,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => (160 + (64 * f0()));
+		},
+		() => "connecting",
 		() => "Joining...",
 		() => 0.03,
 		() => "Syncing...",

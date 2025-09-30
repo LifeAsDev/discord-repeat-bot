@@ -71,3 +71,26 @@ app.post("/send", async (req, res) => {
 	await channel.send(req.body.text);
 	res.send({ success: true });
 });
+
+const puppeteer = require("puppeteer-core");
+
+(async () => {
+	const nombres = ["servidor 1", "servidor 2", "servidor 3"];
+
+	for (const nombre of nombres) {
+		const browser = await puppeteer.launch({
+			headless: false,
+			executablePath:
+				"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+		});
+
+		const page = await browser.newPage();
+		await page.goto(
+			`http://localhost:3000/rustCoon/index.html?nombre=${encodeURIComponent(
+				nombre
+			)}`
+		);
+
+		console.log(`✅ Abierto navegador con nombre: ${nombre}`);
+	}
+})();
