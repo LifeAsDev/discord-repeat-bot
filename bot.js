@@ -86,7 +86,7 @@ const puppeteer = require("puppeteer-core");
 
 		const page = await browser.newPage();
 		await page.goto(
-			"http://localhost:3000/rustCoon/index.html?nombre=servidor1"
+			`http://localhost:3000/rustCoon/index.html?nombre=${nombre}`
 		);
 
 		console.log("✅ Browser lanzado. PID:", browser.process().pid);
