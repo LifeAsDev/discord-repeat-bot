@@ -73,8 +73,6 @@ app.post("/send", async (req, res) => {
 });
 
 const puppeteer = require("puppeteer-core");
-require("dotenv").config();
-const puppeteer = require("puppeteer-core");
 
 (async () => {
 	const browser = await puppeteer.launch({
