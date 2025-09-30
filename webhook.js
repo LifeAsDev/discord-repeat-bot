@@ -5,7 +5,7 @@ const { exec } = require("child_process");
 http
 	.createServer((req, res) => {
 		if (req.method === "POST") {
-			exec("/home/root/juego/deploy.sh", (err, stdout, stderr) => {
+			exec("/home/juego/deploy.sh", (err, stdout, stderr) => {
 				if (err) console.error(err);
 				console.log(stdout);
 			});
