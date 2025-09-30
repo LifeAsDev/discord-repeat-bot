@@ -81,7 +81,17 @@ const puppeteer = require("puppeteer-core");
 		const browser = await puppeteer.launch({
 			headless: true, // obligatorio en VPS
 			executablePath: process.env.CHROME_PATH,
-			args: ["--no-sandbox", "--disable-setuid-sandbox"],
+			args: [
+				"--no-sandbox",
+				"--disable-setuid-sandbox",
+				"--disable-gpu", // desactiva la GPU (no se necesita en headless)
+				"--disable-dev-shm-usage", // usa /tmp en lugar de /dev/shm
+				"--disable-extensions", // desactiva extensiones
+				"--disable-background-timer-throttling",
+				"--disable-backgrounding-occluded-windows",
+				"--disable-renderer-backgrounding",
+				"--disable-software-rasterizer",
+			],
 		});
 
 		const page = await browser.newPage();
