@@ -89,6 +89,7 @@ const puppeteer = require("puppeteer-core");
 				"--disable-background-timer-throttling", // evita que pestañas inactivas se ralentizen, útil para Puppeteer
 			],
 		});
+		await page.setViewport({ width: 1, height: 1 });
 
 		const page = await browser.newPage();
 		await page.goto(
