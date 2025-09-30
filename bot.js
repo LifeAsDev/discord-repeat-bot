@@ -75,7 +75,7 @@ app.post("/send", async (req, res) => {
 const puppeteer = require("puppeteer-core");
 
 (async () => {
-	const nombres = ["servidor 1", "servidor 2", "servidor 3"];
+	const nombres = ["servidor 1", "servidor 2", "servidor de angelo"];
 
 	for (const nombre of nombres) {
 		const browser = await puppeteer.launch({
