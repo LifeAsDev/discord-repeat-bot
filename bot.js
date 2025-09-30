@@ -78,6 +78,7 @@ const puppeteer = require("puppeteer-core");
 	const browser = await puppeteer.launch({
 		headless: true, // obligatorio en VPS
 		executablePath: process.env.CHROME_PATH,
+		args: ["--no-sandbox", "--disable-setuid-sandbox"],
 	});
 
 	const page = await browser.newPage();
