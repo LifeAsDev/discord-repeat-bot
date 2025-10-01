@@ -94,7 +94,6 @@ app.post("/rooms/create", async (req, res) => {
 				"--disable-extensions",
 				"--disable-background-timer-throttling",
 				"--disable-gpu",
-				"--window-size=1,1",
 			],
 		});
 
