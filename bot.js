@@ -72,31 +72,68 @@ app.post("/send", async (req, res) => {
 	res.send({ success: true });
 });
 
+const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, page } }
 const puppeteer = require("puppeteer-core");
 
-(async () => {
-	const nombres = ["servidor 1"];
+// Crear un cuarto
+app.post("/rooms/create", async (req, res) => {
+	try {
+		const { nombre } = req.body;
+		if (rooms[nombre] && nombre !== "") {
+			return res.status(400).send({ error: "Ese cuarto ya existe" });
+		}
 
-	for (const nombre of nombres) {
 		const browser = await puppeteer.launch({
-			headless: true, // obligatorio en VPS
-			executablePath: process.env.CHROME_PATH,
+			headless: true,
+			executablePath:
+				process.env.CHROME_PATH || "/usr/bin/google-chrome-stable",
 			args: [
 				"--no-sandbox",
 				"--disable-setuid-sandbox",
 				"--disable-dev-shm-usage",
 				"--disable-extensions",
-				"--disable-background-timer-throttling", // evita que pestañas inactivas se ralentizen, útil para Puppeteer
+				"--disable-background-timer-throttling",
+				"--disable-gpu",
+				"--window-size=1,1",
 			],
 		});
 
 		const page = await browser.newPage();
 		await page.setViewport({ width: 1, height: 1 });
-
 		await page.goto(
 			`http://localhost:3000/rustCoon/index.html?nombre=${nombre}`
 		);
 
-		console.log("✅ Browser lanzado. PID:", browser.process().pid);
+		rooms[nombre] = { browser, page };
+
+		console.log(`✅ Cuarto creado: ${nombre} (PID ${browser.process().pid})`);
+		res.send({ success: true, nombre });
+	} catch (err) {
+		console.error(err);
+		res.status(500).send({ error: "No se pudo crear el cuarto" });
 	}
-})();
+});
+
+// Destruir un cuarto
+app.post("/rooms/destroy", async (req, res) => {
+	try {
+		const { nombre } = req.body;
+		if (!rooms[nombre]) {
+			return res.status(404).send({ error: "Ese cuarto no existe" });
+		}
+
+		await rooms[nombre].browser.close();
+		delete rooms[nombre];
+
+		console.log(`❌ Cuarto destruido: ${nombre}`);
+		res.send({ success: true, nombre });
+	} catch (err) {
+		console.error(err);
+		res.status(500).send({ error: "No se pudo destruir el cuarto" });
+	}
+});
+
+// Listar cuartos activos
+app.get("/rooms", (req, res) => {
+	res.send({ rooms: Object.keys(rooms) });
+});

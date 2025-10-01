@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Gestión de Cuartos</title>
+		<link rel="stylesheet" href="./styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<h1>Gestión de Cuartos</h1>
+
+			<div class="controls">
+				<input id="roomName" type="text" placeholder="Nombre del cuarto" />
+				<button onclick="crearCuarto()">Crear</button>
+				<button onclick="destruirCuarto()">Destruir</button>
+			</div>
+
+			<h2>Activos:</h2>
+			<ul id="lista" class="rooms"></ul>
+		</div>
+
+		<script>
+			// Memoria local de cuartos
+			let localRooms = [];
+
+			function renderRooms() {
+				const ul = document.getElementById("lista");
+				ul.innerHTML = "";
+				localRooms.forEach((room) => {
+					const li = document.createElement("li");
+					li.className = "room";
+					li.innerHTML = `<span>${room}</span>`;
+					ul.appendChild(li);
+				});
+			}
+
+			async function crearCuarto() {
+				const input = document.getElementById("roomName");
+				const nombre = input.value.trim();
+				if (!nombre) return alert("Ponle un nombre al cuarto");
+
+				// Vaciar el input inmediatamente
+				input.value = "";
+				// Actualiza memoria local inmediatamente
+				if (!localRooms.includes(nombre)) {
+					localRooms.push(nombre);
+					renderRooms();
+				}
+
+				// Llama al servidor en segundo plano
+				fetch("/rooms/create", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ nombre }),
+				})
+					.then((res) => res.json())
+					.then((data) => {
+						if (!data.success) {
+							renderRooms();
+						}
+					})
+					.catch((err) => {
+						console.error(err);
+						localRooms = localRooms.filter((r) => r !== nombre);
+						renderRooms();
+					});
+			}
+
+			async function destruirCuarto() {
+				const nombre = document.getElementById("roomName").value.trim();
+				if (!nombre) return alert("Ponle un nombre al cuarto");
+
+				// Actualiza memoria local inmediatamente
+				localRooms = localRooms.filter((r) => r !== nombre);
+				renderRooms();
+
+				// Llama al servidor en segundo plano
+				fetch("/rooms/destroy", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ nombre }),
+				})
+					.then((res) => res.json())
+					.then((data) => {
+						if (!data.success) {
+							alert(
+								"Error al destruir en servidor: " +
+									(data.error || "Desconocido")
+							);
+							// opcional: volver a agregar a memoria local
+							localRooms.push(nombre);
+							renderRooms();
+						}
+					})
+					.catch((err) => {
+						console.error(err);
+						localRooms.push(nombre);
+						renderRooms();
+					});
+			}
+
+			async function listarCuartos() {
+				// Opcional: sincroniza con servidor
+				try {
+					const res = await fetch("/rooms");
+					const data = await res.json();
+					localRooms = data.rooms;
+					renderRooms();
+				} catch (err) {
+					console.error("No se pudo sincronizar con servidor:", err);
+				}
+			}
+
+			// Lista al cargar la página
+			listarCuartos();
+		</script>
+	</body>
+</html>

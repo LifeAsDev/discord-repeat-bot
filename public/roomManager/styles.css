@@ -1,0 +1,98 @@
+/* 🎨 Reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+	background: radial-gradient(circle at top left, #1a1a2e, #0f0f1e);
+	color: #eee;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+}
+
+/* 🏠 Contenedor principal */
+.container {
+	width: 100%;
+	max-width: 700px;
+	background: rgba(30, 30, 50, 0.85);
+	padding: 30px;
+	border-radius: 16px;
+	box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	gap: 15px;
+	display: flex;
+	flex-direction: column;
+}
+
+/* 🔥 Título */
+h1 {
+	text-align: center;
+	font-size: 2rem;
+	color: #00e0ff;
+	margin-bottom: 25px;
+	letter-spacing: 1px;
+}
+
+/* ✍ Inputs */
+input {
+	width: 70%;
+	padding: 12px;
+	border-radius: 8px;
+	border: 1px solid #444;
+	background: #111;
+	color: #fff;
+	margin-right: 10px;
+	transition: 0.2s;
+}
+input:focus {
+	border-color: #00e0ff;
+	outline: none;
+	box-shadow: 0 0 10px #00e0ff55;
+}
+
+/* 🔘 Botones */
+button {
+	background: linear-gradient(135deg, #00e0ff, #0077ff);
+	color: #fff;
+	border: none;
+	padding: 12px 18px;
+	border-radius: 8px;
+	cursor: pointer;
+	font-weight: bold;
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+button:hover {
+	transform: scale(1.05);
+	box-shadow: 0 0 15px #00e0ff88;
+}
+button:active {
+	transform: scale(0.97);
+}
+
+/* 📦 Listado de cuartos */
+#rooms {
+	margin-top: 25px;
+}
+.room {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: rgba(255, 255, 255, 0.05);
+	padding: 15px;
+	margin-bottom: 12px;
+	border-radius: 10px;
+	transition: background 0.2s;
+}
+.room:hover {
+	background: rgba(255, 255, 255, 0.1);
+}
+.room span {
+	font-weight: bold;
+	color: #ffdd57;
+}
