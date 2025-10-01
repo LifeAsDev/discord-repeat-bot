@@ -87,7 +87,7 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event291_Act1(runtime, localVars)
+	async EventWorld_Event292_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -147,35 +147,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event433_Act1(runtime, localVars)
+	async EventWorld_Event434_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event437(runtime, localVars)
+	async EventWorld_Event438(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event438(runtime, localVars)
+	async EventWorld_Event439(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event443(runtime, localVars)
+	async EventWorld_Event444(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event449(runtime, localVars)
+	async EventWorld_Event450(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event465_Act1(runtime, localVars)
+	async EventWorld_Event466_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -191,7 +191,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event466_Act1(runtime, localVars)
+	async EventWorld_Event467_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
