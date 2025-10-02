@@ -17,7 +17,7 @@ const scriptsInEvents = {
 		runtime.globalVars.state = "host";
 		runtime.globalVars.realHost = "host";
 		runtime.globalVars.roomName = nombre;
-		runtime.callFunction("wss://multiplayer.construct.net");
+		runtime.callFunction("connect", "wss://multiplayer.construct.net");
 		} 
 	},
 
