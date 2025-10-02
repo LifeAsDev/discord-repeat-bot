@@ -6,7 +6,7 @@ const app = express();
 const PORT = 3000;
 dotenv.config({ path: "./.env" });
 const cors = require("cors");
-
+// just deploy
 app.use(cors());
 // Servir archivos estáticos desde la carpeta "public"
 app.use(
