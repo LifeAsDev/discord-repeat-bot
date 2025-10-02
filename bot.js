@@ -50,9 +50,10 @@ app.post("/api/token", async (req, res) => {
 	res.send({ access_token });
 });
 
-app.listen(PORT, () => {
-	console.log(`Servidor corriendo en http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+	console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
 });
+
 const { Client, GatewayIntentBits } = require("discord.js");
 const client = new Client({
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
