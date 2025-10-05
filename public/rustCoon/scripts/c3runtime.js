@@ -1448,7 +1448,6 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject();
 		},
-		() => -1,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
@@ -1543,6 +1542,7 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() - 3);
 		},
+		() => -1,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (16 + (v0.GetValue() * 32));
@@ -2226,6 +2226,7 @@ self.C3_ExpressionFuncs = [
 		() => "respawn",
 		() => "ready",
 		() => "setWorld",
+		() => "getInventory",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const n1 = p._GetNode(1);
@@ -2240,8 +2241,6 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => and(and(n0.ExpObject(), "&"), n1.ExpObject());
 		},
-		() => "Test1",
-		() => "283745825685897216",
 		() => "wss://multiplayer.construct.net",
 		() => "Test",
 		() => "roomList",
