@@ -1490,11 +1490,6 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
-			return () => n0.ExpObject(n1.ExpObject(), 3);
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			const n1 = p._GetNode(1);
 			return () => n0.ExpObject(n1.ExpObject(), 4);
 		},
 		p => {
@@ -1511,6 +1506,12 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
 			return () => n0.ExpObject(n1.ExpObject(), 7);
+		},
+		() => 1000,
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => n0.ExpObject(n1.ExpObject(), 3);
 		},
 		() => 15,
 		() => 1,
@@ -1614,8 +1615,7 @@ self.C3_ExpressionFuncs = [
 		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => f0(f1(), "UI");
+			return () => f0(0, "UI");
 		},
 		() => 0.2,
 		p => {
@@ -1995,9 +1995,10 @@ self.C3_ExpressionFuncs = [
 		() => "sendDiscord",
 		() => "discord",
 		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const n1 = p._GetNode(1);
-			return () => (and("Cancelar (", (60 - f0(n1.ExpBehavior("discord")))) + ")");
+			const v0 = p._GetNode(0).GetVar();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const n2 = p._GetNode(2);
+			return () => (and("Cancelar (", (v0.GetValue() - f1(n2.ExpBehavior("discord")))) + ")");
 		},
 		() => "Enviar inventario",
 		() => "oven",

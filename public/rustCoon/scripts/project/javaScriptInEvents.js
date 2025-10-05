@@ -21,7 +21,7 @@ const scriptsInEvents = {
 		} 
 	},
 
-	async EventWorld_Event18(runtime, localVars)
+	async EventWorld_Event19(runtime, localVars)
 	{
 		/**
 		 * Generates a random terrain map.
@@ -87,7 +87,7 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event296_Act1(runtime, localVars)
+	async EventWorld_Event298_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -116,8 +116,8 @@ function sanitizeAndFormat(jsonString) {
 
 const result = sanitizeAndFormat(localVars.inventoryJson);
 
-result.unshift(`<@${localVars.discordAlias}> Envio`)
-result.push(`${runtime.globalVars.roomName}`)
+result.unshift(`<@${localVars.discordAlias}> Envio`);
+result.push(`${runtime.globalVars.roomName}`);
 
 console.log(result);
 
@@ -149,35 +149,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event438_Act1(runtime, localVars)
+	async EventWorld_Event440_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event442(runtime, localVars)
+	async EventWorld_Event444(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event443(runtime, localVars)
+	async EventWorld_Event445(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event448(runtime, localVars)
+	async EventWorld_Event450(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event454(runtime, localVars)
+	async EventWorld_Event456(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event471_Act1(runtime, localVars)
+	async EventWorld_Event473_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -193,7 +193,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event472_Act1(runtime, localVars)
+	async EventWorld_Event474_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
