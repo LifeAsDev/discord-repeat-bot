@@ -21,7 +21,7 @@ const scriptsInEvents = {
 		} 
 	},
 
-	async EventWorld_Event18(runtime, localVars)
+	async EventWorld_Event19(runtime, localVars)
 	{
 		/**
 		 * Generates a random terrain map.
@@ -87,7 +87,7 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event292_Act1(runtime, localVars)
+	async EventWorld_Event297_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -117,6 +117,8 @@ function sanitizeAndFormat(jsonString) {
 const result = sanitizeAndFormat(localVars.inventoryJson);
 
 result.unshift(`<@${localVars.discordAlias}> Envio`)
+result.push(`${runtime.globalVars.roomName}`)
+
 console.log(result);
 
 async function sendInventory(result) {
@@ -147,35 +149,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event434_Act1(runtime, localVars)
+	async EventWorld_Event439_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event438(runtime, localVars)
+	async EventWorld_Event443(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event439(runtime, localVars)
+	async EventWorld_Event444(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event444(runtime, localVars)
+	async EventWorld_Event449(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event450(runtime, localVars)
+	async EventWorld_Event455(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event466_Act1(runtime, localVars)
+	async EventWorld_Event472_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -191,7 +193,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event467_Act1(runtime, localVars)
+	async EventWorld_Event473_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;

@@ -105,7 +105,10 @@ app.post("/rooms/create", async (req, res) => {
 		);
 
 		rooms[nombre] = { browser, page };
-
+		if (!roomNames.includes(nombre)) {
+			roomNames.push(nombre);
+			saveRoomNames(roomNames);
+		}
 		console.log(`✅ Cuarto creado: ${nombre} (PID ${browser.process().pid})`);
 		res.send({ success: true, nombre });
 	} catch (err) {
@@ -125,6 +128,9 @@ app.post("/rooms/destroy", async (req, res) => {
 		await rooms[nombre].browser.close();
 		delete rooms[nombre];
 
+		roomNames = roomNames.filter((r) => r !== nombre);
+		saveRoomNames(roomNames);
+
 		console.log(`❌ Cuarto destruido: ${nombre}`);
 		res.send({ success: true, nombre });
 	} catch (err) {
@@ -137,3 +143,52 @@ app.post("/rooms/destroy", async (req, res) => {
 app.get("/rooms", (req, res) => {
 	res.send({ rooms: Object.keys(rooms) });
 });
+
+const ROOMS_FILE = "./rooms.json";
+
+function loadRoomNames() {
+	if (!fs.existsSync(ROOMS_FILE)) return [];
+	return JSON.parse(fs.readFileSync(ROOMS_FILE));
+}
+
+function saveRoomNames(names) {
+	fs.writeFileSync(ROOMS_FILE, JSON.stringify(names, null, 2));
+}
+
+let roomNames = loadRoomNames();
+
+// --- Inicializar rooms al iniciar el servidor ---
+async function initRooms() {
+	for (const nombre of roomNames) {
+		if (!rooms[nombre]) {
+			try {
+				const browser = await puppeteer.launch({
+					headless: true,
+					executablePath:
+						process.env.CHROME_PATH || "/usr/bin/google-chrome-stable",
+					args: [
+						"--no-sandbox",
+						"--disable-setuid-sandbox",
+						"--disable-dev-shm-usage",
+						"--disable-extensions",
+						"--disable-background-timer-throttling",
+						"--disable-gpu",
+					],
+				});
+
+				const page = await browser.newPage();
+				await page.setViewport({ width: 1, height: 1 });
+				await page.goto(
+					`http://localhost:${PORT}/rustCoon/index.html?nombre=${nombre}`
+				);
+
+				rooms[nombre] = { browser, page };
+				console.log(`♻ Room recreada al iniciar: ${nombre}`);
+			} catch (err) {
+				console.error(`No se pudo recrear la room ${nombre}:`, err);
+			}
+		}
+	}
+}
+
+initRooms();
