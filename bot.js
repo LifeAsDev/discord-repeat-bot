@@ -96,7 +96,16 @@ app.post("/rooms/create", async (req, res) => {
 				"--disable-extensions",
 				"--disable-background-timer-throttling",
 				"--disable-gpu",
+				"--enable-logging",
+				"--v=1",
 			],
+			dumpio: true,
+		});
+
+		browser.on("disconnected", () => {
+			console.error(
+				"[!] Puppeteer: el navegador se ha desconectado (posible crash)"
+			);
 		});
 
 		const page = await browser.newPage();
@@ -174,7 +183,15 @@ async function initRooms() {
 						"--disable-extensions",
 						"--disable-background-timer-throttling",
 						"--disable-gpu",
+						"--enable-logging",
+						"--v=1",
 					],
+					dumpio: true,
+				});
+				browser.on("disconnected", () => {
+					console.error(
+						"[!] Puppeteer: el navegador se ha desconectado (posible crash)"
+					);
 				});
 
 				const page = await browser.newPage();
