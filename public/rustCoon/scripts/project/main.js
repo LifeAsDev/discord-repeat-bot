@@ -40,8 +40,9 @@ runOnStartup(async runtime =>
 
 
     runtime.lifeAsDevUtils.startDiscordLogin = async function() {
-            console.log("Autenticación completada:", result);
         const result = await authenticateDiscord();
+                    console.log("Autenticación completada:", result);
+
     };
 
     runtime.playersArr = [];
