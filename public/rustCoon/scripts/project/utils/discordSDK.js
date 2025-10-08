@@ -14,6 +14,7 @@ async function setupDiscordSdk(discordSdk) {
       "applications.commands"
     ],
   });
+console.log(code);
 
   const response = await fetch("/api/token", {
     method: "POST",
@@ -24,6 +25,8 @@ async function setupDiscordSdk(discordSdk) {
       code,
     }),
   });
+
+console.log(response);
 
   const { access_token } = await response.json();
 console.log(access_token);
