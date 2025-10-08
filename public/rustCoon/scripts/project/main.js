@@ -8,45 +8,39 @@ runOnStartup(async runtime =>
 
     runtime.lifeAsDevUtils = runtime.lifeAsDevUtils || {};
 
-    async function authenticateDiscord() {
+     async function authenticateDiscord() {
         try {
-            await discord.ready();
+            // Usa la función de utils que ya maneja el flujo completo
+            const auth = await setupDiscordSdk(discord);
 
-            const { code } = await discord.commands.authorize({
-                client_id: clientId,
-                response_type: "code",
-                state: "",
-                prompt: "none",
-                scope: ["identify", "guilds", "applications.commands"],
-            });
+            console.log("Discord auth success:", auth);
 
-            const tokenResponse = await discord.commands.authenticate({
-                code,
-            });
+            // Guarda datos globales en Construct
+            runtime.globalVars.alias = auth.user.global_name || auth.user.username;
+            runtime.globalVars.discordId = auth.user.id.toString();
 
-            console.log("Discord auth success:", tokenResponse);
-            runtime.globalVars.alias =
-                tokenResponse.user.global_name || tokenResponse.user.username;
-            runtime.globalVars.discordId = tokenResponse.user.id.toString();
-
+            // Si hay frameId, conecta al proxy
             if (discord && discord.frameId) {
                 const frameId = discord.frameId;
                 console.log("Frame:", frameId);
+
                 const target = "wss://multiplayer.construct.net";
                 const proxyUrl = `wss://${clientId}.discordsays.com/connect`;
+
                 runtime.callFunction("connect", proxyUrl);
             }
 
-            return tokenResponse;
+            return auth;
         } catch (error) {
             console.error("Error al autenticar con Discord:", error);
             throw error;
         }
     }
 
+
     runtime.lifeAsDevUtils.startDiscordLogin = async function() {
+            console.log("Autenticación completada:", result);
         const result = await authenticateDiscord();
-        console.log("Autenticación completada:", result);
     };
 
     runtime.playersArr = [];
