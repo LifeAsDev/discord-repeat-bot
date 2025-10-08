@@ -10,6 +10,7 @@ runOnStartup(async runtime =>
 
      async function authenticateDiscord() {
         try {
+        console.log("update");
             // Usa la función de utils que ya maneja el flujo completo
             const auth = await setupDiscordSdk(discord);
 
