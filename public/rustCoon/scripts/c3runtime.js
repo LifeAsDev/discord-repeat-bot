@@ -2244,6 +2244,9 @@ self.C3_ExpressionFuncs = [
 		},
 		() => "wss://multiplayer.construct.net",
 		() => "Test",
+		() => "connecting",
+		() => "Tap to play",
+		() => "Connecting...",
 		() => "roomList",
 		() => "roomName",
 		() => 480,
@@ -2251,7 +2254,6 @@ self.C3_ExpressionFuncs = [
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => (160 + (64 * f0()));
 		},
-		() => "connecting",
 		() => "Joining...",
 		() => 0.03,
 		() => "Syncing...",
