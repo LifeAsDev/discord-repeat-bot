@@ -231,6 +231,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Exps.savestatejson,
 		C3.JavaScriptInEvents.EventConnect_Event3,
 		C3.Plugins.System.Cnds.IsPreview,
+		C3.Plugins.Spritefont2.Cnds.CompareText,
+		C3.JavaScriptInEvents.EventConnect_Event7_Act1,
 		C3.Plugins.Multiplayer.Cnds.SignallingIsConnected,
 		C3.Plugins.Multiplayer.Acts.SignallingConnect,
 		C3.Plugins.Multiplayer.Cnds.OnSignallingConnected,

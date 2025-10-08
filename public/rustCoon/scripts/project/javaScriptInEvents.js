@@ -21,6 +21,11 @@ const scriptsInEvents = {
 		} 
 	},
 
+	async EventConnect_Event7_Act1(runtime, localVars)
+	{
+		runtime.lifeAsDevUtils.startDiscordLogin();
+	},
+
 	async EventWorld_Event19(runtime, localVars)
 	{
 		/**
