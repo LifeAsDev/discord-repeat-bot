@@ -13,6 +13,18 @@ app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
 
+const versionPath = "/filesv1"; // 🔹 cambia esto a /filesv2, /filesv3 cuando actualices
+
+app.use(
+	versionPath,
+	express.static(publicPath, {
+		etag: false,
+		lastModified: false,
+		setHeaders: (res) =>
+			res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate"),
+	})
+);
+
 app.use(
 	express.static(publicPath, {
 		etag: false,
