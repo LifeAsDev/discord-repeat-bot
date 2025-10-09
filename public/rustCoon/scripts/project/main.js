@@ -26,7 +26,7 @@ runOnStartup(async runtime =>
                 console.log("Frame:", frameId);
 
                 const target = "wss://multiplayer.construct.net";
-                const proxyUrl = `wss://${clientId}.discordsays.com/connect`;
+                const proxyUrl = "/connect";
 
                 runtime.callFunction("connect", proxyUrl);
             }
