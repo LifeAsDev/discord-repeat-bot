@@ -14,7 +14,13 @@ app.use(cors());
 // Valor dinámico único por sesión del servidor
 const versionTag = Date.now().toString(); // Ej: 1738973129000
 
+app.get("/rustCoon", (req, res) => {
+	res.redirect(`/rustCoon/${versionTag}/`);
+});
+
+// Servir archivos estáticos desde una subcarpeta con versión
 app.use(
+	`/rustCoon/${versionTag}`,
 	express.static(path.join(__dirname, "public"), {
 		etag: false,
 		lastModified: false,
@@ -23,23 +29,6 @@ app.use(
 		},
 	})
 );
-
-// Intercepta la entrega del index.html
-app.get("/", (req, res) => {
-	const filePath = path.join(__dirname, "public", "index.html");
-	let html = fs.readFileSync(filePath, "utf8");
-
-	// Reemplaza automáticamente tus scripts con ?v=timestamp
-	html = html.replace(/src="(.*?)"/g, (match, p1) => {
-		if (p1.endsWith(".js")) {
-			return `src="${p1}?v=${versionTag}"`;
-		}
-		return match;
-	});
-
-	res.set("Cache-Control", "no-store");
-	res.send(html);
-});
 
 app.use(express.json());
 
