@@ -251,8 +251,7 @@ const scriptsInEvents = {
 	},
 
 	async EventConnect_Event2_Act1(runtime, localVars) {
-		// utils/logger.js
-		function remoteLog(...args) {
+		/* function remoteLog(...args) {
 			try {
 				fetch("https://rustycoon.site/log", {
 					method: "POST",
@@ -273,7 +272,7 @@ const scriptsInEvents = {
 				original.apply(console, args);
 				remoteLog(`[${level}]`, ...args);
 			};
-		});
+		}); */
 	},
 };
 // update game
