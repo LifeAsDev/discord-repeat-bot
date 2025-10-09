@@ -17,7 +17,8 @@ app.use(
 	express.static(publicPath, {
 		etag: false,
 		lastModified: false,
-		setHeaders: (res) => res.setHeader("Cache-Control", "no-store"),
+		setHeaders: (res) =>
+			res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate"),
 	})
 );
 
