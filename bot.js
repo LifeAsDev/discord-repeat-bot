@@ -50,6 +50,10 @@ app.post("/api/token", async (req, res) => {
 	// Return the access_token to our client as { access_token: "..."}
 	res.send({ access_token });
 });
+app.post("/log", (req, res) => {
+	console.log("📱 iOS Log:", req.body.msg);
+	res.sendStatus(204);
+});
 
 app.listen(PORT, "0.0.0.0", () => {
 	console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);

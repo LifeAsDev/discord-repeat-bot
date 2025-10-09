@@ -229,6 +229,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Acts.SaveState,
 		C3.Plugins.System.Cnds.OnSaveComplete,
 		C3.Plugins.System.Exps.savestatejson,
+		C3.JavaScriptInEvents.EventConnect_Event2_Act1,
 		C3.JavaScriptInEvents.EventConnect_Event3,
 		C3.Plugins.System.Cnds.IsPreview,
 		C3.Plugins.Spritefont2.Cnds.CompareText,
