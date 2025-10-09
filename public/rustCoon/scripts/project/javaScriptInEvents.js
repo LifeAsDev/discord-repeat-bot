@@ -217,27 +217,6 @@ sendInventory(result);
 
 	async EventConnect_Event2_Act1(runtime, localVars)
 	{
-// utils/logger.js
-function remoteLog(...args) {
-  try {
-    fetch("/log", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ts: Date.now(),
-        msg: args.map(a => (typeof a === "object" ? JSON.stringify(a) : a)).join(" "),
-      }),
-    });
-  } catch (err) {}
-}
-
-["log", "warn", "error"].forEach(level => {
-  const original = console[level];
-  console[level] = (...args) => {
-    original.apply(console, args);
-    remoteLog(`[${level}]`, ...args);
-  };
-});
 
 	}
 };
