@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const versionTag = `v${Date.now()}`;
 const publicPath = path.join(__dirname, "public", "rustCoon");
+const publicPath2 = path.join(__dirname, "public");
 
 // 🚪 Ruta especial solo para el juego Discord (rustCoon)
 app.get("/rustCoon", (req, res) => {
@@ -34,7 +35,7 @@ app.get(`/rustCoon/${versionTag}/`, (req, res) => {
 });
 // 📁 El resto de la carpeta /public sigue accesible normalmente
 app.use(
-	express.static(publicPath, {
+	express.static(publicPath2, {
 		etag: false,
 		lastModified: false,
 		setHeaders: (res) => {
