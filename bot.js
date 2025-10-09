@@ -11,36 +11,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const versionTag = `v${Date.now()}`;
-const publicPath = path.join(__dirname, "public", "rustCoon");
-const publicPath2 = path.join(__dirname, "public");
-
-// 🚪 Ruta especial solo para el juego Discord (rustCoon)
-app.get("/rustCoon", (req, res) => {
-	res.redirect(`/rustCoon/${versionTag}/`);
-});
+const publicPath = path.join(__dirname, "public");
 
 app.use(
-	`/rustCoon/${versionTag}`,
 	express.static(publicPath, {
 		etag: false,
 		lastModified: false,
-		setHeaders: (res) => {
-			res.setHeader("Cache-Control", "no-store");
-		},
-	})
-);
-app.get(`/rustCoon/${versionTag}/`, (req, res) => {
-	res.sendFile(path.join(publicPath, "index.html"));
-});
-// 📁 El resto de la carpeta /public sigue accesible normalmente
-app.use(
-	express.static(publicPath2, {
-		etag: false,
-		lastModified: false,
-		setHeaders: (res) => {
-			res.setHeader("Cache-Control", "no-store");
-		},
+		setHeaders: (res) => res.setHeader("Cache-Control", "no-store"),
 	})
 );
 
