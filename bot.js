@@ -10,15 +10,37 @@ const cors = require("cors");
 // just deploy
 app.use(cors());
 // Servir archivos estáticos desde la carpeta "public"
+
+// Valor dinámico único por sesión del servidor
+const versionTag = Date.now().toString(); // Ej: 1738973129000
+
 app.use(
 	express.static(path.join(__dirname, "public"), {
 		etag: false,
 		lastModified: false,
-		setHeaders: (res, path) => {
+		setHeaders: (res) => {
 			res.setHeader("Cache-Control", "no-store");
 		},
 	})
 );
+
+// Intercepta la entrega del index.html
+app.get("/", (req, res) => {
+	const filePath = path.join(__dirname, "public", "index.html");
+	let html = fs.readFileSync(filePath, "utf8");
+
+	// Reemplaza automáticamente tus scripts con ?v=timestamp
+	html = html.replace(/src="(.*?)"/g, (match, p1) => {
+		if (p1.endsWith(".js")) {
+			return `src="${p1}?v=${versionTag}"`;
+		}
+		return match;
+	});
+
+	res.set("Cache-Control", "no-store");
+	res.send(html);
+});
+
 app.use(express.json());
 
 // Opcional: parsear x-www-form-urlencoded si envías formularios
