@@ -7,21 +7,22 @@ const app = express();
 const PORT = 3000;
 dotenv.config({ path: "./.env" });
 const cors = require("cors");
-// just deploy
 app.use(cors());
-// Servir archivos estáticos desde la carpeta "public"
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Valor dinámico único por sesión del servidor
-const versionTag = Date.now().toString(); // Ej: 1738973129000
+const versionTag = `v${Date.now()}`;
+const publicPath = path.join(__dirname, "public");
 
+// 🚪 Ruta especial solo para el juego Discord (rustCoon)
 app.get("/rustCoon", (req, res) => {
 	res.redirect(`/rustCoon/${versionTag}/`);
 });
 
-// Servir archivos estáticos desde una subcarpeta con versión
+// 📦 Mapea la subruta /rustCoon/vXXXX a /public
 app.use(
 	`/rustCoon/${versionTag}`,
-	express.static(path.join(__dirname, "public"), {
+	express.static(publicPath, {
 		etag: false,
 		lastModified: false,
 		setHeaders: (res) => {
@@ -30,10 +31,16 @@ app.use(
 	})
 );
 
-app.use(express.json());
-
-// Opcional: parsear x-www-form-urlencoded si envías formularios
-app.use(express.urlencoded({ extended: true }));
+// 📁 El resto de la carpeta /public sigue accesible normalmente
+app.use(
+	express.static(publicPath, {
+		etag: false,
+		lastModified: false,
+		setHeaders: (res) => {
+			res.setHeader("Cache-Control", "no-store");
+		},
+	})
+);
 
 app.post("/api/token", async (req, res) => {
 	console.log({
