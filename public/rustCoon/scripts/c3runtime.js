@@ -2249,6 +2249,7 @@ self.C3_ExpressionFuncs = [
 		() => "Connecting...",
 		() => "roomList",
 		() => "roomName",
+		() => "Connected",
 		() => 480,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
