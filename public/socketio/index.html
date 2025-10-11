@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Cliente Socket.IO</title>
+		<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+	</head>
+	<body>
+		<h1>Cliente Socket.IO</h1>
+		<input id="input" placeholder="Escribe un mensaje" />
+		<button id="send">Enviar</button>
+		<ul id="messages"></ul>
+
+		<script>
+			// conectar al servidor
+			const socket = io("http://localhost:3000", {
+				path: "/socket.io/",
+				transports: ["websocket", "polling"],
+			});
+			const input = document.getElementById("input");
+			const send = document.getElementById("send");
+			const messages = document.getElementById("messages");
+
+			socket.on("connect", () => {
+				console.log("Conectado como:", socket.id);
+			});
+
+			socket.on("welcome", (msg) => {
+				const li = document.createElement("li");
+				li.textContent = msg;
+				messages.appendChild(li);
+			});
+
+			socket.on("mensaje", (msg) => {
+				const li = document.createElement("li");
+				li.textContent = msg;
+				messages.appendChild(li);
+			});
+
+			send.onclick = () => {
+				const msg = input.value;
+				socket.emit("mensaje", msg);
+				input.value = "";
+			};
+		</script>
+	</body>
+</html>
