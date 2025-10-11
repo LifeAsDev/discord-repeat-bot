@@ -13,6 +13,7 @@ app.use(express.static("public"));
 
 io.on("connection", (socket) => {
 	console.log("🛰️ Cliente conectado:", socket.id);
+	socket.emit("welcome", `Bienvenido al servidor, tu ID es ${socket.id}`);
 
 	socket.on("ping", (msg) => {
 		console.log("📡 Mensaje recibido:", msg);
