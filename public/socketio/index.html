@@ -14,7 +14,7 @@
 		<script>
 			// conectar al servidor
 			const socket = io("/socket", {
-				path: "/socket.io/",
+				path: "/socket/socket.io/",
 				transports: ["websocket", "polling"],
 			});
 			const input = document.getElementById("input");
