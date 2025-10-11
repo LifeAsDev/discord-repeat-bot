@@ -13,7 +13,7 @@
 
 		<script>
 			// conectar al servidor
-			const socket = io("socket", {
+			const socket = io("/socket", {
 				path: "/socket.io/",
 				transports: ["websocket", "polling"],
 			});
