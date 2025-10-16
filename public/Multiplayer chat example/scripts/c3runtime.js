@@ -1256,7 +1256,7 @@ self.C3_ExpressionFuncs = [
 		},
 		() => "Signalling",
 		() => "Connecting to server...",
-		() => "/connect",
+		() => "wss://1411008879885549711.discordsays.com/connect",
 		() => "Connected, logging in...",
 		p => {
 			const v0 = p._GetNode(0).GetVar();

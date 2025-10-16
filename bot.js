@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
 
-const versionPath = "/filesv5"; // 🔹 cambia esto a /filesv2, /filesv3 cuando actualices
+const versionPath = "/filesv6"; // 🔹 cambia esto a /filesv2, /filesv3 cuando actualices
 
 app.use(
 	versionPath,
