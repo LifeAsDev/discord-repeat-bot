@@ -78,43 +78,45 @@
 			})();
 		</script>
 		<script>
-			// instalar con: npm install ws
-			import WebSocket from "ws";
-
 			const wsUrl = "wss://1411008879885549711.discordsays.com/connect";
 
-			// Headers que replican tu request
-			const headers = {
-				Origin: "https://rustycoon.site",
-				"Sec-WebSocket-Protocol": "c2multiplayer",
-				"User-Agent":
-					"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
-				"Sec-WebSocket-Version": "13",
-				"Sec-WebSocket-Extensions":
-					"permessage-deflate; client_max_window_bits",
-				"Cache-Control": "no-cache",
-				Pragma: "no-cache",
-			};
+			// Protocolo a usar
+			const protocol = "c2multiplayer";
 
-			const ws = new WebSocket(wsUrl, "c2multiplayer", { headers });
+			let ws;
 
-			ws.on("open", () => {
-				console.log("✅ Conexión WebSocket abierta");
-				// enviar un mensaje de prueba
-				ws.send(JSON.stringify({ type: "hello", content: "testing" }));
-			});
+			try {
+				ws = new WebSocket(wsUrl, protocol);
 
-			ws.on("message", (msg) => {
-				console.log("📩 Mensaje recibido:", msg.toString());
-			});
+				// Timeout para cachar silencios
+				const timeout = setTimeout(() => {
+					console.warn("⏱ WebSocket parece bloqueado o no responde");
+					ws.close();
+				}, 5000); // 5 segundos
 
-			ws.on("close", (code, reason) => {
-				console.log("❌ Conexión cerrada", code, reason.toString());
-			});
+				ws.addEventListener("open", () => {
+					clearTimeout(timeout);
+					console.log("✅ WebSocket abierto");
+					// enviar mensaje de prueba
+					ws.send(JSON.stringify({ type: "hello", content: "testing" }));
+				});
 
-			ws.on("error", (err) => {
-				console.error("⚠️ Error en WebSocket:", err);
-			});
+				ws.addEventListener("message", (msg) => {
+					console.log("📩 Mensaje recibido:", msg.data);
+				});
+
+				ws.addEventListener("close", (e) => {
+					clearTimeout(timeout);
+					console.log("❌ WebSocket cerrado", e.code, e.reason);
+				});
+
+				ws.addEventListener("error", (err) => {
+					clearTimeout(timeout);
+					console.error("⚠️ Error WebSocket", err);
+				});
+			} catch (e) {
+				console.error("💥 Error creando WebSocket", e);
+			}
 		</script>
 		<noscript>
 			<div id="notSupportedWrap">
