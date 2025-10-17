@@ -1,48 +1,197 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-	<title>Multiplayer chat example</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-	
-	<!-- Made with Construct, the game and app creator :: https://www.construct.net -->
-	<meta name="generator" content="Scirra Construct">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Multiplayer chat example</title>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+		/>
 
+		<!-- Made with Construct, the game and app creator :: https://www.construct.net -->
+		<meta name="generator" content="Scirra Construct" />
 
+		<link rel="manifest" href="appmanifest.json" />
+		<link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png" />
+		<link rel="apple-touch-icon" sizes="256x256" href="icons/icon-256.png" />
+		<link rel="icon" type="image/png" href="icons/icon-256.png" />
 
-	<link rel="manifest" href="appmanifest.json">
-	<link rel="apple-touch-icon" sizes="128x128" href="icons/icon-128.png">
-	<link rel="apple-touch-icon" sizes="256x256" href="icons/icon-256.png">
-	<link rel="icon" type="image/png" href="icons/icon-256.png">
+		<link rel="stylesheet" href="style.css" />
+	</head>
 
-	<link rel="stylesheet" href="style.css">
+	<body>
+		<script>
+			if (location.protocol.substr(0, 4) === "file") {
+				alert(
+					"Web exports won't work until you upload them. (When running on the file: protocol, browsers block many features from working for security reasons.)"
+				);
+			}
+		</script>
+		<script>
+			(function () {
+				// panel en pantalla
+				const div = document.createElement("div");
+				Object.assign(div.style, {
+					position: "fixed",
+					bottom: "0",
+					left: "0",
+					right: "0",
+					maxHeight: "40vh",
+					overflowY: "auto",
+					background: "rgba(0,0,0,0.85)",
+					color: "#0f0",
+					fontSize: "12px",
+					fontFamily: "monospace",
+					zIndex: 999999,
+					padding: "6px",
+				});
+				document.body.appendChild(div);
 
+				function write(...args) {
+					const line = document.createElement("div");
+					line.textContent =
+						`[${new Date().toISOString()}] ` +
+						args
+							.map((a) => {
+								try {
+									return typeof a === "object" ? JSON.stringify(a) : a;
+								} catch (e) {
+									return String(a);
+								}
+							})
+							.join(" ");
+					div.appendChild(line);
+					div.scrollTop = div.scrollHeight;
+				}
 
+				// enviar remoto (no bloquear)
+				async function sendRemote(payload) {
+					try {
+						await fetch("/report-log", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify(payload),
+						});
+					} catch (e) {
+						// no hagas nada, solo mostramos localmente
+					}
+				}
 
-</head> 
- 
-<body>
+				// wrapper de WebSocket que loguea todo
+				window.createDebugWS = function (url, protocols) {
+					write("DEBUG: creating WebSocket ->", url);
+					let ws;
+					try {
+						ws = new WebSocket(url, protocols);
+					} catch (ex) {
+						write("EXCEPTION creating WebSocket:", ex);
+						sendRemote({
+							type: "exception_create",
+							url,
+							error: String(ex),
+							time: Date.now(),
+						});
+						throw ex;
+					}
 
-	
+					ws.addEventListener("open", (ev) => {
+						write("WS open");
+						sendRemote({ type: "open", url, time: Date.now() });
+					});
 
-<script>
-if (location.protocol.substr(0, 4) === "file")
-{
-	alert("Web exports won't work until you upload them. (When running on the file: protocol, browsers block many features from working for security reasons.)");
-}
-</script>
-	
-	<noscript>
-		<div id="notSupportedWrap">
-			<h2 id="notSupportedTitle">This content requires JavaScript</h2>
-			<p class="notSupportedMessage">JavaScript appears to be disabled. Please enable it to view this content.</p>
-		</div>
-	</noscript>
-	<script src="scripts/modernjscheck.js"></script>
-	<script src="scripts/supportcheck.js"></script>
-	<script src="scripts/offlineclient.js" type="module"></script>
-	<script src="scripts/main.js" type="module"></script>
-	<script src="scripts/register-sw.js" type="module"></script>
+					ws.addEventListener("message", (ev) => {
+						write("WS message:", ev.data);
+						// no enviar todo si es pesado
+					});
 
-</body> 
+					ws.addEventListener("error", (ev) => {
+						write("WS error event:", ev);
+						// el evento error no siempre incluye info — avisar al servidor
+						sendRemote({
+							type: "error_event",
+							url,
+							event: String(ev),
+							time: Date.now(),
+						});
+					});
+
+					ws.addEventListener("close", (ev) => {
+						write(
+							"WS close code=" +
+								ev.code +
+								" reason=" +
+								ev.reason +
+								" wasClean=" +
+								ev.wasClean
+						);
+						sendRemote({
+							type: "close",
+							url,
+							code: ev.code,
+							reason: ev.reason,
+							wasClean: ev.wasClean,
+							time: Date.now(),
+						});
+					});
+
+					// detector: si nunca se abrió en X ms -> posible bloqueo nativo
+					const openedFlag = { value: false };
+					ws.addEventListener("open", () => (openedFlag.value = true));
+					setTimeout(() => {
+						if (!openedFlag.value) {
+							write(
+								"⚠️ WS did not open within timeout (3s). Possible native block (ATS / WebView)."
+							);
+							sendRemote({ type: "open_timeout", url, time: Date.now() });
+						}
+					}, 3000);
+
+					return ws;
+				};
+
+				// también expongo función para test rápido
+				window.testDebugWS = function (url) {
+					try {
+						const ws = window.createDebugWS(url);
+						// force short handlers (no enviar datos reales)
+						setTimeout(() => {
+							try {
+								ws.close();
+							} catch (e) {}
+						}, 5000);
+					} catch (e) {
+						write("testDebugWS exception: " + e);
+						sendRemote({
+							type: "test_exception",
+							url,
+							error: String(e),
+							time: Date.now(),
+						});
+					}
+				};
+
+				// interceptar console.log (opcional)
+				const origConsoleLog = console.log;
+				console.log = function (...a) {
+					write("LOG: " + a.join(" "));
+					origConsoleLog.apply(console, a);
+				};
+			})();
+		</script>
+
+		<noscript>
+			<div id="notSupportedWrap">
+				<h2 id="notSupportedTitle">This content requires JavaScript</h2>
+				<p class="notSupportedMessage">
+					JavaScript appears to be disabled. Please enable it to view this
+					content.
+				</p>
+			</div>
+		</noscript>
+		<script src="scripts/modernjscheck.js"></script>
+		<script src="scripts/supportcheck.js"></script>
+		<script src="scripts/offlineclient.js" type="module"></script>
+		<script src="scripts/main.js" type="module"></script>
+		<script src="scripts/register-sw.js" type="module"></script>
+	</body>
 </html>
