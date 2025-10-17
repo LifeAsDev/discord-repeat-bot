@@ -26,16 +26,14 @@
 	_PostToRuntimeMaybeSync(t, i, e) {
 		this._iRuntime.UsesWorker()
 			? this.PostToRuntime(t, i, e)
-			: this._iRuntime
-					._GetLocalRuntime()
-					["_OnMessageFromDOM"]({
-						type: "event",
-						component: this._componentId,
-						handler: t,
-						dispatchOpts: e || null,
-						data: i,
-						responseId: null,
-					});
+			: this._iRuntime._GetLocalRuntime()["_OnMessageFromDOM"]({
+					type: "event",
+					component: this._componentId,
+					handler: t,
+					dispatchOpts: e || null,
+					data: i,
+					responseId: null,
+			  });
 	}
 	AddRuntimeMessageHandler(t, i) {
 		this._iRuntime.AddRuntimeComponentMessageHandler(this._componentId, t, i);
@@ -5007,6 +5005,8 @@
 				return this._simPdv;
 			}
 			_OnGetSupported() {
+				alert("PeerConnection: " + !!i + ", DataChannel: " + !!r);
+
 				console.log(!(!i || !r));
 				return { isSupported: !(!i || !r) };
 			}
