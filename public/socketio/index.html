@@ -1,47 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-		<meta charset="utf-8" />
-		<title>Cliente Socket.IO</title>
-		<script src="/socketiopackage"></script>
+		<meta charset="UTF-8" />
+		<title>Socket.IO Test</title>
 	</head>
 	<body>
-		<h1>Cliente Socket.IO</h1>
-		<input id="input" placeholder="Escribe un mensaje" />
-		<button id="send">Enviar</button>
-		<ul id="messages"></ul>
+		<h1>Socket.IO Test</h1>
+		<div id="status">Conectando...</div>
 
+		<!-- Cliente Socket.IO v4 -->
+		<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 		<script>
-			// conectar al servidor
-			const socket = io("/socket", {
-				path: "/socket/socket.io/",
-				transports: ["websocket", "polling"],
+			// Ajusta la URL y path a tu servidor
+			const socket = io("http://localhost:3000", {
+				path: "/signalling/socket.io",
+				transports: ["websocket", "polling"], // fallback
 			});
-			const input = document.getElementById("input");
-			const send = document.getElementById("send");
-			const messages = document.getElementById("messages");
+
+			const status = document.getElementById("status");
 
 			socket.on("connect", () => {
-				console.log("Conectado como:", socket.id);
+				status.innerText = `Conectado! ID: ${socket.id}`;
+				console.log("Conectado a signalling server:", socket.id);
 			});
 
-			socket.on("welcome", (msg) => {
-				const li = document.createElement("li");
-				li.textContent = msg;
-				messages.appendChild(li);
+			socket.on("disconnect", (reason) => {
+				status.innerText = `Desconectado: ${reason}`;
+				console.log("Desconectado:", reason);
 			});
 
-			socket.on("mensaje", (msg) => {
-				const li = document.createElement("li");
-				li.textContent = msg;
-				messages.appendChild(li);
+			// Mensaje de prueba desde el servidor
+			socket.on("test_message", (msg) => {
+				console.log("Mensaje del servidor:", msg);
 			});
 
-			send.onclick = () => {
-				const msg = input.value;
-				socket.emit("mensaje", msg);
-				input.value = "";
-			};
+			// Enviar mensaje de prueba
+			setTimeout(() => {
+				if (socket.connected) {
+					socket.emit("test_message", "Hola desde el cliente!");
+				}
+			}, 2000);
 		</script>
 	</body>
 </html>

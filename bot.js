@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 const dotenv = require("dotenv");
 const fs = require("fs");
+const { ServerSignalling } = require("./ServerSignalling");
+const http = require("http");
 
 const app = express();
 const PORT = 3000;
@@ -64,9 +66,12 @@ app.post("/log", (req, res) => {
 	console.log("📱 iOS Log:", req.body.msg);
 	res.sendStatus(204);
 });
+const server = http.createServer(app);
 
-app.listen(PORT, "0.0.0.0", () => {
-	console.log(`Servidor corriendo en http://0.0.0.0:${PORT}`);
+const signalling = new ServerSignalling(server);
+
+server.listen(3000, "0.0.0.0", () => {
+	console.log("Servidor corriendo en http://0.0.0.0:3000");
 });
 
 const { Client, GatewayIntentBits } = require("discord.js");
@@ -166,6 +171,9 @@ app.post("/rooms/destroy", async (req, res) => {
 // Listar cuartos activos
 app.get("/rooms", (req, res) => {
 	res.send({ rooms: Object.keys(rooms) });
+});
+app.get("/", (req, res) => {
+	res.send({ message: "Servidor funcionando correctamente." });
 });
 
 const ROOMS_FILE = "./rooms.json";
