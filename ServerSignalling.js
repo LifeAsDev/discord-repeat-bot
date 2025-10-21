@@ -23,7 +23,7 @@ class ServerSignalling {
 				this._createRoom(socket, roomName);
 			});
 
-			socket.on("signalling:join", (roomName) => {
+			socket.on("join_room", (roomName) => {
 				this._joinRoom(socket, roomName);
 			});
 
@@ -95,7 +95,13 @@ class ServerSignalling {
 		});
 
 		socket.join(roomName);
-		socket.emit("room_created", roomName);
+		// Notificar al host que creó la sala
+		socket.emit("room_created", {
+			room: roomName,
+			hostId: socket.id,
+			peers: [{ id: socket.id, isHost: true }], // Solo él mismo
+		});
+
 		console.log(`🏠 Room '${roomName}' created by ${socket.id}`);
 	}
 
@@ -110,12 +116,18 @@ class ServerSignalling {
 
 		room.peers.add(socket.id);
 		socket.join(roomName);
-		socket.emit("room_joined", roomName);
-
-		// Notificar al host
-		this.io.to(room.hostId).emit("signalling:peer_joined", {
-			id: socket.id,
+		socket.emit("room_joined", {
 			room: roomName,
+			hostId: room.hostId,
+			peers: Array.from(room.peers).map((id) => ({
+				id,
+				isHost: id === room.hostId,
+			})),
+		});
+
+		socket.to(roomName).emit("peer_joined", {
+			id: socket.id,
+			isHost: false,
 		});
 
 		console.log(`👥 ${socket.id} joined '${roomName}'`);
@@ -126,10 +138,12 @@ class ServerSignalling {
 			if (!room.peers.has(socket.id)) continue;
 
 			room.peers.delete(socket.id);
-			this.io.to(room.hostId).emit("signalling:peer_left", socket.id);
 
-			// Si el host se fue, cerrar el cuarto
+			// Notificar al resto
+			socket.to(roomName).emit("peer_left", socket.id);
+
 			if (socket.id === room.hostId) {
+				// Si se fue el host, cerrar la sala
 				this.io.to(roomName).emit("signalling:room_closed");
 				this.io.socketsLeave(roomName);
 				this.rooms.delete(roomName);
