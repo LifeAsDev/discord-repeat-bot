@@ -130,7 +130,7 @@ app.post("/rooms/create", async (req, res) => {
 		const page = await browser.newPage();
 		await page.setViewport({ width: 1, height: 1 });
 		await page.goto(
-			`http://localhost:3000/rustCoon/index.html?nombre=${nombre}`
+			`http://localhost:${PORT}/RustCoon1/index.html?nombre=${nombre}`
 		);
 
 		rooms[nombre] = { browser, page };
@@ -219,7 +219,7 @@ async function initRooms() {
 				const page = await browser.newPage();
 				await page.setViewport({ width: 1, height: 1 });
 				await page.goto(
-					`http://localhost:${PORT}/rustCoon/index.html?nombre=${nombre}`
+					`http://localhost:${PORT}/RustCoon1/index.html?nombre=${nombre}`
 				);
 
 				rooms[nombre] = { browser, page };
