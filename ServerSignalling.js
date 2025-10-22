@@ -40,7 +40,7 @@ class ServerSignalling {
 				if (socket.id === room.hostId) {
 					// Host puede enviar a un peer específico
 					if (targetId && room.peers.has(targetId)) {
-						this.io.to(targetId).emit("signalling:message", {
+						this.io.to(targetId).emit("message", {
 							from: socket.id,
 							message,
 							tag,
@@ -48,7 +48,7 @@ class ServerSignalling {
 					}
 				} else {
 					// Peer solo puede enviar al host
-					this.io.to(room.hostId).emit("signalling:message", {
+					this.io.to(room.hostId).emit("message", {
 						from: socket.id,
 						message,
 						tag,
@@ -65,7 +65,7 @@ class ServerSignalling {
 				if (socket.id === room.hostId) {
 					room.peers.forEach((peerId) => {
 						if (peerId !== room.hostId) {
-							this.io.to(peerId).emit("signalling:message", {
+							this.io.to(peerId).emit("message", {
 								from: fromId || socket.id,
 								message,
 								tag,
