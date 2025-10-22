@@ -29,7 +29,10 @@ export default class ClientSignalling {
 		this.options.path = path || this.options.path;
 		if (this.connected) return;
 		this.serverUrl = serverUrl;
-		this.socket = io(this.serverUrl, { path: this.options.path });
+		this.socket = io(this.serverUrl, {
+			path: this.options.path,
+			transports: ["websocket"], // fuerza websocket directo
+		});
 
 		this.socket.on("signalling:connected", () => {
 			this.connected = true;
