@@ -221,7 +221,7 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event473_Act1(runtime, localVars)
+	async EventWorld_Event472_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -237,7 +237,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event474_Act1(runtime, localVars)
+	async EventWorld_Event473_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
