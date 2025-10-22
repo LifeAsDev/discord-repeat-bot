@@ -64,7 +64,7 @@ class ServerSignalling {
 
 				if (socket.id === room.hostId) {
 					room.peers.forEach((peerId) => {
-						if (peerId !== room.hostId) {
+						if (peerId !== room.hostId && peerId !== fromId) {
 							this.io.to(peerId).emit("message", {
 								from: fromId || socket.id,
 								message,
