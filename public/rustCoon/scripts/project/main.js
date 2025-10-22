@@ -1,6 +1,5 @@
 import { DiscordSDK } from "./vendor.bundle.js"
 import { setupDiscordSdk} from "./utils/discordSDK.js"
-
 runOnStartup(async runtime =>
 {
     const clientId = "1411008879885549711";
@@ -46,6 +45,8 @@ runOnStartup(async runtime =>
     };
 
     runtime.playersArr = [];
+
+
     runtime.addEventListener("beforeprojectstart", () => OnBeforeProjectStart(runtime));
 });
 async function OnBeforeProjectStart(runtime)
