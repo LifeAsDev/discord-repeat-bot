@@ -25,7 +25,7 @@ runOnStartup(async runtime =>
                 console.log("Frame:", frameId);
 
                 const target = "wss://multiplayer.construct.net";
-                const proxyUrl = "/connect";
+                const proxyUrl = "/";
 
                 runtime.callFunction("connect", proxyUrl);
             }
