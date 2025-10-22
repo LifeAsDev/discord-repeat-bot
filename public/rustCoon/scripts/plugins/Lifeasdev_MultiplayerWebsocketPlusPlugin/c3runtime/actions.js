@@ -1,7 +1,7 @@
 const C3 = globalThis.C3;
 C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Acts = {
-	connect(url) {
-		this.client.connect(url);
+	connect(url, path) {
+		this.client.connect(url, path);
 	},
 	disconnectFromRoom() {
 		this.client.disconnectFromRoom();

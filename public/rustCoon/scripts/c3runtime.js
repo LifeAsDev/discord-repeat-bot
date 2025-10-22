@@ -2289,11 +2289,12 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => and(and(n0.ExpObject(), "&"), n1.ExpObject());
 		},
-		() => "http://localhost:3000",
+		() => "https://1411008879885549711.discordsays.com",
 		() => "283745825685897216",
 		() => "Test",
 		() => "connecting",
 		() => "Tap to play",
+		() => "/signalling/socket.io",
 		() => "Connecting...",
 		() => "roomList",
 		() => "roomName",

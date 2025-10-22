@@ -25,7 +25,8 @@ export default class ClientSignalling {
 		};
 	}
 	// 🔹 Conectar al servidor
-	connect(serverUrl) {
+	connect(serverUrl, path) {
+		this.options.path = path || this.options.path;
 		if (this.connected) return;
 		this.serverUrl = serverUrl;
 		this.socket = io(this.serverUrl, { path: this.options.path });

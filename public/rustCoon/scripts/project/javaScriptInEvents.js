@@ -31,7 +31,7 @@ const scriptsInEvents = {
 		runtime.globalVars.state = "host";
 		runtime.globalVars.realHost = "host";
 		runtime.globalVars.roomName = nombre;
-		runtime.callFunction("connect", "wss://multiplayer.construct.net");
+		runtime.callFunction("connect", "https://1411008879885549711.discordsays.com");
 		} 
 	},
 
