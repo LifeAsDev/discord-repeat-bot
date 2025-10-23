@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const fs = require("fs");
 const { ServerSignalling } = require("./ServerSignalling");
 const http = require("http");
+const { chromium } = require("playwright"); // 👈 así se importa en CommonJS
 
 const app = express();
 const PORT = 3000;
@@ -190,14 +191,14 @@ function saveRoomNames(names) {
 let roomNames = loadRoomNames();
 
 // --- Inicializar rooms al iniciar el servidor ---
+
 async function initRooms() {
 	for (const nombre of roomNames) {
 		if (!rooms[nombre]) {
 			try {
-				const browser = await puppeteer.launch({
+				// 🚀 Lanzar Chromium (Playwright)
+				const browser = await chromium.launch({
 					headless: true,
-					executablePath:
-						process.env.CHROME_PATH || "/usr/bin/google-chrome-stable",
 					args: [
 						"--no-sandbox",
 						"--disable-setuid-sandbox",
@@ -209,27 +210,31 @@ async function initRooms() {
 						"--disable-breakpad",
 						"--no-zygote",
 
-						// 🔧 Evitar dependencias D-Bus y servicios multimedia
+						// 🔧 Evitar dependencias D-Bus y multimedia
 						"--disable-features=AudioServiceOutOfProcess,VaapiVideoDecoder,UseDBus",
 						"--disable-dbus",
 
-						// 🔧 Mantener WebGL activo
+						// 🔧 Mantener WebGL activo (SwiftShader fallback)
 						"--use-gl=swiftshader",
-						"--enable-unsafe-swiftshader", // 👈 este flag es lo que pide tu log
+						"--enable-unsafe-swiftshader",
 						"--ignore-gpu-blocklist",
-						"--disable-gpu-sandbox",
 						"--enable-webgl",
 					],
-					dumpio: true,
 				});
+
+				// 🧠 Log por si se desconecta
 				browser.on("disconnected", () => {
 					console.error(
-						"[!] Puppeteer: el navegador se ha desconectado (posible crash)"
+						"[!] Playwright: el navegador se ha desconectado (posible crash)"
 					);
 				});
 
-				const page = await browser.newPage();
-				await page.setViewport({ width: 1, height: 1 });
+				// 🪟 Crear contexto y página
+				const context = await browser.newContext();
+				const page = await context.newPage();
+
+				await page.setViewportSize({ width: 1, height: 1 });
+
 				await page.goto(
 					`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${nombre}`
 				);
