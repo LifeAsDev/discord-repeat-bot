@@ -196,25 +196,28 @@ async function initRooms() {
 			try {
 				const browser = await puppeteer.launch({
 					headless: true,
-					executablePath:
-						process.env.CHROME_PATH || "/usr/bin/google-chrome-stable",
 					args: [
 						"--no-sandbox",
 						"--disable-setuid-sandbox",
-						"--enable-logging",
-						"--v=1",
-						"--use-gl=swiftshader",
-						"--enable-unsafe-swiftshader",
-						"--use-gl=swiftshader",
-						"--enable-unsafe-swiftshader",
-						"--ignore-gpu-blocklist",
-						"--disable-features=VizDisplayCompositor",
+						"--disable-dev-shm-usage",
+						"--disable-extensions",
 						"--disable-gpu-sandbox",
-						"--disable-dbus", // 👈 evita el crash principal
-						"--disable-features=UseDBus", // 👈 evita llamadas al sistema D-Bus
+						"--disable-logging",
+						"--log-level=3",
+						"--disable-breakpad",
+						"--no-zygote",
+
+						// 🔧 Evitar dependencias D-Bus y servicios multimedia
+						"--disable-features=AudioServiceOutOfProcess,VaapiVideoDecoder,UseDBus",
+						"--disable-dbus",
+
+						// 🔧 Mantener WebGL activo
+						"--enable-webgl",
+						"--ignore-gpu-blocklist",
+						"--use-gl=egl",
 					],
-					dumpio: true,
 				});
+
 				browser.on("disconnected", () => {
 					console.error(
 						"[!] Puppeteer: el navegador se ha desconectado (posible crash)"
