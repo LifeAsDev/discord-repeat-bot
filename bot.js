@@ -211,6 +211,7 @@ async function initRooms() {
 						"--disable-features=VizDisplayCompositor",
 						"--disable-gpu-sandbox",
 						"--disable-dbus", // 👈 evita el crash principal
+						"--disable-features=UseDBus", // 👈 evita llamadas al sistema D-Bus
 					],
 					dumpio: true,
 				});
