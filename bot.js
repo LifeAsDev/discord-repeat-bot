@@ -196,6 +196,8 @@ async function initRooms() {
 			try {
 				const browser = await puppeteer.launch({
 					headless: true,
+					executablePath:
+						process.env.CHROME_PATH || "/usr/bin/google-chrome-stable",
 					args: [
 						"--no-sandbox",
 						"--disable-setuid-sandbox",
@@ -216,8 +218,8 @@ async function initRooms() {
 						"--ignore-gpu-blocklist",
 						"--use-gl=egl",
 					],
+					dumpio: true,
 				});
-
 				browser.on("disconnected", () => {
 					console.error(
 						"[!] Puppeteer: el navegador se ha desconectado (posible crash)"
