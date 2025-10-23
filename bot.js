@@ -204,7 +204,6 @@ async function initRooms() {
 						"--disable-dev-shm-usage",
 						"--disable-extensions",
 						"--disable-gpu",
-						"--disable-software-rasterizer",
 						"--disable-webgl",
 						"--disable-webgl2",
 						"--disable-accelerated-2d-canvas",
