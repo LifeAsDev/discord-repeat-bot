@@ -209,9 +209,7 @@ async function initRooms() {
 						"--enable-unsafe-swiftshader",
 						"--ignore-gpu-blocklist",
 						"--disable-features=VizDisplayCompositor",
-						"--disable-software-rasterizer=false",
 						"--disable-gpu-sandbox",
-						"--disable-features=WebRtcHideLocalIpsWithMdns",
 					],
 					dumpio: true,
 				});
