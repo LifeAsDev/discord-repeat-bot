@@ -214,9 +214,11 @@ async function initRooms() {
 						"--disable-dbus",
 
 						// 🔧 Mantener WebGL activo
-						"--enable-webgl",
+						"--use-gl=swiftshader",
+						"--enable-unsafe-swiftshader", // 👈 este flag es lo que pide tu log
 						"--ignore-gpu-blocklist",
-						"--use-gl=egl",
+						"--disable-gpu-sandbox",
+						"--enable-webgl",
 					],
 					dumpio: true,
 				});
