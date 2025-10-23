@@ -205,6 +205,13 @@ async function initRooms() {
 						"--v=1",
 						"--use-gl=swiftshader",
 						"--enable-unsafe-swiftshader",
+						"--use-gl=swiftshader",
+						"--enable-unsafe-swiftshader",
+						"--ignore-gpu-blocklist",
+						"--disable-features=VizDisplayCompositor",
+						"--disable-software-rasterizer=false",
+						"--disable-gpu-sandbox",
+						"--disable-features=WebRtcHideLocalIpsWithMdns",
 					],
 					dumpio: true,
 				});
