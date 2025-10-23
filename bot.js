@@ -210,6 +210,7 @@ async function initRooms() {
 						"--ignore-gpu-blocklist",
 						"--disable-features=VizDisplayCompositor",
 						"--disable-gpu-sandbox",
+						"--disable-dbus", // 👈 evita el crash principal
 					],
 					dumpio: true,
 				});
