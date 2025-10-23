@@ -201,12 +201,10 @@ async function initRooms() {
 					args: [
 						"--no-sandbox",
 						"--disable-setuid-sandbox",
-						"--disable-dev-shm-usage",
-						"--disable-extensions",
-						"--disable-gpu",
-						"--disable-background-timer-throttling",
-						"--disable-backgrounding-occluded-windows",
-						"--disable-renderer-backgrounding",
+						"--enable-logging",
+						"--v=1",
+						"--use-gl=swiftshader",
+						"--enable-unsafe-swiftshader",
 					],
 					dumpio: true,
 				});
