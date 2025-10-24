@@ -240,7 +240,7 @@ async function initRooms() {
 				);
 
 				rooms[nombre] = { browser, page };
-				console.log(`♻ Room recreada al iniciar: ${nombre}`);
+				console.log(`[!] Playwright: Room recreada al iniciar: ${nombre}`);
 			} catch (err) {
 				console.error(`No se pudo recrear la room ${nombre}:`, err);
 			}
