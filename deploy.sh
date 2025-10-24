@@ -7,5 +7,5 @@ echo "Usuario: $(whoami)"
 echo "Branch actual: $(git branch --show-current)"
 git pull origin main
 npm install --production
-pm2 restart juego || pm2 start index.js --name juego
+pm2 restart juego || pm2 start bot.js --name juego
 echo "Despliegue completado"
