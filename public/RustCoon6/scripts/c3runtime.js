@@ -2337,6 +2337,7 @@ self.C3_ExpressionFuncs = [
 		() => "connecting",
 		() => "Tap to play",
 		() => "roomName",
+		() => "Authenticating",
 		() => "/signalling/socket.io",
 		() => "Connecting...",
 		() => "roomList",

@@ -230,7 +230,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.JavaScriptInEvents.EventConnect_Event3,
 		C3.Plugins.System.Cnds.IsPreview,
 		C3.Plugins.Spritefont2.Cnds.CompareText,
-		C3.JavaScriptInEvents.EventConnect_Event8_Act1,
+		C3.JavaScriptInEvents.EventConnect_Event8_Act2,
 		C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Acts.connect,
 		C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Cnds.onConnectedToSgWs,
 		C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Acts.requestRoomList,

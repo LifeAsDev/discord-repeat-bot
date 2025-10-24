@@ -35,7 +35,7 @@ const scriptsInEvents = {
 		} 
 	},
 
-	async EventConnect_Event8_Act1(runtime, localVars)
+	async EventConnect_Event8_Act2(runtime, localVars)
 	{
 		runtime.lifeAsDevUtils.startDiscordLogin();
 	},
