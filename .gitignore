@@ -18,3 +18,5 @@ Thumbs.db
 .cache/
 dist/
 build/
+rooms.json
+roomdata.json

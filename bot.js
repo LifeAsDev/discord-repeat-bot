@@ -94,55 +94,135 @@ app.post("/send", async (req, res) => {
 	res.send({ success: true });
 });
 
-const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, page } }
-const puppeteer = require("puppeteer-core");
+// --- PATCH para guardar/cargar data por nombre de cuarto ---
+const DATA_FILE = "./roomdata.json";
 
-// Crear un cuarto
-app.post("/rooms/create", async (req, res) => {
+// 🔹 Función segura para leer el archivo (devuelve objeto vacío si no existe o falla)
+function loadDataFile() {
 	try {
-		const { nombre } = req.body;
-		if (rooms[nombre] && nombre !== "") {
-			return res.status(400).send({ error: "Ese cuarto ya existe" });
+		if (!fs.existsSync(DATA_FILE)) return {};
+		return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+	} catch {
+		return {};
+	}
+}
+
+// 🔹 Función para guardar el archivo
+function saveDataFile(data) {
+	fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
+}
+
+// 🧩 Guardar data asociada a un cuarto
+app.patch("/storage/save", (req, res) => {
+	try {
+		const { nombre, data } = req.body;
+		if (!nombre || typeof data !== "string") {
+			return res.status(400).send({
+				error: "Se requiere 'nombre' (string) y 'data' (string).",
+			});
 		}
 
-		const browser = await puppeteer.launch({
+		const fileData = loadDataFile();
+		fileData[nombre] = data;
+		saveDataFile(fileData);
+
+		console.log(`💾 Data guardada para cuarto '${nombre}'`);
+		res.send({ success: true, message: `Data guardada para '${nombre}'` });
+	} catch (err) {
+		console.error("Error al guardar:", err);
+		res.status(500).send({ error: "No se pudo guardar la data." });
+	}
+});
+
+// 🧩 Cargar data asociada a un cuarto
+app.get("/storage/load/:nombre", (req, res) => {
+	try {
+		const nombre = req.params.nombre;
+		const fileData = loadDataFile();
+
+		if (!fileData[nombre]) {
+			return res.send({
+				found: false,
+				message: `No se encontró data para el cuarto '${nombre}'.`,
+			});
+		}
+
+		res.send({ found: true, nombre, data: fileData[nombre] });
+	} catch (err) {
+		console.error("Error al cargar:", err);
+		res.status(500).send({ error: "No se pudo cargar la data." });
+	}
+});
+
+const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, page } }
+
+async function launchRoom(nombre) {
+	try {
+		const browser = await chromium.launch({
 			headless: true,
-			executablePath:
-				process.env.CHROME_PATH || "/usr/bin/google-chrome-stable",
 			args: [
 				"--no-sandbox",
 				"--disable-setuid-sandbox",
 				"--disable-dev-shm-usage",
 				"--disable-extensions",
-				"--disable-background-timer-throttling",
-				"--disable-gpu",
-				"--enable-logging",
-				"--v=1",
+				"--disable-gpu-sandbox",
+				"--disable-logging",
+				"--log-level=3",
+				"--disable-breakpad",
+				"--no-zygote",
+
+				// 🔧 Evitar dependencias D-Bus y multimedia
+				"--disable-features=AudioServiceOutOfProcess,VaapiVideoDecoder,UseDBus",
+				"--disable-dbus",
+
+				// 🔧 Mantener WebGL activo (SwiftShader fallback)
+				"--use-gl=swiftshader",
+				"--enable-unsafe-swiftshader",
+				"--ignore-gpu-blocklist",
+				"--enable-webgl",
 			],
-			dumpio: true,
 		});
 
 		browser.on("disconnected", () => {
-			console.error(
-				"[!] Puppeteer: el navegador se ha desconectado (posible crash)"
-			);
+			console.error(`[!] Playwright: navegador desconectado (${nombre})`);
 		});
 
-		const page = await browser.newPage();
-		await page.setViewport({ width: 1, height: 1 });
+		const context = await browser.newContext();
+		const page = await context.newPage();
+		await page.setViewportSize({ width: 1, height: 1 });
+
 		await page.goto(
 			`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${nombre}`
 		);
 
 		rooms[nombre] = { browser, page };
+
+		console.log(`✅ Room lanzada: ${nombre} (PID ${browser.process().pid})`);
+		return true;
+	} catch (err) {
+		console.error(`[X] No se pudo lanzar room ${nombre}:`, err);
+		return false;
+	}
+}
+
+app.post("/rooms/create", async (req, res) => {
+	const { nombre } = req.body;
+
+	if (!nombre || rooms[nombre]) {
+		return res
+			.status(400)
+			.send({ error: "Ese cuarto ya existe o nombre inválido" });
+	}
+
+	const success = await launchRoom(nombre);
+
+	if (success) {
 		if (!roomNames.includes(nombre)) {
 			roomNames.push(nombre);
 			saveRoomNames(roomNames);
 		}
-		console.log(`✅ Cuarto creado: ${nombre} (PID ${browser.process().pid})`);
 		res.send({ success: true, nombre });
-	} catch (err) {
-		console.error(err);
+	} else {
 		res.status(500).send({ error: "No se pudo crear el cuarto" });
 	}
 });
@@ -195,55 +275,8 @@ let roomNames = loadRoomNames();
 async function initRooms() {
 	for (const nombre of roomNames) {
 		if (!rooms[nombre]) {
-			try {
-				// 🚀 Lanzar Chromium (Playwright)
-				const browser = await chromium.launch({
-					headless: true,
-					args: [
-						"--no-sandbox",
-						"--disable-setuid-sandbox",
-						"--disable-dev-shm-usage",
-						"--disable-extensions",
-						"--disable-gpu-sandbox",
-						"--disable-logging",
-						"--log-level=3",
-						"--disable-breakpad",
-						"--no-zygote",
-
-						// 🔧 Evitar dependencias D-Bus y multimedia
-						"--disable-features=AudioServiceOutOfProcess,VaapiVideoDecoder,UseDBus",
-						"--disable-dbus",
-
-						// 🔧 Mantener WebGL activo (SwiftShader fallback)
-						"--use-gl=swiftshader",
-						"--enable-unsafe-swiftshader",
-						"--ignore-gpu-blocklist",
-						"--enable-webgl",
-					],
-				});
-
-				// 🧠 Log por si se desconecta
-				browser.on("disconnected", () => {
-					console.error(
-						"[!] Playwright: el navegador se ha desconectado (posible crash)"
-					);
-				});
-
-				// 🪟 Crear contexto y página
-				const context = await browser.newContext();
-				const page = await context.newPage();
-
-				await page.setViewportSize({ width: 1, height: 1 });
-
-				await page.goto(
-					`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${nombre}`
-				);
-
-				rooms[nombre] = { browser, page };
-				console.log(`[!] Playwright: Room recreada al iniciar: ${nombre}`);
-			} catch (err) {
-				console.error(`No se pudo recrear la room ${nombre}:`, err);
-			}
+			await launchRoom(nombre);
+			console.log(`[!] Room recreada al iniciar: ${nombre}`);
 		}
 	}
 }
