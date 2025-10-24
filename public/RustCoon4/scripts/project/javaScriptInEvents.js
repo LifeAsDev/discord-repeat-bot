@@ -31,7 +31,7 @@ const scriptsInEvents = {
 		runtime.globalVars.state = "host";
 		runtime.globalVars.realHost = "host";
 		runtime.globalVars.roomName = nombre;
-		runtime.callFunction("connect", "https://1411008879885549711.discordsays.com");
+		runtime.callFunction("connect", "https://rustycoon.site/rustCoon/");
 		} 
 	},
 
@@ -131,7 +131,7 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event298_Act1(runtime, localVars)
+	async EventWorld_Event299_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -193,35 +193,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event440_Act1(runtime, localVars)
+	async EventWorld_Event441_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event444(runtime, localVars)
+	async EventWorld_Event445(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event445(runtime, localVars)
+	async EventWorld_Event446(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event450(runtime, localVars)
+	async EventWorld_Event451(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event456(runtime, localVars)
+	async EventWorld_Event457(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event472_Act1(runtime, localVars)
+	async EventWorld_Event473_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -237,7 +237,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event473_Act1(runtime, localVars)
+	async EventWorld_Event474_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;

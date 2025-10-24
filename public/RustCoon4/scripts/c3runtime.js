@@ -1554,7 +1554,9 @@ self.C3_ExpressionFuncs = [
 		() => 0.1,
 		() => "recipe",
 		() => 0,
-		() => 10,
+		() => 21,
+		() => 22,
+		() => 30,
 		() => "y",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -1600,6 +1602,7 @@ self.C3_ExpressionFuncs = [
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(0, 1, 2);
 		},
+		() => 10,
 		() => 11,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
@@ -1631,9 +1634,7 @@ self.C3_ExpressionFuncs = [
 			return () => f0(n1.ExpObject());
 		},
 		() => 16,
-		() => 21,
 		() => 0.9,
-		() => 22,
 		() => "mainTopUI",
 		p => {
 			const n0 = p._GetNode(0);
@@ -1646,7 +1647,9 @@ self.C3_ExpressionFuncs = [
 		},
 		p => {
 			const n0 = p._GetNode(0);
-			return () => n0.ExpObject("startData.peerAlias");
+			const n1 = p._GetNode(1);
+			const n2 = p._GetNode(2);
+			return () => and((n0.ExpInstVar() + " "), n1.ExpObject(("startData.peerAlias." + n2.ExpInstVar())));
 		},
 		() => "Controls",
 		p => {
@@ -1685,7 +1688,6 @@ self.C3_ExpressionFuncs = [
 		() => 240,
 		() => 210,
 		() => 330,
-		() => 30,
 		() => 150,
 		() => "OvenUI",
 		() => "InventoryUI",
@@ -2268,12 +2270,20 @@ self.C3_ExpressionFuncs = [
 		() => "retry",
 		() => -10000,
 		() => "tryAgain",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => ("tryAgain" + f0());
+		},
 		() => "respawn",
 		() => "setList",
 		() => "startData.peerAlias",
+		() => "startData.worldData",
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("startData.peerAlias");
+		},
 		() => "ready",
 		() => "startData",
-		() => "startData.worldData",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
@@ -2304,13 +2314,26 @@ self.C3_ExpressionFuncs = [
 			return () => n0.ExpObject("startData");
 		},
 		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => ("tryAgain " + f0());
+		},
+		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
-			return () => and(and(n0.ExpObject(), "&"), n1.ExpObject());
+			const n2 = p._GetNode(2);
+			return () => ((and(and(n0.ExpObject(), "&"), n1.ExpObject()) + "&") + n2.ExpInstVar());
 		},
 		() => "https://1411008879885549711.discordsays.com",
-		() => "asdihdajklhjkhdsad",
-		() => "Test",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => and("id", f0(f1(100000000)));
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => and("Test", f0(f1(1000)));
+		},
 		() => "connecting",
 		() => "Tap to play",
 		() => "roomName",
