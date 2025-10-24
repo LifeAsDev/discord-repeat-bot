@@ -4,6 +4,7 @@ const { exec } = require("child_process");
 
 http
 	.createServer((req, res) => {
+		console.log("github webhook received");
 		if (req.method === "POST") {
 			exec("/home/juego/deploy.sh", (err, stdout, stderr) => {
 				if (err) console.error(err);
