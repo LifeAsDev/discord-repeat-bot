@@ -31,7 +31,7 @@ const scriptsInEvents = {
 		runtime.globalVars.state = "host";
 		runtime.globalVars.realHost = "host";
 		runtime.globalVars.roomName = nombre;
-		runtime.callFunction("connect", "https://rustycoon.site/rustCoon/");
+		runtime.callFunction("connect", "https://rustycoon.site/");
 		} 
 	},
 

@@ -2300,11 +2300,6 @@ self.C3_ExpressionFuncs = [
 			return () => f0(f1(), 1, "|");
 		},
 		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const n1 = p._GetNode(1);
-			return () => f0(100, (n1.ExpObject() - 100));
-		},
-		p => {
 			const n0 = p._GetNode(0);
 			return () => ("startData.peerAlias." + n0.ExpInstVar());
 		},
@@ -2316,6 +2311,11 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => ("tryAgain " + f0());
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => f0(100, (n1.ExpObject() - 100));
 		},
 		p => {
 			const n0 = p._GetNode(0);
