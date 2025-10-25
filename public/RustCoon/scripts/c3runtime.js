@@ -1483,10 +1483,6 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject();
 		},
-		p => {
-			const v0 = p._GetNode(0).GetVar();
-			return () => v0.GetValue();
-		},
 		() => "floor",
 		p => {
 			const n0 = p._GetNode(0);
@@ -1502,7 +1498,18 @@ self.C3_ExpressionFuncs = [
 		() => "item",
 		() => "alias",
 		() => "pickItem",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => v0.GetValue();
+		},
 		() => "host",
+		() => "startData",
+		() => "startData.peerAlias",
+		() => "startData.playerBox",
+		() => 0.1,
+		() => "recipe",
+		() => 0,
+		() => 12,
 		() => "mainBottom",
 		p => {
 			const n0 = p._GetNode(0);
@@ -1543,6 +1550,21 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => n0.ExpObject(n1.ExpObject(), 7);
 		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => n0.ExpObject(n1.ExpObject(), 8);
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => n0.ExpObject(n1.ExpObject(), 9);
+		},
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => n0.ExpObject(n1.ExpObject(), 10);
+		},
 		() => 1000,
 		p => {
 			const n0 = p._GetNode(0);
@@ -1551,12 +1573,15 @@ self.C3_ExpressionFuncs = [
 		},
 		() => 15,
 		() => 1,
-		() => 0.1,
-		() => "recipe",
-		() => 0,
-		() => 21,
-		() => 22,
+		p => {
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("startData.worldData");
+		},
+		() => 5,
+		() => 100,
+		() => 10,
 		() => 30,
+		() => 17,
 		() => "y",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
@@ -1573,7 +1598,6 @@ self.C3_ExpressionFuncs = [
 		},
 		() => 7,
 		() => 3,
-		() => 5,
 		() => 2,
 		() => 8,
 		() => 6,
@@ -1586,7 +1610,6 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (16 + (v0.GetValue() * 32));
 		},
-		() => 100,
 		() => 14,
 		() => 32,
 		() => 42,
@@ -1596,13 +1619,11 @@ self.C3_ExpressionFuncs = [
 			return () => (f0(1, (n1.ExpObject() / 2)) + 4);
 		},
 		() => 9,
-		() => 12,
 		() => "mainTop",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0(0, 1, 2);
 		},
-		() => 10,
 		() => 11,
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
@@ -1634,7 +1655,9 @@ self.C3_ExpressionFuncs = [
 			return () => f0(n1.ExpObject());
 		},
 		() => 16,
+		() => 21,
 		() => 0.9,
+		() => 22,
 		() => "mainTopUI",
 		p => {
 			const n0 = p._GetNode(0);
@@ -1644,12 +1667,6 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
 			return () => n0.ExpObject(("startData.peerAlias." + n1.ExpInstVar()));
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			const n1 = p._GetNode(1);
-			const n2 = p._GetNode(2);
-			return () => and((n0.ExpInstVar() + " "), n1.ExpObject(("startData.peerAlias." + n2.ExpInstVar())));
 		},
 		() => "Controls",
 		p => {
@@ -1776,7 +1793,10 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			const n2 = p._GetNode(2);
 			const n3 = p._GetNode(3);
-			return () => and((and((and(and(n0.ExpInstVar(), "&"), n1.ExpInstVar()) + "&"), n2.ExpInstVar()) + "&"), n3.ExpInstVar());
+			const n4 = p._GetNode(4);
+			const n5 = p._GetNode(5);
+			const n6 = p._GetNode(6);
+			return () => and((and((and((and((and((and(and(n0.ExpInstVar(), "&"), n1.ExpInstVar()) + "&"), n2.ExpInstVar()) + "&"), n3.ExpInstVar()) + "&"), n4.ExpInstVar()) + "&"), n5.ExpInstVar()) + "&"), n6.ExpInstVar());
 		},
 		p => {
 			const n0 = p._GetNode(0);
@@ -1900,6 +1920,24 @@ self.C3_ExpressionFuncs = [
 			const f1 = p._GetNode(1).GetBoundMethod();
 			return () => f0(f1());
 		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			return () => f0(f1(f2(), 4, "&"));
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			return () => f0(f1(f2(), 5, "&"));
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			return () => f0(f1(f2(), 6, "&"));
+		},
 		() => "tableCheck",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
@@ -1988,7 +2026,6 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() * 10);
 		},
-		() => 17,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() * 5);
@@ -2270,20 +2307,11 @@ self.C3_ExpressionFuncs = [
 		() => "retry",
 		() => -10000,
 		() => "tryAgain",
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			return () => ("tryAgain" + f0());
-		},
+		() => "shield",
 		() => "respawn",
 		() => "setList",
-		() => "startData.peerAlias",
 		() => "startData.worldData",
-		p => {
-			const n0 = p._GetNode(0);
-			return () => n0.ExpObject("startData.peerAlias");
-		},
 		() => "ready",
-		() => "startData",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
@@ -2300,6 +2328,11 @@ self.C3_ExpressionFuncs = [
 			return () => f0(f1(), 1, "|");
 		},
 		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => f0(100, (n1.ExpObject() - 100));
+		},
+		p => {
 			const n0 = p._GetNode(0);
 			return () => ("startData.peerAlias." + n0.ExpInstVar());
 		},
@@ -2309,13 +2342,12 @@ self.C3_ExpressionFuncs = [
 			return () => n0.ExpObject("startData");
 		},
 		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			return () => ("tryAgain " + f0());
+			const n0 = p._GetNode(0);
+			return () => n0.ExpObject("startData.peerAlias");
 		},
 		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const n1 = p._GetNode(1);
-			return () => f0(100, (n1.ExpObject() - 100));
+			const n0 = p._GetNode(0);
+			return () => ("startData.playerBox." + n0.ExpInstVar());
 		},
 		p => {
 			const n0 = p._GetNode(0);
@@ -2324,11 +2356,7 @@ self.C3_ExpressionFuncs = [
 			return () => ((and(and(n0.ExpObject(), "&"), n1.ExpObject()) + "&") + n2.ExpInstVar());
 		},
 		() => "https://1411008879885549711.discordsays.com",
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => and("id", f0(f1(100000000)));
-		},
+		() => "idasdadadasd",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
@@ -2355,10 +2383,6 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			const v1 = p._GetNode(1).GetVar();
 			return () => ((v0.GetValue() + "|") + v1.GetValue());
-		},
-		p => {
-			const n0 = p._GetNode(0);
-			return () => n0.ExpObject("startData.worldData");
 		}
 ];
 

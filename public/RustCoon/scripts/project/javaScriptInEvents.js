@@ -10,6 +10,48 @@ let client;
   "Arco", "Flecha"
 ];
 
+// --- 🔹 Guardar data de un cuarto ---
+function isJsonString(str) {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function saveRoomData(nombre, data) {
+  const payloadData =
+    typeof data === "string"? data : JSON.stringify(data);
+
+  const res = await fetch("http://localhost:3000/storage/save", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nombre, data: payloadData }),
+  });
+
+  return await res.json();
+}
+
+
+// --- 🔹 Cargar data de un cuarto ---
+async function loadRoomData(nombre) {
+	try {
+		const res = await fetch(`http://localhost:3000/storage/load/${encodeURIComponent(nombre)}`);
+		const json = await res.json();
+
+		if (!json.found) {
+			console.warn(`⚠️ No se encontró data para el cuarto '${nombre}'`);
+			return null;
+		}
+		// parsear el string guardado de vuelta a objeto
+		return json.data;
+	} catch (err) {
+		console.error("❌ Error cargando data del cuarto:", err);
+		return null;
+	}
+}
+
 
 const scriptsInEvents = {
 
@@ -65,7 +107,7 @@ const scriptsInEvents = {
 		client.sendMessage(localVars.targetId,localVars.message,localVars.tag);
 	},
 
-	async EventWorld_Event19(runtime, localVars)
+	async EventWorld_Event25(runtime, localVars)
 	{
 		/**
 		 * Generates a random terrain map.
@@ -131,7 +173,7 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event299_Act1(runtime, localVars)
+	async EventWorld_Event307_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -193,35 +235,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event441_Act1(runtime, localVars)
+	async EventWorld_Event449_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event445(runtime, localVars)
+	async EventWorld_Event453(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event446(runtime, localVars)
+	async EventWorld_Event454(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event451(runtime, localVars)
+	async EventWorld_Event459(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event457(runtime, localVars)
+	async EventWorld_Event465(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event473_Act1(runtime, localVars)
+	async EventWorld_Event481_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -237,7 +279,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event474_Act1(runtime, localVars)
+	async EventWorld_Event482_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -252,6 +294,24 @@ sendInventory(result);
 		 runtime.callFunction("playerSync",data.date,data.playersArr[i].animationName,data.playersArr[i].mirror,data.playersArr[i].px,data.playersArr[i].py,data.playersArr[i].inputs,data.playersArr[i].id);
 		 }
 		
+	},
+
+	async EventWorld_Event9_Act3(runtime, localVars)
+	{
+		const data = await loadRoomData(runtime.globalVars.roomName);
+		
+		if (data === null) {
+		runtime.callFunction("hostStartGame","")
+		}
+		 else {
+		  runtime.callFunction("hostStartGame",data)
+		}
+		
+	},
+
+	async EventWorld_Event543_Act2(runtime, localVars)
+	{
+		await saveRoomData(runtime.globalVars.roomName, localVars.worldJson);
 	}
 };
 

@@ -11,13 +11,13 @@ const PORT = 3000;
 dotenv.config({ path: "./.env" });
 const cors = require("cors");
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
 
 const versionPath = "/filesv19"; // 🔹 cambia esto a /filesv2, /filesv3 cuando actualices
-const versionFile = 6;
+const versionFile = 7;
 app.use(
 	versionPath,
 	express.static(publicPath, {
@@ -139,7 +139,6 @@ app.get("/storage/load/:nombre", (req, res) => {
 	try {
 		const nombre = req.params.nombre;
 		const fileData = loadDataFile();
-
 		if (!fileData[nombre]) {
 			return res.send({
 				found: false,
