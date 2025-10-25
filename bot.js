@@ -197,7 +197,7 @@ async function launchRoom(nombre) {
 
 		rooms[nombre] = { browser, page };
 
-		console.log(`✅ Room lanzada: ${nombre} (PID ${browser.process().pid})`);
+		console.log(`✅ Room lanzada: ${nombre}`);
 		return true;
 	} catch (err) {
 		console.error(`[X] No se pudo lanzar room ${nombre}:`, err);
