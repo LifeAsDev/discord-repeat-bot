@@ -20,3 +20,8 @@ dist/
 build/
 rooms.json
 roomdata.json
+tileRender.ts
+logs.ans
+colorize-colors.js
+logs-colored.ansi
+logs.txt

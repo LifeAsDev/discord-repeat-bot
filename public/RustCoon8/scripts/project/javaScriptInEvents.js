@@ -107,6 +107,19 @@ const scriptsInEvents = {
 		client.sendMessage(localVars.targetId,localVars.message,localVars.tag);
 	},
 
+	async EventWorld_Event9_Act3(runtime, localVars)
+	{
+		const data = await loadRoomData(runtime.globalVars.roomName);
+		
+		if (data === null) {
+		runtime.callFunction("hostStartGame","")
+		}
+		 else {
+		  runtime.callFunction("hostStartGame",data)
+		}
+		
+	},
+
 	async EventWorld_Event25(runtime, localVars)
 	{
 		/**
@@ -173,7 +186,7 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event307_Act1(runtime, localVars)
+	async EventWorld_Event308_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -235,35 +248,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event449_Act1(runtime, localVars)
+	async EventWorld_Event451_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event453(runtime, localVars)
+	async EventWorld_Event455(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event454(runtime, localVars)
+	async EventWorld_Event456(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event459(runtime, localVars)
+	async EventWorld_Event461(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event465(runtime, localVars)
+	async EventWorld_Event467(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event481_Act1(runtime, localVars)
+	async EventWorld_Event483_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -279,7 +292,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event482_Act1(runtime, localVars)
+	async EventWorld_Event484_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -296,20 +309,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event9_Act3(runtime, localVars)
-	{
-		const data = await loadRoomData(runtime.globalVars.roomName);
-		
-		if (data === null) {
-		runtime.callFunction("hostStartGame","")
-		}
-		 else {
-		  runtime.callFunction("hostStartGame",data)
-		}
-		
-	},
-
-	async EventWorld_Event543_Act2(runtime, localVars)
+	async EventWorld_Event546_Act2(runtime, localVars)
 	{
 		await saveRoomData(runtime.globalVars.roomName, localVars.worldJson);
 	}
