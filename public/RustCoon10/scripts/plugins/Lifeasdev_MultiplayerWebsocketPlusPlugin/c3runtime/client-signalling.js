@@ -39,6 +39,7 @@ export default class ClientSignalling {
 			this.myId = this.socket.id;
 			this._emitLocal("connected");
 		});
+
 		this.socket.on("signalling:disconnect", () => {
 			this.connected = false;
 			this._emitLocal("disconnect");
@@ -46,6 +47,8 @@ export default class ClientSignalling {
 		this.socket.on("disconnect", (reason) => {
 			console.log("Desconectado del servidor:", reason);
 			this.connected = false;
+			this.room = null;
+
 			this._emitLocal("disconnect");
 		});
 
@@ -101,6 +104,9 @@ export default class ClientSignalling {
 			this.errorMessage = errorMessage;
 			this._emitLocal("error", errorMessage);
 		});
+	}
+	forceDisconnect() {
+		this.socket.io.engine.close();
 	}
 	// 🔹 Crear sala (host)
 	createRoom(roomName) {

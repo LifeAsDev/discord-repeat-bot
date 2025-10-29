@@ -27,5 +27,9 @@ C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Acts = {
 	kickPeer(peerId, reason) {
 		//placeholder
 	},
+    forceDisconnect() {
+        
+        this.client.forceDisconnect();
+    }
 };
 export {};

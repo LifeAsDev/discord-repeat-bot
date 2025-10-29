@@ -292,7 +292,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event484_Act1(runtime, localVars)
+	async EventWorld_Event484_Act2(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -309,7 +309,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event546_Act2(runtime, localVars)
+	async EventWorld_Event556_Act2(runtime, localVars)
 	{
 		await saveRoomData(runtime.globalVars.roomName, localVars.worldJson);
 	}
