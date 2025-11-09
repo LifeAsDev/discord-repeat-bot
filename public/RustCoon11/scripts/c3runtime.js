@@ -1604,10 +1604,18 @@ self.C3_ExpressionFuncs = [
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() - 3);
 		},
-		() => -1,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (16 + (v0.GetValue() * 32));
+		},
+		() => -1,
+		() => "generateTerrain",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			const v1 = p._GetNode(1).GetVar();
+			const v2 = p._GetNode(2).GetVar();
+			const n3 = p._GetNode(3);
+			return () => and((and((and(and(v0.GetValue(), "|"), v1.GetValue()) + "|"), v2.GetValue()) + "|"), n3.ExpInstVar());
 		},
 		() => 100,
 		() => 14,
@@ -2320,6 +2328,30 @@ self.C3_ExpressionFuncs = [
 		},
 		() => "joined",
 		() => "setWorld",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			return () => f0(f1(f2(), 2, "|"));
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			return () => f0(f1(f2(), 0, "|"));
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			return () => f0(f1(f2(), 1, "|"));
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			const f2 = p._GetNode(2).GetBoundMethod();
+			return () => f0(f1(f2(), 3, "|"));
+		},
 		() => "respawn",
 		() => "setList",
 		() => "startData.worldData",
@@ -2364,6 +2396,12 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			const n2 = p._GetNode(2);
 			return () => ((and(and(n0.ExpObject(), "&"), n1.ExpObject()) + "&") + n2.ExpInstVar());
+		},
+		() => 5000,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const v1 = p._GetNode(1).GetVar();
+			return () => Math.round(f0(2, (v1.GetValue() - 3)));
 		},
 		() => "https://rustycoon.site/",
 		() => "idasdadadasd",
