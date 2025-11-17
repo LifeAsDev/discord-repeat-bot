@@ -186,7 +186,7 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event312_Act1(runtime, localVars)
+	async EventWorld_Event313_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -248,35 +248,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event455_Act1(runtime, localVars)
+	async EventWorld_Event456_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event459(runtime, localVars)
+	async EventWorld_Event460(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event460(runtime, localVars)
+	async EventWorld_Event461(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event465(runtime, localVars)
+	async EventWorld_Event466(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event471(runtime, localVars)
+	async EventWorld_Event472(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event487_Act1(runtime, localVars)
+	async EventWorld_Event488_Act1(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -292,7 +292,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event488_Act2(runtime, localVars)
+	async EventWorld_Event489_Act2(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -309,12 +309,12 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event562_Act2(runtime, localVars)
+	async EventWorld_Event568_Act2(runtime, localVars)
 	{
 		await saveRoomData(runtime.globalVars.roomName, localVars.worldJson);
 	},
 
-	async EventWorld_Event569_Act1(runtime, localVars)
+	async EventWorld_Event575_Act1(runtime, localVars)
 	{
 		function getRandomTile(tileOptions) {
 			const total = tileOptions.reduce((sum, opt) => sum + opt.probability, 0);
