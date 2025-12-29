@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Server List</title>
+    <style>
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        /* CONTENEDOR RAÍZ CENTRADO */
+        .center-root {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-family: "LeagueSpartan-VariableFont_wght";
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .server-container {
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+
+            background: #1d1d1d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #8aff8a;
+            font-size: 18px;
+        }
+
+        #servers {
+            padding: 10px 0;
+            border-radius: 10px;
+            height: 350px;
+            overflow-y: auto;
+        }
+
+        .server {
+            padding: 10px;
+            background: #242424;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            color: white;
+            cursor: pointer;
+            transition: background .15s ease;
+        }
+
+        .server:hover {
+            background: #3e3e3e;
+        }
+
+        p {
+            color: white;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="center-root">
+
+        <h1>Server List</h1>
+
+        <div class="server-container">
+            <label>Select a server</label>
+            <div id="servers"></div>
+        </div>
+
+    </div>
+
+    <script>
+        /*
+        =====================================
+            API GLOBAL SERVER LIST
+        =====================================
+            window.ServerList.refresh()
+            window.ServerList.updateServers(array)
+            window.ServerList.onSelectServer = fn
+        =====================================
+        */
+
+        window.ServerList = {
+            onSelectServer: null,
+
+            updateServers(servers) {
+                const container = document.getElementById("servers");
+                container.innerHTML = "";
+
+                if (!servers || servers.length === 0) {
+                    container.innerHTML = "<p>No servers available.</p>";
+                    return;
+                }
+
+                servers.forEach(server => {
+                    const div = document.createElement("div");
+                    div.className = "server";
+                    div.textContent = server.name ?? server;
+
+                    div.onclick = () => {
+                        if (this.onSelectServer) {
+                            this.onSelectServer(server);
+                        }
+                    };
+
+                    container.appendChild(div);
+                });
+            }
+        };
+
+        // UI
+        document.getElementById("btnRefresh").onclick = () => {
+            const container = document.getElementById("servers");
+            container.innerHTML = "<p>Updating...</p>";
+            window.ServerList.refresh();
+        };
+    </script>
+
+</body>
+
+</html>

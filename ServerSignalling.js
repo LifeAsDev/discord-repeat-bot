@@ -111,7 +111,6 @@ class ServerSignalling {
 
         const room = this.rooms.get(roomName);
         if (!room) {
-            return this._createRoom(socket, roomName);
 
             socket.emit("signalling:error", "room-not-found");
             return;
