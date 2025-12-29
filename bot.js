@@ -17,16 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 const publicPath = path.join(__dirname, "public");
 
 const versionPath = "/filesv19"; // 🔹 cambia esto a /filesv2, /filesv3 cuando actualices
-const versionFile = 22;
-app.use(
-    versionPath,
-    express.static(publicPath, {
-        etag: false,
-        lastModified: false,
-        setHeaders: (res) =>
-            res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate"),
-    })
-);
+const versionFile = 23;
+
 
 app.use(
     express.static(publicPath, {
