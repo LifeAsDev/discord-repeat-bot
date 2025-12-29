@@ -17,10 +17,28 @@
 		<link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png" />
 		<link rel="icon" type="image/png" href="icons/icon-512.png" />
 
-		<link rel="stylesheet" href="style.css?v=24" />
+		<link rel="stylesheet" href="style.css?v=25" />
 	</head>
 
 	<body>
+		<script>
+			(async () => {
+				if ("serviceWorker" in navigator) {
+					const regs = await navigator.serviceWorker.getRegistrations();
+					for (const reg of regs) {
+						await reg.unregister();
+					}
+					if (caches?.keys) {
+						const keys = await caches.keys();
+						for (const key of keys) {
+							await caches.delete(key);
+						}
+					}
+					console.log("SW purged");
+				}
+			})();
+		</script>
+
 		<script>
 			if (location.protocol.substr(0, 4) === "file") {
 				alert(
@@ -41,6 +59,6 @@
 		<script src="scripts/modernjscheck.js"></script>
 		<script src="scripts/supportcheck.js"></script>
 		<script src="scripts/offlineclient.js" type="module"></script>
-		<script src="scripts/main.js?v=24" type="module"></script>
+		<script src="scripts/main.js?v=25" type="module"></script>
 	</body>
 </html>
