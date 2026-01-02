@@ -220,7 +220,113 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event341_Act1(runtime, localVars)
+	async EventWorld_Event485_Act1(runtime, localVars)
+	{
+		runtime.playersArr = [];
+	},
+
+	async EventWorld_Event489(runtime, localVars)
+	{
+		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
+		runtime.playersArr.push(jsonString);
+		
+	},
+
+	async EventWorld_Event490(runtime, localVars)
+	{
+		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
+	},
+
+	async EventWorld_Event495(runtime, localVars)
+	{
+		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
+		localVars.jsonStringify = JSON.stringify(jsonString);
+	},
+
+	async EventWorld_Event501(runtime, localVars)
+	{
+
+	},
+
+	async EventWorld_Event517_Act1(runtime, localVars)
+	{
+		const data = JSON.parse(localVars.jsonStringify);
+		/* localVars.date = data.date;
+		localVars.animationName = data.animationName;
+		localVars.mirror = data.mirror;
+		localVars.px = data.x;
+		localVars.py = data.y;
+		localVars.inputs = data.inputs; */
+		if(data){
+		runtime.callFunction("playerSync",data.date,data.animationName,data.mirror,data.px,data.py,data.inputs,data.id);
+		}
+		
+		
+	},
+
+	async EventWorld_Event518_Act2(runtime, localVars)
+	{
+		const data = JSON.parse(localVars.jsonStringify);
+		/* localVars.date = data.date;
+		localVars.animationName = data.animationName;
+		localVars.mirror = data.mirror;
+		localVars.px = data.x;
+		localVars.py = data.y;
+		localVars.inputs = data.inputs;
+		 */
+		 for (let i = 0 ; i < data.playersArr.length; i++){
+		
+		 runtime.callFunction("playerSync",data.date,data.playersArr[i].animationName,data.playersArr[i].mirror,data.playersArr[i].px,data.playersArr[i].py,data.playersArr[i].inputs,data.playersArr[i].id);
+		 }
+		
+	},
+
+	async EventWorld_Event600_Act2(runtime, localVars)
+	{
+		await saveRoomData(runtime.globalVars.roomName, localVars.worldJson);
+	},
+
+	async EventWorld_Event607_Act1(runtime, localVars)
+	{
+		function getRandomTile(tileOptions) {
+			const total = tileOptions.reduce((sum, opt) => sum + opt.probability, 0);
+		
+			let sum = 0;
+			const cumulative = tileOptions.map(opt => ({
+				tile: opt.tile,
+				limit: (sum += opt.probability / total)
+			}));
+		
+			const r = Math.random();
+			for (const opt of cumulative) {
+				if (r < opt.limit) return opt.tile;
+			}
+		}
+		
+		
+		const tiles = [  
+		    { tile: 0, probability: 0.2 },
+		    { tile: 1, probability: 0.2 }, 
+		    { tile: 2, probability: 0.2 },   
+			{ tile: 3, probability: 0.2 }, 
+			{ tile: 4, probability: 0.2 },    
+			{ tile: 5, probability: 0.2 },
+			{ tile: 6, probability: 0.75 },
+			{ tile: 7, probability: 0.2 },
+			{ tile: 8, probability: 0.2 },
+			{ tile: 9, probability: .2 },  
+			{ tile: 10, probability: 0.3 },
+			{ tile: 11, probability: 1.2},
+			{ tile: 13, probability: 0.1 },
+		    { tile: 14, probability: 0.4 },
+		
+		];
+		
+		const tileFrame = getRandomTile(tiles);
+		localVars.tileFrame= tileFrame;
+	},
+
+	async EventWorld_Event342_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -280,112 +386,6 @@ const resultFetch = sanitizeAndFormat(localVars.inventoryJson);
 sendInventory(result);
 
 
-	},
-
-	async EventWorld_Event484_Act1(runtime, localVars)
-	{
-		runtime.playersArr = [];
-	},
-
-	async EventWorld_Event488(runtime, localVars)
-	{
-		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id}
-		runtime.playersArr.push(jsonString);
-		
-	},
-
-	async EventWorld_Event489(runtime, localVars)
-	{
-		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
-	},
-
-	async EventWorld_Event494(runtime, localVars)
-	{
-		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
-		localVars.jsonStringify = JSON.stringify(jsonString);
-	},
-
-	async EventWorld_Event500(runtime, localVars)
-	{
-
-	},
-
-	async EventWorld_Event516_Act1(runtime, localVars)
-	{
-		const data = JSON.parse(localVars.jsonStringify);
-		/* localVars.date = data.date;
-		localVars.animationName = data.animationName;
-		localVars.mirror = data.mirror;
-		localVars.px = data.x;
-		localVars.py = data.y;
-		localVars.inputs = data.inputs; */
-		if(data){
-		runtime.callFunction("playerSync",data.date,data.animationName,data.mirror,data.px,data.py,data.inputs,data.id);
-		}
-		
-		
-	},
-
-	async EventWorld_Event517_Act2(runtime, localVars)
-	{
-		const data = JSON.parse(localVars.jsonStringify);
-		/* localVars.date = data.date;
-		localVars.animationName = data.animationName;
-		localVars.mirror = data.mirror;
-		localVars.px = data.x;
-		localVars.py = data.y;
-		localVars.inputs = data.inputs;
-		 */
-		 for (let i = 0 ; i < data.playersArr.length; i++){
-		
-		 runtime.callFunction("playerSync",data.date,data.playersArr[i].animationName,data.playersArr[i].mirror,data.playersArr[i].px,data.playersArr[i].py,data.playersArr[i].inputs,data.playersArr[i].id);
-		 }
-		
-	},
-
-	async EventWorld_Event596_Act2(runtime, localVars)
-	{
-		await saveRoomData(runtime.globalVars.roomName, localVars.worldJson);
-	},
-
-	async EventWorld_Event603_Act1(runtime, localVars)
-	{
-		function getRandomTile(tileOptions) {
-			const total = tileOptions.reduce((sum, opt) => sum + opt.probability, 0);
-		
-			let sum = 0;
-			const cumulative = tileOptions.map(opt => ({
-				tile: opt.tile,
-				limit: (sum += opt.probability / total)
-			}));
-		
-			const r = Math.random();
-			for (const opt of cumulative) {
-				if (r < opt.limit) return opt.tile;
-			}
-		}
-		
-		
-		const tiles = [  
-		    { tile: 0, probability: 0.2 },
-		    { tile: 1, probability: 0.2 }, 
-		    { tile: 2, probability: 0.2 },   
-			{ tile: 3, probability: 0.2 }, 
-			{ tile: 4, probability: 0.2 },    
-			{ tile: 5, probability: 0.2 },
-			{ tile: 6, probability: 0.75 },
-			{ tile: 7, probability: 0.2 },
-			{ tile: 8, probability: 0.2 },
-			{ tile: 9, probability: .2 },  
-			{ tile: 10, probability: 0.3 },
-			{ tile: 11, probability: 1.2},
-			{ tile: 13, probability: 0.1 },
-		    { tile: 14, probability: 0.4 },
-		
-		];
-		
-		const tileFrame = getRandomTile(tiles);
-		localVars.tileFrame= tileFrame;
 	}
 };
 
