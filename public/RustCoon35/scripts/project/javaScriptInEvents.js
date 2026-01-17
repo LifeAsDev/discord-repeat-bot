@@ -150,7 +150,7 @@ const scriptsInEvents = {
 		
 	},
 
-	async EventWorld_Event32(runtime, localVars)
+	async EventWorld_Event33(runtime, localVars)
 	{
 		/**
 		 * Generates a random terrain map.
@@ -216,7 +216,7 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event181_Act3(runtime, localVars)
+	async EventWorld_Event182_Act3(runtime, localVars)
 	{
 		const miniPos = worldToMinimap(
 		  { x: localVars.px, y: localVars.py },
@@ -228,7 +228,7 @@ const scriptsInEvents = {
 		localVars.miniY = miniPos.y;
 	},
 
-	async EventWorld_Event183_Act3(runtime, localVars)
+	async EventWorld_Event184_Act3(runtime, localVars)
 	{
 		const miniPos = worldToMinimap(
 		  { x: localVars.px, y: localVars.py },
@@ -330,12 +330,45 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event629_Act2(runtime, localVars)
+	async EventWorld_Event542_Act2(runtime, localVars)
+	{
+		const data = JSON.parse(localVars.jsonStringify);
+		/* localVars.date = data.date;
+		localVars.animationName = data.animationName;
+		localVars.mirror = data.mirror;
+		localVars.px = data.x;
+		localVars.py = data.y;
+		localVars.inputs = data.inputs; */
+		if(data){
+		runtime.callFunction("playerSync",data.date,data.animationName,data.mirror,data.px,data.py,data.inputs,data.id,"");
+		}
+		
+		
+	},
+
+	async EventWorld_Event543_Act3(runtime, localVars)
+	{
+		const data = JSON.parse(localVars.jsonStringify);
+		/* localVars.date = data.date;
+		localVars.animationName = data.animationName;
+		localVars.mirror = data.mirror;
+		localVars.px = data.x;
+		localVars.py = data.y;
+		localVars.inputs = data.inputs;
+		 */
+		 for (let i = 0 ; i < data.playersArr.length; i++){
+		
+		 runtime.callFunction("playerSync",data.date,data.playersArr[i].animationName,data.playersArr[i].mirror,data.playersArr[i].px,data.playersArr[i].py,data.playersArr[i].inputs,data.playersArr[i].id,data.playersArr[i].alias);
+		 }
+		
+	},
+
+	async EventWorld_Event630_Act2(runtime, localVars)
 	{
 		await saveRoomData(runtime.globalVars.roomName, localVars.worldJson);
 	},
 
-	async EventWorld_Event636_Act1(runtime, localVars)
+	async EventWorld_Event637_Act1(runtime, localVars)
 	{
 		function getRandomTile(tileOptions) {
 			const total = tileOptions.reduce((sum, opt) => sum + opt.probability, 0);
@@ -373,39 +406,6 @@ sendInventory(result);
 		
 		const tileFrame = getRandomTile(tiles);
 		localVars.tileFrame= tileFrame;
-	},
-
-	async EventWorld_Event541_Act2(runtime, localVars)
-	{
-		const data = JSON.parse(localVars.jsonStringify);
-		/* localVars.date = data.date;
-		localVars.animationName = data.animationName;
-		localVars.mirror = data.mirror;
-		localVars.px = data.x;
-		localVars.py = data.y;
-		localVars.inputs = data.inputs; */
-		if(data){
-		runtime.callFunction("playerSync",data.date,data.animationName,data.mirror,data.px,data.py,data.inputs,data.id,"");
-		}
-		
-		
-	},
-
-	async EventWorld_Event542_Act3(runtime, localVars)
-	{
-		const data = JSON.parse(localVars.jsonStringify);
-		/* localVars.date = data.date;
-		localVars.animationName = data.animationName;
-		localVars.mirror = data.mirror;
-		localVars.px = data.x;
-		localVars.py = data.y;
-		localVars.inputs = data.inputs;
-		 */
-		 for (let i = 0 ; i < data.playersArr.length; i++){
-		
-		 runtime.callFunction("playerSync",data.date,data.playersArr[i].animationName,data.playersArr[i].mirror,data.playersArr[i].px,data.playersArr[i].py,data.playersArr[i].inputs,data.playersArr[i].id,data.playersArr[i].alias);
-		 }
-		
 	}
 };
 
