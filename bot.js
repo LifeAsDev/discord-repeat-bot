@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
 
-const versionFile = 34;
+const versionFile = 35;
 
 app.use(
 	express.static(publicPath, {
@@ -24,7 +24,7 @@ app.use(
 		lastModified: false,
 		setHeaders: (res) =>
 			res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate"),
-	})
+	}),
 );
 
 app.post("/api/token", async (req, res) => {
@@ -181,7 +181,7 @@ async function launchRoom(nombre) {
 		await page.setViewportSize({ width: 1, height: 1 });
 
 		await page.goto(
-			`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${nombre}`
+			`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${nombre}`,
 		);
 
 		rooms[nombre] = { browser, page };
