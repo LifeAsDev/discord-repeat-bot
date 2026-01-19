@@ -1650,7 +1650,11 @@ self.C3_ExpressionFuncs = [
 			const n2 = p._GetNode(2);
 			return () => f0(n1.ExpObject((("startData.playerBox." + n2.ExpObject()) + ".Y")));
 		},
+		() => 6,
 		() => 16,
+		() => 7,
+		() => 8,
+		() => 9,
 		() => 22,
 		() => 23,
 		() => 21,
@@ -1669,11 +1673,8 @@ self.C3_ExpressionFuncs = [
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => f0("x");
 		},
-		() => 7,
 		() => 3,
 		() => 2,
-		() => 8,
-		() => 6,
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => (v0.GetValue() - 3);
@@ -1699,7 +1700,6 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => (f0(1, (n1.ExpObject() / 2)) + 4);
 		},
-		() => 9,
 		() => "mainTop",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
@@ -1797,6 +1797,9 @@ self.C3_ExpressionFuncs = [
 		},
 		() => "addhp",
 		() => "10",
+		() => 25,
+		() => "addHunger",
+		() => "5",
 		() => "InventoryUI",
 		p => {
 			const n0 = p._GetNode(0);
@@ -1933,7 +1936,7 @@ self.C3_ExpressionFuncs = [
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const n1 = p._GetNode(1);
 			const n2 = p._GetNode(2);
-			return () => f0(C3.lerp(n1.ExpObject(), ((n2.ExpInstVar() / 100) * 240), 0.1), 0);
+			return () => f0(C3.lerp(n1.ExpObject(), ((n2.ExpInstVar() / 100) * 212), 0.1), 0);
 		},
 		p => {
 			const n0 = p._GetNode(0);
@@ -2432,6 +2435,12 @@ self.C3_ExpressionFuncs = [
 			return () => and((n0.ExpInstVar() + "&"), n1.ExpInstVar());
 		},
 		() => "shake",
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => f0(100, n1.ExpInstVar());
+		},
+		() => "hunger",
 		() => "_w",
 		p => {
 			const n0 = p._GetNode(0);
@@ -2557,7 +2566,7 @@ self.C3_ExpressionFuncs = [
 		() => "Connecting...",
 		() => "roomList",
 		() => "Connected",
-		() => "test4",
+		() => "test5",
 		() => "Joining...",
 		() => "peer",
 		() => "room-not-found",

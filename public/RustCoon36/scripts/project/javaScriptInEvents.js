@@ -204,6 +204,7 @@ const scriptsInEvents = {
 			{ tile: 11, probability: 1.2},
 			{ tile: 13, probability: 0.1 },
 		    { tile: 14, probability: 0.4 },
+		    { tile: 16, probability: 0.4 },
 		
 		];
 		
@@ -214,18 +215,6 @@ const scriptsInEvents = {
 		        runtime.callFunction("setTile", tile, x, y,0,-1);
 		    }
 		}
-	},
-
-	async EventWorld_Event182_Act3(runtime, localVars)
-	{
-		const miniPos = worldToMinimap(
-		  { x: localVars.px, y: localVars.py },
-		  { width: 6400, height: 6400 },
-		  { width: 480, height: 480 }
-		);
-		
-		localVars.miniX = miniPos.x;
-		localVars.miniY = miniPos.y;
 	},
 
 	async EventWorld_Event184_Act3(runtime, localVars)
@@ -240,7 +229,19 @@ const scriptsInEvents = {
 		localVars.miniY = miniPos.y;
 	},
 
-	async EventWorld_Event367_Act1(runtime, localVars)
+	async EventWorld_Event186_Act3(runtime, localVars)
+	{
+		const miniPos = worldToMinimap(
+		  { x: localVars.px, y: localVars.py },
+		  { width: 6400, height: 6400 },
+		  { width: 480, height: 480 }
+		);
+		
+		localVars.miniX = miniPos.x;
+		localVars.miniY = miniPos.y;
+	},
+
+	async EventWorld_Event369_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -302,35 +303,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event510_Act1(runtime, localVars)
+	async EventWorld_Event514_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event514(runtime, localVars)
+	async EventWorld_Event518(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id,alias:localVars.aliasP}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event515(runtime, localVars)
+	async EventWorld_Event519(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event520(runtime, localVars)
+	async EventWorld_Event524(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event526(runtime, localVars)
+	async EventWorld_Event530(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event542_Act2(runtime, localVars)
+	async EventWorld_Event546_Act2(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -346,7 +347,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event543_Act3(runtime, localVars)
+	async EventWorld_Event547_Act3(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -363,12 +364,12 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event630_Act2(runtime, localVars)
+	async EventWorld_Event652_Act2(runtime, localVars)
 	{
 		await saveRoomData(runtime.globalVars.roomName, localVars.worldJson);
 	},
 
-	async EventWorld_Event637_Act1(runtime, localVars)
+	async EventWorld_Event659_Act1(runtime, localVars)
 	{
 		function getRandomTile(tileOptions) {
 			const total = tileOptions.reduce((sum, opt) => sum + opt.probability, 0);
@@ -401,6 +402,7 @@ sendInventory(result);
 			{ tile: 11, probability: 1.2},
 			{ tile: 13, probability: 0.1 },
 		    { tile: 14, probability: 0.4 },
+			{ tile: 16, probability: 0.4 },
 		
 		];
 		
