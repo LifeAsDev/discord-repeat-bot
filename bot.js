@@ -146,22 +146,37 @@ app.get("/storage/load/:nombre", (req, res) => {
 
 const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, page } }
 
-let browser = null;
 async function createRoom(nombre) {
-	const context = await browser.newContext({
-		reducedMotion: "reduce",
-		colorScheme: "dark",
+	if (!nombre || rooms[nombre]) return false;
+
+	const browser = await chromium.launch({
+		headless: true,
+		args: [
+			"--no-sandbox",
+			"--disable-gpu",
+			"--disable-dev-shm-usage",
+			"--mute-audio",
+			"--no-zygote",
+			"--disable-breakpad",
+			"--log-level=3",
+		],
 	});
+
+	const context = await browser.newContext();
 	const page = await context.newPage();
 
-	await page.setViewportSize({ width: 320, height: 240 });
+	await page.setViewportSize({ width: 1, height: 1 });
+
+	const safeNombre = encodeURIComponent(nombre);
 
 	await page.goto(
-		`http://localhost:3000/RustCoon38/index.html?nombre=${encodeURIComponent(nombre)}`,
+		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
 		{ waitUntil: "load" },
 	);
 
-	rooms[nombre] = { context, page };
+	rooms[nombre] = { browser, context, page };
+
+	console.log(`🟢 Room ${nombre} lanzada (browser propio)`);
 	return true;
 }
 
