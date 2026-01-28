@@ -155,19 +155,26 @@ async function launchRoom(nombre) {
 				"--disable-dev-shm-usage",
 				"--disable-extensions",
 				"--disable-gpu-sandbox",
-				"--disable-logging",
-				"--log-level=3",
-				"--disable-breakpad",
 				"--no-zygote",
 
-				// 🔧 Evitar dependencias D-Bus y multimedia
+				// 🔇 Logs / crash / ruido
+				"--log-level=3",
+				"--disable-breakpad",
+
+				// 🔧 Evitar D-Bus, audio y video
 				"--disable-features=AudioServiceOutOfProcess,VaapiVideoDecoder,UseDBus",
 				"--disable-dbus",
+				"--mute-audio",
 
-				// 🔧 Mantener WebGL activo (SwiftShader fallback)
-				"--use-gl=swiftshader",
-				"--enable-unsafe-swiftshader",
-				"--ignore-gpu-blocklist",
+				// 🧠 MODO SERVER REAL (CLAVE)
+				"--disable-gpu",
+				"--disable-webgl",
+				"--disable-software-rasterizer",
+
+				// 💤 Reduce trabajo en background
+				"--disable-background-timer-throttling",
+				"--disable-backgrounding-occluded-windows",
+				"--disable-renderer-backgrounding",
 			],
 		});
 
