@@ -13,13 +13,11 @@ const { chromium } = require("playwright");
 	const browser = await chromium.launch({
 		headless: true,
 		args: [
-			"--no-sandbox",
 			"--disable-gpu",
-			"--mute-audio",
-			"--disable-dev-shm-usage",
-			"--no-zygote",
-			"--disable-breakpad",
-			"--log-level=3",
+			"--ignore-gpu-blacklist",
+			"--disable-background-timer-throttling",
+			"--disable-backgrounding-occluded-windows",
+			"--disable-renderer-backgrounding",
 		],
 	});
 
