@@ -5,6 +5,7 @@ const fs = require("fs");
 const { ServerSignalling } = require("./ServerSignalling");
 const http = require("http");
 const { chromium } = require("playwright"); // 👈 así se importa en CommonJS
+const { fork } = require("child_process");
 
 const app = express();
 const PORT = 3000;
@@ -165,71 +166,64 @@ async function getBrowser() {
 	return browser;
 }
 
-async function launchRoom(nombre) {
-	const browser = await getBrowser();
-	const context = await browser.newContext();
-	const page = await context.newPage();
-	await page.setViewportSize({ width: 1, height: 1 });
+function createRoom(nombre) {
+	if (!nombre) return false;
+	if (rooms[nombre]) return false;
+	if (Object.keys(rooms).length >= MAX_ROOMS) return false;
 
-	await page.goto(
-		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${nombre}`,
-	);
+	const child = fork("./roomWorker.js", [nombre], {
+		env: process.env,
+		stdio: "ignore",
+	});
 
-	rooms[nombre] = { context, page };
+	rooms[nombre] = { process: child };
+
+	child.on("exit", (code) => {
+		console.log(`⚠️ Room ${nombre} terminó (code ${code})`);
+		delete rooms[nombre];
+	});
+
+	console.log(`✅ Room creada: ${nombre}`);
+	return true;
 }
 
-app.post("/rooms/create", async (req, res) => {
+app.post("/rooms/create", (req, res) => {
 	const { nombre } = req.body;
 
-	if (!nombre || rooms[nombre]) {
-		return res
-			.status(400)
-			.send({ error: "Ese cuarto ya existe o nombre inválido" });
+	const ok = createRoom(nombre);
+
+	if (!ok) {
+		return res.status(400).send({
+			error:
+				"No se pudo crear el cuarto (ya existe, nombre inválido o límite alcanzado)",
+		});
 	}
 
-	const success = await launchRoom(nombre);
-
-	if (success) {
-		if (!roomNames.includes(nombre)) {
-			roomNames.push(nombre);
-			saveRoomNames(roomNames);
-		}
-		res.send({ success: true, nombre });
-	} else {
-		res.status(500).send({ error: "No se pudo crear el cuarto" });
+	if (!roomNames.includes(nombre)) {
+		roomNames.push(nombre);
+		saveRoomNames(roomNames);
 	}
+
+	res.send({ success: true, nombre });
 });
 
 // Destruir un cuarto
-app.post("/rooms/destroy", async (req, res) => {
-	try {
-		const { nombre } = req.body;
+app.post("/rooms/destroy", (req, res) => {
+	const { nombre } = req.body;
+	const room = rooms[nombre];
 
-		const room = rooms[nombre];
-		if (!room) {
-			return res.status(404).send({ error: "Ese cuarto no existe" });
-		}
-
-		// Cerrar recursos del room
-		if (room.page && !room.page.isClosed()) {
-			await room.page.close();
-		}
-
-		if (room.context) {
-			await room.context.close();
-		}
-
-		delete rooms[nombre];
-
-		roomNames = roomNames.filter((r) => r !== nombre);
-		saveRoomNames(roomNames);
-
-		console.log(`❌ Cuarto destruido: ${nombre}`);
-		res.send({ success: true, nombre });
-	} catch (err) {
-		console.error("Error al destruir room:", err);
-		res.status(500).send({ error: "No se pudo destruir el cuarto" });
+	if (!room) {
+		return res.status(404).send({ error: "Ese cuarto no existe" });
 	}
+
+	room.process.kill("SIGTERM");
+	delete rooms[nombre];
+
+	roomNames = roomNames.filter((r) => r !== nombre);
+	saveRoomNames(roomNames);
+
+	console.log(`❌ Room destruida: ${nombre}`);
+	res.send({ success: true, nombre });
 });
 
 // Listar cuartos activos
@@ -258,7 +252,7 @@ let roomNames = loadRoomNames();
 async function initRooms() {
 	for (const nombre of roomNames) {
 		if (!rooms[nombre]) {
-			await launchRoom(nombre);
+			createRoom(nombre);
 			console.log(`[!] Room recreada al iniciar: ${nombre}`);
 		}
 	}
