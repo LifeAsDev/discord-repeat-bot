@@ -36,18 +36,6 @@ const { chromium } = require("playwright");
 		document.dispatchEvent(new Event("visibilitychange"));
 	}); */
 	const safeNombre = encodeURIComponent(nombre);
-	await page.addInitScript(() => {
-		const MAX_FPS = 20;
-		const FRAME_TIME = 1000 / MAX_FPS;
-
-		const _raf = window.requestAnimationFrame.bind(window);
-
-		window.requestAnimationFrame = function (cb) {
-			return _raf(function (t) {
-				setTimeout(() => cb(t), FRAME_TIME);
-			});
-		};
-	});
 
 	await page.goto(
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
