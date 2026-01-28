@@ -146,18 +146,7 @@ app.get("/storage/load/:nombre", (req, res) => {
 
 const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, page } }
 
-const browser = chromium.launch({
-	headless: true,
-	args: [
-		"--disable-gpu",
-		"--disable-dev-shm-usage",
-		"--no-sandbox",
-		"--disable-background-timer-throttling",
-		"--disable-backgrounding-occluded-windows",
-		"--disable-renderer-backgrounding",
-	],
-});
-
+let browser = null;
 async function createRoom(nombre) {
 	const context = await browser.newContext();
 	const page = await context.newPage();
@@ -236,6 +225,18 @@ let roomNames = loadRoomNames();
 // --- Inicializar rooms al iniciar el servidor ---
 
 async function initRooms() {
+	browser = await chromium.launch({
+		headless: true,
+		args: [
+			"--disable-gpu",
+			"--disable-dev-shm-usage",
+			"--no-sandbox",
+			"--disable-background-timer-throttling",
+			"--disable-backgrounding-occluded-windows",
+			"--disable-renderer-backgrounding",
+		],
+	});
+
 	for (const nombre of roomNames) {
 		if (!rooms[nombre]) {
 			console.log(`[!] Room recreada al iniciar: ${nombre}`);
