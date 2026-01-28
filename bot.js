@@ -169,7 +169,6 @@ async function getBrowser() {
 function createRoom(nombre) {
 	if (!nombre) return false;
 	if (rooms[nombre]) return false;
-	if (Object.keys(rooms).length >= MAX_ROOMS) return false;
 
 	const child = fork("./roomWorker.js", [nombre], {
 		env: process.env,
