@@ -146,7 +146,7 @@ app.get("/storage/load/:nombre", (req, res) => {
 
 const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, page } }
 
-const browser = await chromium.launch({
+const browser = chromium.launch({
 	headless: true,
 	args: [
 		"--disable-gpu",
