@@ -153,8 +153,6 @@ async function launchRoom(nombre) {
 				"--no-sandbox",
 				"--disable-setuid-sandbox",
 				"--disable-dev-shm-usage",
-				"--disable-extensions",
-				"--disable-gpu-sandbox",
 				"--no-zygote",
 
 				// 🔇 Logs / crash / ruido
@@ -163,16 +161,10 @@ async function launchRoom(nombre) {
 
 				// 🔧 Evitar D-Bus, audio y video
 				"--disable-features=AudioServiceOutOfProcess,VaapiVideoDecoder,UseDBus",
-				"--disable-dbus",
 				"--mute-audio",
 
 				// 🧠 MODO SERVER REAL (CLAVE)
 				"--disable-gpu",
-
-				// 💤 Reduce trabajo en background
-				"--disable-background-timer-throttling",
-				"--disable-backgrounding-occluded-windows",
-				"--disable-renderer-backgrounding",
 			],
 		});
 
