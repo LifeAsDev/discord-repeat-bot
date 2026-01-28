@@ -169,6 +169,7 @@ async function launchRoom(nombre) {
 	const browser = await getBrowser();
 	const context = await browser.newContext();
 	const page = await context.newPage();
+	await page.setViewportSize({ width: 1, height: 1 });
 
 	await page.goto(
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${nombre}`,
