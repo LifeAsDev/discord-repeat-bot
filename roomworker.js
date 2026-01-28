@@ -41,6 +41,7 @@ const { chromium } = require("playwright");
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
 		{ waitUntil: "load" },
 	);
+	await page.setViewportSize({ width: 1, height: 1 });
 
 	console.log(`🟢 Room ${nombre} iniciada`);
 
