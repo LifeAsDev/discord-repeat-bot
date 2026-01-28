@@ -38,25 +38,13 @@ const { chromium } = require("playwright");
 	const safeNombre = encodeURIComponent(nombre);
 	await page.addInitScript(() => {
 		const MAX_FPS = 60;
-		let last = 0;
+		const FRAME_TIME = 1000 / MAX_FPS;
 
 		const _raf = window.requestAnimationFrame.bind(window);
 
 		window.requestAnimationFrame = function (cb) {
 			return _raf(function (t) {
-				// Siempre deja pasar el primer frame
-				if (!last) {
-					last = t;
-					return cb(t);
-				}
-
-				if (t - last >= 1000 / MAX_FPS) {
-					last = t;
-					cb(t);
-				} else {
-					// Reprograma el callback (NO lo pierdas)
-					_raf(arguments.callee);
-				}
+				setTimeout(() => cb(t), FRAME_TIME);
 			});
 		};
 	});
