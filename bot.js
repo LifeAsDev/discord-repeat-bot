@@ -145,49 +145,36 @@ app.get("/storage/load/:nombre", (req, res) => {
 
 const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, page } }
 
-async function launchRoom(nombre) {
-	try {
-		const browser = await chromium.launch({
+let browser; // global
+
+async function getBrowser() {
+	if (!browser) {
+		browser = await chromium.launch({
 			headless: true,
 			args: [
 				"--no-sandbox",
-				"--disable-setuid-sandbox",
-				"--disable-dev-shm-usage",
-				"--no-zygote",
-
-				// 🔇 Logs / crash / ruido
-				"--log-level=3",
-				"--disable-breakpad",
-
-				// 🔧 Evitar D-Bus, audio y video
-				"--disable-features=AudioServiceOutOfProcess,VaapiVideoDecoder,UseDBus",
-				"--mute-audio",
-
-				// 🧠 MODO SERVER REAL (CLAVE)
 				"--disable-gpu",
+				"--disable-dev-shm-usage",
+				"--mute-audio",
+				"--no-zygote",
+				"--disable-breakpad",
+				"--log-level=3",
 			],
 		});
-
-		browser.on("disconnected", () => {
-			console.error(`[!] Playwright: navegador desconectado (${nombre})`);
-		});
-
-		const context = await browser.newContext();
-		const page = await context.newPage();
-		await page.setViewportSize({ width: 1, height: 1 });
-
-		await page.goto(
-			`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${nombre}`,
-		);
-
-		rooms[nombre] = { browser, page };
-
-		console.log(`✅ Room lanzada: ${nombre}`);
-		return true;
-	} catch (err) {
-		console.error(`[X] No se pudo lanzar room ${nombre}:`, err);
-		return false;
 	}
+	return browser;
+}
+
+async function launchRoom(nombre) {
+	const browser = await getBrowser();
+	const context = await browser.newContext();
+	const page = await context.newPage();
+
+	await page.goto(
+		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${nombre}`,
+	);
+
+	rooms[nombre] = { context, page };
 }
 
 app.post("/rooms/create", async (req, res) => {
