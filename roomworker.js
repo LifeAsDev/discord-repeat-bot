@@ -37,24 +37,27 @@ const { chromium } = require("playwright");
 	}); */
 	const safeNombre = encodeURIComponent(nombre);
 	await page.addInitScript(() => {
-		// Limita rAF
 		const MAX_FPS = 15;
 		let last = 0;
 
-		const _raf = window.requestAnimationFrame;
+		const _raf = window.requestAnimationFrame.bind(window);
+
 		window.requestAnimationFrame = function (cb) {
 			return _raf(function (t) {
+				// Siempre deja pasar el primer frame
+				if (!last) {
+					last = t;
+					return cb(t);
+				}
+
 				if (t - last >= 1000 / MAX_FPS) {
 					last = t;
 					cb(t);
+				} else {
+					// Reprograma el callback (NO lo pierdas)
+					_raf(arguments.callee);
 				}
 			});
-		};
-
-		// Baja timers
-		const _setTimeout = window.setTimeout;
-		window.setTimeout = function (fn, delay, ...args) {
-			return _setTimeout(fn, Math.max(delay, 66), ...args);
 		};
 	});
 
