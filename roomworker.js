@@ -37,7 +37,7 @@ const { chromium } = require("playwright");
 	}); */
 	const safeNombre = encodeURIComponent(nombre);
 	await page.addInitScript(() => {
-		const MAX_FPS = 45;
+		const MAX_FPS = 60;
 		let last = 0;
 
 		const _raf = window.requestAnimationFrame.bind(window);
