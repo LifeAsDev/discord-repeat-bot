@@ -185,8 +185,7 @@ app.post("/rooms/create", (req, res) => {
 	res.send({ success: true, nombre });
 });
 
-// Destruir un cuarto
-app.post("/rooms/destroy", (req, res) => {
+app.post("/rooms/destroy", async (req, res) => {
 	const { nombre } = req.body;
 	const room = rooms[nombre];
 
@@ -194,14 +193,26 @@ app.post("/rooms/destroy", (req, res) => {
 		return res.status(404).send({ error: "Ese cuarto no existe" });
 	}
 
-	room.process.kill("SIGTERM");
-	delete rooms[nombre];
+	try {
+		if (room.page && !room.page.isClosed()) {
+			await room.page.close();
+		}
 
-	roomNames = roomNames.filter((r) => r !== nombre);
-	saveRoomNames(roomNames);
+		if (room.context) {
+			await room.context.close();
+		}
 
-	console.log(`❌ Room destruida: ${nombre}`);
-	res.send({ success: true, nombre });
+		delete rooms[nombre];
+
+		roomNames = roomNames.filter((r) => r !== nombre);
+		saveRoomNames(roomNames);
+
+		console.log(`❌ Room destruida: ${nombre}`);
+		res.send({ success: true, nombre });
+	} catch (err) {
+		console.error("Error al destruir room:", err);
+		res.status(500).send({ error: "No se pudo destruir el cuarto" });
+	}
 });
 
 // Listar cuartos activos
