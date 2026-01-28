@@ -35,9 +35,10 @@ const { chromium } = require("playwright");
 		});
 		document.dispatchEvent(new Event("visibilitychange"));
 	});
+	const safeNombre = encodeURIComponent(nombre);
 
 	await page.goto(
-		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${nombre}`,
+		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
 		{ waitUntil: "load" },
 	);
 

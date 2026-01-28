@@ -209,6 +209,7 @@ app.post("/rooms/destroy", (req, res) => {
 
 // Listar cuartos activos
 app.get("/rooms", (req, res) => {
+	console.log(rooms);
 	res.send({ rooms: Object.keys(rooms) });
 });
 app.get("/", (req, res) => {
