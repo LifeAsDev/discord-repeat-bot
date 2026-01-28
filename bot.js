@@ -154,7 +154,7 @@ function createRoom(nombre) {
 
 	const child = fork("./roomworker.js", [nombre], {
 		env: process.env,
-		stdio: "inherit", // 👈 deja pasar logs
+		stdio: ["ignore", "inherit", "inherit", "ipc"],
 	});
 
 	rooms[nombre] = { process: child };
