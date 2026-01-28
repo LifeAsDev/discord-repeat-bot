@@ -169,7 +169,6 @@ async function launchRoom(nombre) {
 				// 🧠 MODO SERVER REAL (CLAVE)
 				"--disable-gpu",
 				"--disable-webgl",
-				"--disable-software-rasterizer",
 
 				// 💤 Reduce trabajo en background
 				"--disable-background-timer-throttling",
