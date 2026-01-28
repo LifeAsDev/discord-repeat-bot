@@ -146,25 +146,30 @@ app.get("/storage/load/:nombre", (req, res) => {
 
 const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, page } }
 
-let browser; // global
+const browser = await chromium.launch({
+	headless: true,
+	args: [
+		"--disable-gpu",
+		"--disable-dev-shm-usage",
+		"--no-sandbox",
+		"--disable-background-timer-throttling",
+		"--disable-backgrounding-occluded-windows",
+		"--disable-renderer-backgrounding",
+	],
+});
 
-function createRoom(nombre) {
-	if (!nombre) return false;
-	if (rooms[nombre]) return false;
+async function createRoom(nombre) {
+	const context = await browser.newContext();
+	const page = await context.newPage();
 
-	const child = fork("./roomworker.js", [nombre], {
-		env: process.env,
-		stdio: ["ignore", "inherit", "inherit", "ipc"],
-	});
+	await page.setViewportSize({ width: 1, height: 1 });
 
-	rooms[nombre] = { process: child };
+	await page.goto(
+		`http://localhost:3000/RustCoon38/index.html?nombre=${encodeURIComponent(nombre)}`,
+		{ waitUntil: "load" },
+	);
 
-	child.on("exit", (code) => {
-		console.log(`⚠️ Room ${nombre} terminó (code ${code})`);
-		delete rooms[nombre];
-	});
-
-	console.log(`✅ Room creada: ${nombre}`);
+	rooms[nombre] = { context, page };
 	return true;
 }
 
@@ -209,7 +214,6 @@ app.post("/rooms/destroy", (req, res) => {
 
 // Listar cuartos activos
 app.get("/rooms", (req, res) => {
-	console.log(rooms);
 	res.send({ rooms: Object.keys(rooms) });
 });
 app.get("/", (req, res) => {
