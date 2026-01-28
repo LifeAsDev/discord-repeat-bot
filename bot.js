@@ -204,11 +204,21 @@ app.post("/rooms/create", async (req, res) => {
 app.post("/rooms/destroy", async (req, res) => {
 	try {
 		const { nombre } = req.body;
-		if (!rooms[nombre]) {
+
+		const room = rooms[nombre];
+		if (!room) {
 			return res.status(404).send({ error: "Ese cuarto no existe" });
 		}
 
-		await rooms[nombre].browser.close();
+		// Cerrar recursos del room
+		if (room.page && !room.page.isClosed()) {
+			await room.page.close();
+		}
+
+		if (room.context) {
+			await room.context.close();
+		}
+
 		delete rooms[nombre];
 
 		roomNames = roomNames.filter((r) => r !== nombre);
@@ -217,7 +227,7 @@ app.post("/rooms/destroy", async (req, res) => {
 		console.log(`❌ Cuarto destruido: ${nombre}`);
 		res.send({ success: true, nombre });
 	} catch (err) {
-		console.error(err);
+		console.error("Error al destruir room:", err);
 		res.status(500).send({ error: "No se pudo destruir el cuarto" });
 	}
 });
