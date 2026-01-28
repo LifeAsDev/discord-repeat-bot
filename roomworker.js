@@ -28,13 +28,13 @@ const { chromium } = require("playwright");
 	await page.setViewportSize({ width: 1, height: 1 });
 
 	// 🔥 Simula pestaña minimizada
-	await page.addInitScript(() => {
+	/* 	await page.addInitScript(() => {
 		Object.defineProperty(document, "hidden", { get: () => true });
 		Object.defineProperty(document, "visibilityState", {
 			get: () => "hidden",
 		});
 		document.dispatchEvent(new Event("visibilitychange"));
-	});
+	}); */
 	const safeNombre = encodeURIComponent(nombre);
 
 	await page.goto(
