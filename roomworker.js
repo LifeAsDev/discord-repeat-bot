@@ -23,7 +23,7 @@ const { chromium } = require("playwright");
 
 	const context = await browser.newContext();
 	const page = await context.newPage();
-	await page.setViewportSize({ width: 1, height: 1 });
+	await page.setViewportSize({ width: 320, height: 240 });
 
 	// 🔥 Simula pestaña minimizada
 	/* 	await page.addInitScript(() => {

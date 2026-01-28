@@ -148,10 +148,13 @@ const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, p
 
 let browser = null;
 async function createRoom(nombre) {
-	const context = await browser.newContext();
+	const context = await browser.newContext({
+		reducedMotion: "reduce",
+		colorScheme: "dark",
+	});
 	const page = await context.newPage();
 
-	await page.setViewportSize({ width: 1, height: 1 });
+	await page.setViewportSize({ width: 320, height: 240 });
 
 	await page.goto(
 		`http://localhost:3000/RustCoon38/index.html?nombre=${encodeURIComponent(nombre)}`,
