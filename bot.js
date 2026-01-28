@@ -152,9 +152,9 @@ function createRoom(nombre) {
 	if (!nombre) return false;
 	if (rooms[nombre]) return false;
 
-	const child = fork("./roomWorker.js", [nombre], {
+	const child = fork("./roomworker.js", [nombre], {
 		env: process.env,
-		stdio: "ignore",
+		stdio: "inherit", // 👈 deja pasar logs
 	});
 
 	rooms[nombre] = { process: child };
