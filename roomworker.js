@@ -36,6 +36,27 @@ const { chromium } = require("playwright");
 		document.dispatchEvent(new Event("visibilitychange"));
 	}); */
 	const safeNombre = encodeURIComponent(nombre);
+	await page.addInitScript(() => {
+		// Limita rAF
+		const MAX_FPS = 15;
+		let last = 0;
+
+		const _raf = window.requestAnimationFrame;
+		window.requestAnimationFrame = function (cb) {
+			return _raf(function (t) {
+				if (t - last >= 1000 / MAX_FPS) {
+					last = t;
+					cb(t);
+				}
+			});
+		};
+
+		// Baja timers
+		const _setTimeout = window.setTimeout;
+		window.setTimeout = function (fn, delay, ...args) {
+			return _setTimeout(fn, Math.max(delay, 66), ...args);
+		};
+	});
 
 	await page.goto(
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
