@@ -148,24 +148,6 @@ const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, p
 
 let browser; // global
 
-async function getBrowser() {
-	if (!browser) {
-		browser = await chromium.launch({
-			headless: true,
-			args: [
-				"--no-sandbox",
-				"--disable-gpu",
-				"--disable-dev-shm-usage",
-				"--mute-audio",
-				"--no-zygote",
-				"--disable-breakpad",
-				"--log-level=3",
-			],
-		});
-	}
-	return browser;
-}
-
 function createRoom(nombre) {
 	if (!nombre) return false;
 	if (rooms[nombre]) return false;
