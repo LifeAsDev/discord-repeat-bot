@@ -251,8 +251,9 @@ let roomNames = loadRoomNames();
 async function initRooms() {
 	for (const nombre of roomNames) {
 		if (!rooms[nombre]) {
-			createRoom(nombre);
 			console.log(`[!] Room recreada al iniciar: ${nombre}`);
+
+			createRoom(nombre);
 		}
 	}
 }
