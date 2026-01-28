@@ -14,7 +14,7 @@ const { chromium } = require("playwright");
 		headless: true,
 		args: [
 			"--disable-gpu",
-			"--ignore-gpu-blacklist",
+			"--disable-software-rasterizer",
 			"--disable-background-timer-throttling",
 			"--disable-backgrounding-occluded-windows",
 			"--disable-renderer-backgrounding",
