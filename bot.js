@@ -168,7 +168,6 @@ async function launchRoom(nombre) {
 				"--use-gl=swiftshader",
 				"--enable-unsafe-swiftshader",
 				"--ignore-gpu-blocklist",
-				"--enable-webgl",
 			],
 		});
 
