@@ -146,26 +146,55 @@ app.get("/storage/load/:nombre", (req, res) => {
 
 const rooms = {}; // aquí guardamos los cuartos abiertos { nombre: { browser, page } }
 
-async function createRoom(nombre) {
-	if (!nombre || rooms[nombre]) return false;
+// Variable global (o dentro de tu objeto server / módulo)
+let sharedBrowser = null;
 
-	const browser = await chromium.launch({
+// Inicializar el browser UNA VEZ al arrancar el servidor
+async function initSharedBrowser() {
+	if (sharedBrowser) return;
+
+	sharedBrowser = await chromium.launch({
 		headless: true,
 		args: [
 			"--no-sandbox",
-			"--disable-gpu",
+			"--disable-gpu", // muy importante si usas canvas/WebGL
 			"--disable-dev-shm-usage",
 			"--mute-audio",
+			"--disable-accelerated-2d-canvas", // reduce mucho cpu en canvas 2D
+			"--disable-background-timer-throttling",
+			"--disable-renderer-backgrounding",
 			"--no-zygote",
 			"--disable-breakpad",
 			"--log-level=3",
+			// Opcional pero recomendado:
+			"--disable-setuid-sandbox",
+			"--disable-infobars",
+			"--window-size=800,600", // o el tamaño real de tu juego
 		],
 	});
 
-	const context = await browser.newContext();
+	console.log("→ Browser compartido iniciado");
+}
+
+// Tu nueva createRoom (sin lanzar browser cada vez)
+async function createRoom(nombre) {
+	if (!nombre || rooms[nombre]) return false;
+
+	await initSharedBrowser(); // se ejecuta solo la primera vez
+
+	const context = await sharedBrowser.newContext({
+		viewport: { width: 800, height: 600 }, // ajusta al tamaño real de tu juego
+		ignoreHTTPSErrors: true,
+		// Puedes agregar más opciones de aislamiento si necesitas
+	});
+
 	const page = await context.newPage();
 
-	await page.setViewportSize({ width: 1, height: 1 });
+	// Muy importante: viewport pequeño reduce algo de carga de render
+	// await page.setViewportSize({ width: 1, height: 1 });  ← ¡NO! Esto fuerza resize constante y más cpu en algunos juegos
+
+	// Mejor: usa el tamaño real del juego o uno razonable
+	await page.setViewportSize({ width: 800, height: 600 });
 
 	const safeNombre = encodeURIComponent(nombre);
 
@@ -174,9 +203,9 @@ async function createRoom(nombre) {
 		{ waitUntil: "load" },
 	);
 
-	rooms[nombre] = { browser, context, page };
+	rooms[nombre] = { context, page }; // ya no guardas browser
 
-	console.log(`🟢 Room ${nombre} lanzada (browser propio)`);
+	console.log(`🟢 Room ${nombre} lanzada (context compartido)`);
 	return true;
 }
 
@@ -202,31 +231,47 @@ app.post("/rooms/create", (req, res) => {
 
 app.post("/rooms/destroy", async (req, res) => {
 	const { nombre } = req.body;
+
+	if (!nombre) {
+		return res.status(400).json({ error: "Falta el nombre de la sala" });
+	}
+
 	const room = rooms[nombre];
 
 	if (!room) {
-		return res.status(404).send({ error: "Ese cuarto no existe" });
+		return res.status(404).json({ error: "Ese cuarto no existe" });
 	}
 
 	try {
+		// Cerramos page y context de forma segura
 		if (room.page && !room.page.isClosed()) {
-			await room.page.close();
+			await room.page.close().catch((err) => {
+				console.warn(`Advertencia al cerrar page de ${nombre}:`, err.message);
+			});
 		}
 
 		if (room.context) {
-			await room.context.close();
+			await room.context.close().catch((err) => {
+				console.warn(
+					`Advertencia al cerrar context de ${nombre}:`,
+					err.message,
+				);
+			});
 		}
 
+		// Eliminamos la referencia
 		delete rooms[nombre];
 
+		// Actualizamos la lista de nombres (si la usas)
 		roomNames = roomNames.filter((r) => r !== nombre);
 		saveRoomNames(roomNames);
 
 		console.log(`❌ Room destruida: ${nombre}`);
-		res.send({ success: true, nombre });
+
+		res.json({ success: true, nombre });
 	} catch (err) {
-		console.error("Error al destruir room:", err);
-		res.status(500).send({ error: "No se pudo destruir el cuarto" });
+		console.error(`Error al destruir room ${nombre}:`, err);
+		res.status(500).json({ error: "No se pudo destruir el cuarto" });
 	}
 });
 
