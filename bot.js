@@ -161,8 +161,7 @@ async function initSharedBrowser() {
 			"--disable-dev-shm-usage",
 			"--disable-gpu",
 			"--disable-accelerated-2d-canvas",
-			"--in-process-gpu", // reduce procesos
-			"--single-process", // prueba: baja 30-50% CPU si <15 rooms
+
 			"--mute-audio",
 			"--no-zygote",
 			"--disable-background-timer-throttling",
