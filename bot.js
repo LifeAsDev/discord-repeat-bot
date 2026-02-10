@@ -157,23 +157,18 @@ async function initSharedBrowser() {
 		headless: true,
 		args: [
 			"--no-sandbox",
-			"--disable-setuid-sandbox",
-			"--disable-dev-shm-usage",
 			"--disable-gpu",
-			"--disable-accelerated-2d-canvas",
-
+			"--disable-gpu", // muy importante si usas canvas/WebGL
+			"--disable-dev-shm-usage",
 			"--mute-audio",
+			"--disable-accelerated-2d-canvas", // reduce mucho cpu en canvas 2D
+			"--disable-background-timer-throttling",
+			"--disable-renderer-backgrounding",
 			"--no-zygote",
-			"--single-process", // une renderer + browser process (baja overhead con pocas rooms)
-			"--disable-renderer-backgrounding", // evita que pause timers cuando "oculto"
-			"--disable-backgrounding-occluded-windows",
-			"--in-process-gpu",
-			"--log-level=3",
-			"--disable-features=site-per-process", // fuerza más sharing de procesos (cuidado: menos aislamiento)
-			"--enable-low-end-device-mode",
-			"--no-first-run",
-			"--disable-infobars",
 			"--disable-breakpad",
+			"--log-level=3",
+			"--disable-setuid-sandbox",
+			"--disable-infobars",
 		],
 	});
 
@@ -183,8 +178,8 @@ async function initSharedBrowser() {
 // Tu nueva createRoom (sin lanzar browser cada vez)
 async function createRoom(nombre) {
 	if (!nombre || rooms[nombre]) return false;
-
-	const tempBrowser = await chromium.launch({
+	const tempBrowser = await initSharedBrowser();
+	/* 	const tempBrowser = await chromium.launch({
 		headless: true,
 		args: [
 			"--no-sandbox",
@@ -195,7 +190,7 @@ async function createRoom(nombre) {
 			"--disable-breakpad",
 			"--log-level=3",
 		],
-	});
+	}); */
 
 	const context = await tempBrowser.newContext({
 		viewport: { width: 1, height: 1 }, // ajusta al tamaño real de tu juego
@@ -205,9 +200,6 @@ async function createRoom(nombre) {
 
 	const page = await context.newPage();
 
-	// Muy importante: viewport pequeño reduce algo de carga de render
-	// await page.setViewportSize({ width: 1, height: 1 });  ← ¡NO! Esto fuerza resize constante y más cpu en algunos juegos
-
 	// Mejor: usa el tamaño real del juego o uno razonable
 
 	const safeNombre = encodeURIComponent(nombre);
@@ -215,6 +207,7 @@ async function createRoom(nombre) {
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
 		{ waitUntil: "load" },
 	);
+	await page.setViewportSize({ width: 1, height: 1 });
 
 	rooms[nombre] = { context, page }; // ya no guardas browser
 
