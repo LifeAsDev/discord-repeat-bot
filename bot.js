@@ -178,7 +178,7 @@ async function initSharedBrowser() {
 // Tu nueva createRoom (sin lanzar browser cada vez)
 async function createRoom(nombre) {
 	if (!nombre || rooms[nombre]) return false;
-	const tempBrowser = await initSharedBrowser();
+	await initSharedBrowser();
 	/* 	const tempBrowser = await chromium.launch({
 		headless: true,
 		args: [
@@ -192,7 +192,7 @@ async function createRoom(nombre) {
 		],
 	}); */
 
-	const context = await tempBrowser.newContext({
+	const context = await sharedBrowser.newContext({
 		viewport: { width: 1, height: 1 }, // ajusta al tamaño real de tu juego
 		ignoreHTTPSErrors: true,
 		// Puedes agregar más opciones de aislamiento si necesitas
