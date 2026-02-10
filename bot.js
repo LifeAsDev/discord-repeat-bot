@@ -299,18 +299,6 @@ let roomNames = loadRoomNames();
 // --- Inicializar rooms al iniciar el servidor ---
 
 async function initRooms() {
-	browser = await chromium.launch({
-		headless: true,
-		args: [
-			"--disable-gpu",
-			"--disable-dev-shm-usage",
-			"--no-sandbox",
-			"--disable-background-timer-throttling",
-			"--disable-backgrounding-occluded-windows",
-			"--disable-renderer-backgrounding",
-		],
-	});
-
 	for (const nombre of roomNames) {
 		if (!rooms[nombre]) {
 			console.log(`[!] Room recreada al iniciar: ${nombre}`);
