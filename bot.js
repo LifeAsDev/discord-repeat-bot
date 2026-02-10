@@ -221,11 +221,11 @@ async function createRoom(nombre) {
 	// Mejor: usa el tamaño real del juego o uno razonable
 
 	const safeNombre = encodeURIComponent(nombre);
-	page.goto(
+	/* 	page.goto(
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
 		{ waitUntil: "load" },
 	);
-
+ */
 	rooms[nombre] = { context, page }; // ya no guardas browser
 
 	console.log(`🟢 Room ${nombre} lanzada (context compartido)`);
