@@ -157,19 +157,19 @@ async function initSharedBrowser() {
 		headless: true,
 		args: [
 			"--no-sandbox",
-			"--disable-gpu", // muy importante si usas canvas/WebGL
+			"--disable-setuid-sandbox",
 			"--disable-dev-shm-usage",
+			"--disable-gpu",
+			"--disable-accelerated-2d-canvas",
+			"--in-process-gpu", // reduce procesos
+			"--single-process", // prueba: baja 30-50% CPU si <15 rooms
+			"--disable-software-rasterizer", // evita fallback extra
 			"--mute-audio",
-			"--disable-accelerated-2d-canvas", // reduce mucho cpu en canvas 2D
+			"--no-zygote",
 			"--disable-background-timer-throttling",
 			"--disable-renderer-backgrounding",
-			"--no-zygote",
-			"--disable-breakpad",
+			"--window-size=1,1", // 2x2 o 4x4 suele ser suficiente para lógica sin render visual
 			"--log-level=3",
-			// Opcional pero recomendado:
-			"--disable-setuid-sandbox",
-			"--disable-infobars",
-			"--window-size=1,1", // o el tamaño real de tu juego
 		],
 	});
 
@@ -198,6 +198,22 @@ async function createRoom(nombre) {
 
 	const safeNombre = encodeURIComponent(nombre);
 
+	await page.addInitScript(() => {
+		// Baja a 10-15 FPS (ajusta según necesites "vida" en el servidor)
+		const fpsTarget = 12;
+		const frameTime = 1000 / fpsTarget;
+
+		const originalRAF = window.requestAnimationFrame;
+		window.requestAnimationFrame = (callback) => {
+			setTimeout(() => {
+				callback(performance.now());
+			}, frameTime);
+		};
+
+		// Opcional: fuerza delta time fijo si el juego usa dt para lógica
+		// Muchos juegos C3 usan dt, así que bajando FPS la lógica va más lenta → puede romper física si no es fixed timestep
+		// Si rompe → considera hookear Runtime o usar events para limitar lógica
+	});
 	await page.goto(
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
 		{ waitUntil: "load" },
