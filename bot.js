@@ -196,68 +196,7 @@ async function createRoom(nombre) {
 	await page.setViewportSize({ width: 1, height: 1 });
 
 	const safeNombre = encodeURIComponent(nombre);
-	await page.addInitScript(() => {
-		// Mock ultra-ligero de canvas 2D y WebGL
-		// Devuelve un objeto que no hace nada real, pero evita crashes si el engine chequea existencia
-		const mockContext2D = {
-			canvas: null,
-			clearRect: () => {},
-			fillRect: () => {},
-			strokeRect: () => {},
-			drawImage: () => {},
-			putImageData: () => {},
-			getImageData: () => ({
-				data: new Uint8ClampedArray(4),
-				width: 1,
-				height: 1,
-			}),
-			save: () => {},
-			restore: () => {},
-			translate: () => {},
-			rotate: () => {},
-			scale: () => {},
-			// Agrega más métodos si tu juego usa (arc, lineTo, etc.) – inspecciona en browser normal
-		};
-
-		const mockWebGL = {
-			// Métodos mínimos para WebGL/WebGL2
-			getExtension: () => null,
-			getParameter: () => 1,
-			clear: () => {},
-			drawArrays: () => {},
-			drawElements: () => {},
-			// etc. – puedes expandir si crashea
-		};
-
-		const originalGetContext = HTMLCanvasElement.prototype.getContext;
-
-		HTMLCanvasElement.prototype.getContext = function (type, attrs) {
-			if (type === "2d") {
-				return mockContext2D;
-			}
-			if (
-				type === "webgl" ||
-				type === "webgl2" ||
-				type === "experimental-webgl"
-			) {
-				return mockWebGL;
-			}
-			return originalGetContext.apply(this, arguments);
-		};
-
-		// Opcional: fuerza que el canvas no tenga tamaño real (reduce allocs)
-		Object.defineProperty(HTMLCanvasElement.prototype, "width", {
-			get: () => 1,
-			set: () => {},
-		});
-		Object.defineProperty(HTMLCanvasElement.prototype, "height", {
-			get: () => 1,
-			set: () => {},
-		});
-
-		console.log("[Headless] Canvas rendering mocked – no draw calls");
-	});
-	await page.goto(
+	page.goto(
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
 		{ waitUntil: "load" },
 	);
