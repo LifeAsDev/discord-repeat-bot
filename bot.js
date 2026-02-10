@@ -184,9 +184,30 @@ async function initSharedBrowser() {
 async function createRoom(nombre) {
 	if (!nombre || rooms[nombre]) return false;
 
-	await initSharedBrowser(); // se ejecuta solo la primera vez
+	const tempBrowser = await chromium.launch({
+		headless: true,
+		args: [
+			"--no-sandbox",
+			"--disable-setuid-sandbox",
+			"--disable-dev-shm-usage",
+			"--disable-gpu",
+			"--disable-accelerated-2d-canvas",
+			"--mute-audio",
+			"--no-zygote",
+			"--single-process", // une renderer + browser process (baja overhead con pocas rooms)
+			"--disable-renderer-backgrounding", // evita que pause timers cuando "oculto"
+			"--disable-backgrounding-occluded-windows",
+			"--in-process-gpu",
+			"--log-level=3",
+			"--disable-features=site-per-process", // fuerza más sharing de procesos (cuidado: menos aislamiento)
+			"--enable-low-end-device-mode",
+			"--no-first-run",
+			"--disable-infobars",
+			"--disable-breakpad",
+		],
+	});
 
-	const context = await sharedBrowser.newContext({
+	const context = await tempBrowser.newContext({
 		viewport: { width: 1, height: 1 }, // ajusta al tamaño real de tu juego
 		ignoreHTTPSErrors: true,
 		// Puedes agregar más opciones de aislamiento si necesitas
