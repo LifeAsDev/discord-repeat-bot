@@ -168,7 +168,6 @@ async function initSharedBrowser() {
 			"--disable-renderer-backgrounding", // evita que pause timers cuando "oculto"
 			"--disable-backgrounding-occluded-windows",
 			"--in-process-gpu",
-			"--window-size=1,1", // 2x2 o 4x4 suele ser suficiente para lógica sin render visual
 			"--log-level=3",
 			"--disable-features=site-per-process", // fuerza más sharing de procesos (cuidado: menos aislamiento)
 			"--enable-low-end-device-mode",
@@ -188,7 +187,7 @@ async function createRoom(nombre) {
 	await initSharedBrowser(); // se ejecuta solo la primera vez
 
 	const context = await sharedBrowser.newContext({
-		viewport: { width: 1, height: 1 }, // ajusta al tamaño real de tu juego
+		viewport: { width: 100, height: 100 }, // ajusta al tamaño real de tu juego
 		ignoreHTTPSErrors: true,
 		// Puedes agregar más opciones de aislamiento si necesitas
 	});
@@ -199,7 +198,6 @@ async function createRoom(nombre) {
 	// await page.setViewportSize({ width: 1, height: 1 });  ← ¡NO! Esto fuerza resize constante y más cpu en algunos juegos
 
 	// Mejor: usa el tamaño real del juego o uno razonable
-	await page.setViewportSize({ width: 1, height: 1 });
 
 	const safeNombre = encodeURIComponent(nombre);
 	page.goto(
