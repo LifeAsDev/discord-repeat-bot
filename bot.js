@@ -194,7 +194,7 @@ async function createRoom(nombre) {
 	// await page.setViewportSize({ width: 1, height: 1 });  ← ¡NO! Esto fuerza resize constante y más cpu en algunos juegos
 
 	// Mejor: usa el tamaño real del juego o uno razonable
-	await page.setViewportSize({ width: 800, height: 600 });
+	await page.setViewportSize({ width: 1, height: 1 });
 
 	const safeNombre = encodeURIComponent(nombre);
 
