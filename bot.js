@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
 
-const versionFile = 41;
+const versionFile = 42;
 
 app.use(
 	express.static(publicPath, {
@@ -157,8 +157,7 @@ async function initSharedBrowser() {
 		headless: true,
 		args: [
 			"--no-sandbox",
-			"--disable-gpu",
-			"--disable-gpu", // muy importante si usas canvas/WebGL
+
 			"--disable-dev-shm-usage",
 			"--mute-audio",
 			"--disable-accelerated-2d-canvas", // reduce mucho cpu en canvas 2D
