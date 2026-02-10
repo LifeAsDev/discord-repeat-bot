@@ -183,7 +183,7 @@ async function createRoom(nombre) {
 	await initSharedBrowser(); // se ejecuta solo la primera vez
 
 	const context = await sharedBrowser.newContext({
-		viewport: { width: 800, height: 600 }, // ajusta al tamaño real de tu juego
+		viewport: { width: 1, height: 1 }, // ajusta al tamaño real de tu juego
 		ignoreHTTPSErrors: true,
 		// Puedes agregar más opciones de aislamiento si necesitas
 	});
