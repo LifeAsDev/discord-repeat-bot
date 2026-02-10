@@ -188,22 +188,12 @@ async function createRoom(nombre) {
 		headless: true,
 		args: [
 			"--no-sandbox",
-			"--disable-setuid-sandbox",
-			"--disable-dev-shm-usage",
 			"--disable-gpu",
-			"--disable-accelerated-2d-canvas",
+			"--disable-dev-shm-usage",
 			"--mute-audio",
 			"--no-zygote",
-			"--single-process", // une renderer + browser process (baja overhead con pocas rooms)
-			"--disable-renderer-backgrounding", // evita que pause timers cuando "oculto"
-			"--disable-backgrounding-occluded-windows",
-			"--in-process-gpu",
-			"--log-level=3",
-			"--disable-features=site-per-process", // fuerza más sharing de procesos (cuidado: menos aislamiento)
-			"--enable-low-end-device-mode",
-			"--no-first-run",
-			"--disable-infobars",
 			"--disable-breakpad",
+			"--log-level=3",
 		],
 	});
 
@@ -221,11 +211,11 @@ async function createRoom(nombre) {
 	// Mejor: usa el tamaño real del juego o uno razonable
 
 	const safeNombre = encodeURIComponent(nombre);
-	/* 	page.goto(
+	page.goto(
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
 		{ waitUntil: "load" },
 	);
- */
+
 	rooms[nombre] = { context, page }; // ya no guardas browser
 
 	console.log(`🟢 Room ${nombre} lanzada (context compartido)`);
