@@ -170,6 +170,11 @@ async function initSharedBrowser() {
 			"--in-process-gpu",
 			"--window-size=1,1", // 2x2 o 4x4 suele ser suficiente para lógica sin render visual
 			"--log-level=3",
+			"--disable-features=site-per-process", // fuerza más sharing de procesos (cuidado: menos aislamiento)
+			"--enable-low-end-device-mode",
+			"--no-first-run",
+			"--disable-infobars",
+			"--disable-breakpad",
 		],
 	});
 
