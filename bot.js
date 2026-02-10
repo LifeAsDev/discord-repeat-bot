@@ -169,7 +169,7 @@ async function initSharedBrowser() {
 			// Opcional pero recomendado:
 			"--disable-setuid-sandbox",
 			"--disable-infobars",
-			"--window-size=800,600", // o el tamaño real de tu juego
+			"--window-size=1,1", // o el tamaño real de tu juego
 		],
 	});
 
