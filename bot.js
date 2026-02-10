@@ -164,8 +164,10 @@ async function initSharedBrowser() {
 
 			"--mute-audio",
 			"--no-zygote",
-			"--disable-background-timer-throttling",
-			"--disable-renderer-backgrounding",
+			"--single-process", // une renderer + browser process (baja overhead con pocas rooms)
+			"--disable-renderer-backgrounding", // evita que pause timers cuando "oculto"
+			"--disable-backgrounding-occluded-windows",
+			"--in-process-gpu",
 			"--window-size=1,1", // 2x2 o 4x4 suele ser suficiente para lógica sin render visual
 			"--log-level=3",
 		],
