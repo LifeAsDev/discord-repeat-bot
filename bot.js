@@ -197,22 +197,6 @@ async function createRoom(nombre) {
 
 	const safeNombre = encodeURIComponent(nombre);
 
-	await page.addInitScript(() => {
-		// Baja a 10-15 FPS (ajusta según necesites "vida" en el servidor)
-		const fpsTarget = 12;
-		const frameTime = 1000 / fpsTarget;
-
-		const originalRAF = window.requestAnimationFrame;
-		window.requestAnimationFrame = (callback) => {
-			setTimeout(() => {
-				callback(performance.now());
-			}, frameTime);
-		};
-
-		// Opcional: fuerza delta time fijo si el juego usa dt para lógica
-		// Muchos juegos C3 usan dt, así que bajando FPS la lógica va más lenta → puede romper física si no es fixed timestep
-		// Si rompe → considera hookear Runtime o usar events para limitar lógica
-	});
 	await page.goto(
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
 		{ waitUntil: "load" },
