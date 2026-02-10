@@ -1,15 +1,26 @@
 // webhook.js
 const http = require("http");
-const { exec } = require("child_process");
+const { execFile } = require("child_process");
 
 http
 	.createServer((req, res) => {
 		console.log("github webhook received");
+
 		if (req.method === "POST") {
-			exec("/home/juego/deploy.sh", (err, stdout, stderr) => {
-				if (err) console.error(err);
-				console.log(stdout);
-			});
+			execFile(
+				"/bin/bash",
+				["/home/juego/deploy.sh"],
+				{ cwd: "/home/juego" },
+				(err, stdout, stderr) => {
+					if (err) {
+						console.error("DEPLOY ERROR:", err);
+						console.error(stderr);
+					} else {
+						console.log(stdout);
+					}
+				},
+			);
+
 			res.writeHead(200, { "Content-Type": "text/plain" });
 			res.end("Despliegue ejecutado");
 		} else {
