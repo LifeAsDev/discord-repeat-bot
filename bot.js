@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
 
-const versionFile = 42;
+const versionFile = 43;
 
 app.use(
 	express.static(publicPath, {
