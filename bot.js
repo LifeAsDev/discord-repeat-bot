@@ -171,45 +171,46 @@ async function initSharedBrowser() {
 
 // Tu nueva createRoom (sin lanzar browser cada vez)
 async function createRoom(nombre) {
-	if (!nombre || rooms[nombre]) return false;
-	await initSharedBrowser();
-	/* 	const tempBrowser = await chromium.launch({
+	if (rooms[nombre]) return false;
+
+	const browser = await chromium.launch({
 		headless: true,
 		args: [
 			"--no-sandbox",
-			"--disable-gpu",
+			"--disable-gpu", // importante si no necesitas rendering
 			"--disable-dev-shm-usage",
 			"--mute-audio",
-			"--no-zygote",
-			"--disable-breakpad",
+			"--disable-accelerated-2d-canvas",
+			"--disable-background-timer-throttling",
+			"--disable-renderer-backgrounding",
 			"--log-level=3",
 		],
-	}); */
+	});
 
-	const context = await sharedBrowser.newContext({
-		viewport: { width: 1, height: 1 }, // ajusta al tamaño real de tu juego
+	const context = await browser.newContext({
+		viewport: { width: 1, height: 1 }, // o el tamaño real de tu juego
 		ignoreHTTPSErrors: true,
-		// Puedes agregar más opciones de aislamiento si necesitas
 	});
 
 	const page = await context.newPage();
-
-	// Mejor: usa el tamaño real del juego o uno razonable
-	await page.setViewportSize({ width: 1, height: 1 });
+	// Opcional: page.setViewportSize(...)
 
 	const safeNombre = encodeURIComponent(nombre);
-	page.goto(
+	await page.goto(
 		`http://localhost:${PORT}/RustCoon${versionFile}/index.html?nombre=${safeNombre}`,
-		{ waitUntil: "load" },
+		{
+			waitUntil: "networkidle", // o "domcontentloaded" si es más rápido
+		},
 	);
-	await page.setViewportSize({ width: 1, height: 1 });
 
-	rooms[nombre] = { context, page }; // ya no guardas browser
+	// Aquí puedes automatizar el "Hostear partida" si no lo hace la URL
+	// await page.click('#host-button'); etc.
 
-	console.log(`🟢 Room ${nombre} lanzada (context compartido)`);
+	rooms[nombre] = { browser, context, page }; // guarda el browser para poder cerrarlo después
+
+	console.log(`🟢 Room ${nombre} lanzada (browser independiente)`);
 	return true;
 }
-
 app.post("/rooms/create", (req, res) => {
 	const { nombre } = req.body;
 
