@@ -252,7 +252,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Exps.Count,
 		C3.JavaScriptInEvents.EventWorld_Event664_Act1,
 		C3.Plugins.LocalStorage.Acts.GetItem,
-		C3.JavaScriptInEvents.EventConnect_Event3,
 		C3.Plugins.Touch.Cnds.OnTouchStart,
 		C3.Plugins.Spritefont2.Cnds.CompareText,
 		C3.JavaScriptInEvents.EventConnect_Event9_Act2,

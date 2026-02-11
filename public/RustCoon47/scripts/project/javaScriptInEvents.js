@@ -73,15 +73,7 @@ const scriptsInEvents = {
 
 	async EventConnect_Event3(runtime, localVars)
 	{
-		const params = new URLSearchParams(window.location.search);
-		const nombre = params.get("nombre"); 
-		if(nombre) { 
-		runtime.globalVars.mobile = 0;
-		runtime.globalVars.state = "host";
-		runtime.globalVars.realHost = "host";
-		runtime.globalVars.roomName = nombre;
-		runtime.callFunction("connect", "https://rustycoon.site/");
-		} 
+
 	},
 
 	async EventConnect_Event9_Act2(runtime, localVars)
