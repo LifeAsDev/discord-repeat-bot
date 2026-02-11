@@ -191,7 +191,6 @@ async function createRoom(nombre) {
 		ignoreHTTPSErrors: true,
 		// Puedes agregar más opciones de aislamiento si necesitas
 	});
-	await page.setViewportSize({ width: 1, height: 1 });
 
 	const page = await context.newPage();
 
