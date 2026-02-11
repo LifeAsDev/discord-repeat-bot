@@ -184,7 +184,6 @@ async function createRoom(nombre) {
 			"--disable-background-timer-throttling",
 			"--disable-renderer-backgrounding",
 			"--log-level=3",
-			"--disable-webgl",
 		],
 	});
 
