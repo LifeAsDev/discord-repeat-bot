@@ -2547,6 +2547,12 @@ self.C3_ExpressionFuncs = [
 			const n2 = p._GetNode(2);
 			return () => ((and(and(n0.ExpObject(), "&"), n1.ExpObject()) + "&") + n2.ExpInstVar());
 		},
+		() => 5000,
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const v1 = p._GetNode(1).GetVar();
+			return () => Math.round(f0(2, (v1.GetValue() - 3)));
+		},
 		() => "html",
 		() => "lastServer",
 		() => "eatmyeoka😮💨",

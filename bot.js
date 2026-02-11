@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
 
-const versionFile = 44;
+const versionFile = 45;
 
 app.use(
 	express.static(publicPath, {
@@ -157,17 +157,12 @@ async function initSharedBrowser() {
 		headless: true,
 		args: [
 			"--no-sandbox",
-
+			"--disable-gpu",
 			"--disable-dev-shm-usage",
 			"--mute-audio",
-			"--disable-accelerated-2d-canvas", // reduce mucho cpu en canvas 2D
-			"--disable-background-timer-throttling",
-			"--disable-renderer-backgrounding",
 			"--no-zygote",
 			"--disable-breakpad",
 			"--log-level=3",
-			"--disable-setuid-sandbox",
-			"--disable-infobars",
 		],
 	});
 

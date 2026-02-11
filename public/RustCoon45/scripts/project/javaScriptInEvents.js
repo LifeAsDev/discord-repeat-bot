@@ -372,7 +372,43 @@ sendInventory(result);
 
 	async EventWorld_Event664_Act1(runtime, localVars)
 	{
-
+		function getRandomTile(tileOptions) {
+			const total = tileOptions.reduce((sum, opt) => sum + opt.probability, 0);
+		
+			let sum = 0;
+			const cumulative = tileOptions.map(opt => ({
+				tile: opt.tile,
+				limit: (sum += opt.probability / total)
+			}));
+		
+			const r = Math.random();
+			for (const opt of cumulative) {
+				if (r < opt.limit) return opt.tile;
+			}
+		}
+		
+		
+		const tiles = [  
+		    { tile: 0, probability: 0.2 },
+		    { tile: 1, probability: 0.2 }, 
+		    { tile: 2, probability: 0.2 },   
+			{ tile: 3, probability: 0.2 }, 
+			{ tile: 4, probability: 0.2 },    
+			{ tile: 5, probability: 0.2 },
+			{ tile: 6, probability: 0.75 },
+			{ tile: 7, probability: 0.2 },
+			{ tile: 8, probability: 0.2 },
+			{ tile: 9, probability: .2 },  
+			{ tile: 10, probability: 0.3 },
+			{ tile: 11, probability: 1.2},
+			{ tile: 13, probability: 0.1 },
+		    { tile: 14, probability: 0.4 },
+			{ tile: 16, probability: 0.4 },
+		
+		];
+		
+		const tileFrame = getRandomTile(tiles);
+		localVars.tileFrame= tileFrame;
 	}
 };
 

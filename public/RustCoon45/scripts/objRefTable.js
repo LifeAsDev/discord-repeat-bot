@@ -249,6 +249,8 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Lifeasdev_MultiplayerWebsocketPlusPlugin.Cnds.onJoinedRoom,
 		C3.Plugins.Arr.Acts.Push,
 		C3.JavaScriptInEvents.EventWorld_Event657_Act2,
+		C3.Plugins.Sprite.Exps.Count,
+		C3.JavaScriptInEvents.EventWorld_Event664_Act1,
 		C3.Plugins.LocalStorage.Acts.GetItem,
 		C3.JavaScriptInEvents.EventConnect_Event3,
 		C3.Plugins.Touch.Cnds.OnTouchStart,
