@@ -138,9 +138,17 @@ const scriptsInEvents = {
 		client.sendMessage(localVars.targetId,localVars.message,localVars.tag);
 	},
 
-	async EventWorld_Event8_Act3(runtime, localVars)
+	async EventWorld_Event8_Act2(runtime, localVars)
 	{
-
+		const data = await loadRoomData(runtime.globalVars.roomName);
+		
+		if (data === null) {
+		runtime.callFunction("hostStartGame","")
+		}
+		 else {
+		  runtime.callFunction("hostStartGame",data)
+		}
+		
 	},
 
 	async EventWorld_Event33(runtime, localVars)

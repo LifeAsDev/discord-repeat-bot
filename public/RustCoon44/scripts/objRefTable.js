@@ -48,6 +48,7 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Spritefont2.Cnds.CompareInstanceVar,
 		C3.Plugins.Spritefont2.Acts.Destroy,
 		C3.Plugins.System.Cnds.Compare,
+		C3.JavaScriptInEvents.EventWorld_Event8_Act2,
 		C3.Plugins.Json.Acts.SetObject,
 		C3.Plugins.System.Acts.ScrollX,
 		C3.Plugins.System.Acts.SetLayerVisible,
