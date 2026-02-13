@@ -238,32 +238,7 @@ app.post("/rooms/destroy", async (req, res) => {
 		return res.status(400).json({ error: "Falta el nombre de la sala" });
 	}
 
-	const room = rooms[nombre];
-
-	if (!room) {
-		return res.status(404).json({ error: "Ese cuarto no existe" });
-	}
-
 	try {
-		// Cerramos page y context de forma segura
-		if (room.page && !room.page.isClosed()) {
-			await room.page.close().catch((err) => {
-				console.warn(`Advertencia al cerrar page de ${nombre}:`, err.message);
-			});
-		}
-
-		if (room.context) {
-			await room.context.close().catch((err) => {
-				console.warn(
-					`Advertencia al cerrar context de ${nombre}:`,
-					err.message,
-				);
-			});
-		}
-
-		// Eliminamos la referencia
-		delete rooms[nombre];
-
 		// Actualizamos la lista de nombres (si la usas)
 		roomNames = roomNames.filter((r) => r !== nombre);
 		saveRoomNames(roomNames);
@@ -298,11 +273,12 @@ app.get("/", (req, res) => {
 // --- Inicializar rooms al iniciar el servidor ---
 
 async function initRooms() {
-	for (const nombre of roomNames) {
+	createRoom("master");
+	/* 	for (const nombre of roomNames) {
 		if (!rooms[nombre]) {
 			console.log(`[!] Room recreada al iniciar: ${nombre}`);
 		}
-	}
+	} */
 }
 
 initRooms();
