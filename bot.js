@@ -276,6 +276,8 @@ app.post("/rooms/destroy", async (req, res) => {
 		res.status(500).json({ error: "No se pudo destruir el cuarto" });
 	}
 });
+const ROOMS_FILE = "./rooms.json";
+
 function loadRoomNames() {
 	if (!fs.existsSync(ROOMS_FILE)) return [];
 	return JSON.parse(fs.readFileSync(ROOMS_FILE));
@@ -292,8 +294,6 @@ app.get("/rooms", (req, res) => {
 app.get("/", (req, res) => {
 	res.send({ message: "Servidor funcionando correctamente." });
 });
-
-const ROOMS_FILE = "./rooms.json";
 
 // --- Inicializar rooms al iniciar el servidor ---
 
