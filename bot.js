@@ -6,6 +6,7 @@ const { ServerSignalling } = require("./ServerSignalling");
 const http = require("http");
 const { chromium } = require("playwright"); // 👈 así se importa en CommonJS
 const { fork } = require("child_process");
+const fsp = require("fs/promises"); // async moderno
 
 const app = express();
 const PORT = 3000;
@@ -117,7 +118,7 @@ app.patch("/storage/save", async (req, res) => {
 
 		const filePath = path.join(STORAGE_DIR, `${nombre}.json`);
 
-		await fs.writeFile(filePath, data);
+		await fsp.writeFile(filePath, data);
 
 		console.log(`💾 Guardado ${nombre}`);
 		res.send({ success: true });
@@ -135,7 +136,7 @@ app.get("/storage/load/:nombre", async (req, res) => {
 		let data;
 
 		try {
-			data = await fs.readFile(filePath, "utf8");
+			data = await fsp.readFile(filePath, "utf8");
 		} catch {
 			return res.send({
 				found: false,
