@@ -103,41 +103,51 @@ function saveDataFile(data) {
 	fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
 }
 
-// 🧩 Guardar data asociada a un cuarto
-app.patch("/storage/save", (req, res) => {
+const STORAGE_DIR = "./storage";
+
+app.patch("/storage/save", async (req, res) => {
 	try {
 		const { nombre, data } = req.body;
+
 		if (!nombre || typeof data !== "string") {
 			return res.status(400).send({
-				error: "Se requiere 'nombre' (string) y 'data' (string).",
+				error: "Se requiere 'nombre' y 'data'.",
 			});
 		}
 
-		const fileData = loadDataFile();
-		fileData[nombre] = data;
-		saveDataFile(fileData);
+		const filePath = path.join(STORAGE_DIR, `${nombre}.json`);
 
-		console.log(`💾 Data guardada para cuarto '${nombre}'`);
-		res.send({ success: true, message: `Data guardada para '${nombre}'` });
+		await fs.writeFile(filePath, data);
+
+		console.log(`💾 Guardado ${nombre}`);
+		res.send({ success: true });
 	} catch (err) {
-		console.error("Error al guardar:", err);
-		res.status(500).send({ error: "No se pudo guardar la data." });
+		console.error(err);
+		res.status(500).send({ error: "No se pudo guardar." });
 	}
 });
 
-// 🧩 Cargar data asociada a un cuarto
-app.get("/storage/load/:nombre", (req, res) => {
+app.get("/storage/load/:nombre", async (req, res) => {
 	try {
 		const nombre = req.params.nombre;
-		const fileData = loadDataFile();
-		if (!fileData[nombre]) {
+		const filePath = path.join(STORAGE_DIR, `${nombre}.json`);
+
+		let data;
+
+		try {
+			data = await fs.readFile(filePath, "utf8");
+		} catch {
 			return res.send({
 				found: false,
-				message: `No se encontró data para el cuarto '${nombre}'.`,
+				message: `No se encontró data para '${nombre}'`,
 			});
 		}
 
-		res.send({ found: true, nombre, data: fileData[nombre] });
+		res.send({
+			found: true,
+			nombre,
+			data,
+		});
 	} catch (err) {
 		console.error("Error al cargar:", err);
 		res.status(500).send({ error: "No se pudo cargar la data." });
