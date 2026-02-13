@@ -98,19 +98,19 @@ const scriptsInEvents = {
 		};
 	},
 
-	async EventConnect_Event16_Act1(runtime, localVars)
+	async EventConnect_Event19_Act1(runtime, localVars)
 	{
-		runtime.listRoom =[]
+
 	},
 
-	async EventConnect_Event18_Act2(runtime, localVars)
+	async EventConnect_Event21_Act2(runtime, localVars)
 	{
-		runtime.listRoom.push(localVars.serverName);
+
 	},
 
-	async EventConnect_Event19(runtime, localVars)
+	async EventConnect_Event22(runtime, localVars)
 	{
-		 runtime.ServerList.updateServers(runtime.listRoom);
+
 	},
 
 	async EventWebsocket_Event1_Act1(runtime, localVars)
@@ -272,7 +272,7 @@ function sanitizeAndFormat(jsonString) {
 const result = sanitizeAndFormat(localVars.inventoryJson);
 
 result.unshift(`<@${localVars.discordAlias}> Envio`);
-result.push(`${runtime.globalVars.roomName}`);
+result.push(`${localVars.roomNamePlayer}`);
 
 console.log(result);
 
@@ -409,6 +409,20 @@ sendInventory(result);
 		
 		const tileFrame = getRandomTile(tiles);
 		localVars.tileFrame= tileFrame;
+	},
+
+	async EventConnect_Event17_Act1(runtime, localVars)
+	{
+		runtime.listRoom = [];
+		
+		fetch("https://rustycoon.site/rooms")
+		  .then(res => res.json())
+		  .then(data => {
+		    runtime.listRoom = data.rooms;
+		 runtime.ServerList.updateServers(runtime.listRoom);
+		   })
+		  .catch(err => console.error(err));
+		
 	}
 };
 

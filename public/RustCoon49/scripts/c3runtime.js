@@ -2289,12 +2289,18 @@ self.C3_ExpressionFuncs = [
 		p => {
 			const n0 = p._GetNode(0);
 			const v1 = p._GetNode(1).GetVar();
-			return () => ((n0.ExpObject() + "&") + v1.GetValue());
+			const v2 = p._GetNode(2).GetVar();
+			return () => ((((n0.ExpObject() + "&") + v1.GetValue()) + "&") + v2.GetValue());
 		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
 			return () => f0(f1(), 1, "&");
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => f0(f1(), 2, "&");
 		},
 		() => -1000,
 		() => -1100,
@@ -2347,11 +2353,6 @@ self.C3_ExpressionFuncs = [
 		},
 		() => "ok",
 		() => "Common",
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => f0(f1(), 2, "&");
-		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => ((f0() % 6) * 51);
@@ -2520,6 +2521,11 @@ self.C3_ExpressionFuncs = [
 			const f1 = p._GetNode(1).GetBoundMethod();
 			return () => f0(f1(), 0, "|");
 		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const f1 = p._GetNode(1).GetBoundMethod();
+			return () => f0(f1(), 2, "|");
+		},
 		() => "getInventory",
 		p => {
 			const n0 = p._GetNode(0);
@@ -2573,7 +2579,14 @@ self.C3_ExpressionFuncs = [
 		() => "Connected",
 		() => "RC | SCOOBZ 3X SERVER",
 		() => "Joining...",
+		() => "master",
 		() => "peer",
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			const v1 = p._GetNode(1).GetVar();
+			const v2 = p._GetNode(2).GetVar();
+			return () => ((((v0.GetValue() + "|") + v1.GetValue()) + "|") + v2.GetValue());
+		},
 		() => "room-not-found",
 		() => "Loading Map...",
 		() => "Play",
