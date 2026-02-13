@@ -294,8 +294,7 @@ app.get("/", (req, res) => {
 // --- Inicializar rooms al iniciar el servidor ---
 
 async function initRooms() {
-	/* 	createRoom("master");
-	 */
+	createRoom("master");
 }
 
 initRooms();
