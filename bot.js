@@ -289,7 +289,7 @@ function saveRoomNames(names) {
 let roomNames = loadRoomNames();
 // Listar cuartos activos
 app.get("/rooms", (req, res) => {
-	res.send({ rooms: Object.keys(roomNames) });
+	res.send({ rooms: roomNames });
 });
 app.get("/", (req, res) => {
 	res.send({ message: "Servidor funcionando correctamente." });
