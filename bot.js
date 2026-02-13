@@ -273,12 +273,8 @@ app.get("/", (req, res) => {
 // --- Inicializar rooms al iniciar el servidor ---
 
 async function initRooms() {
-	createRoom("master");
-	/* 	for (const nombre of roomNames) {
-		if (!rooms[nombre]) {
-			console.log(`[!] Room recreada al iniciar: ${nombre}`);
-		}
-	} */
+	/* 	createRoom("master");
+	 */
 }
 
 initRooms();
