@@ -106,6 +106,15 @@ function saveDataFile(data) {
 
 const STORAGE_DIR = "./storage";
 
+// crear la carpeta si no existe
+if (!fs.existsSync(STORAGE_DIR)) {
+	fs.mkdirSync(STORAGE_DIR, { recursive: true });
+}
+
+function sanitizeFileName(name) {
+	return name.replace(/[<>:"\/\\|?*]/g, "_");
+}
+
 app.patch("/storage/save", async (req, res) => {
 	try {
 		const { nombre, data } = req.body;
@@ -116,14 +125,15 @@ app.patch("/storage/save", async (req, res) => {
 			});
 		}
 
-		const filePath = path.join(STORAGE_DIR, `${nombre}.json`);
+		const safeName = sanitizeFileName(nombre);
+		const filePath = path.join(STORAGE_DIR, `${safeName}.json`);
 
-		await fsp.writeFile(filePath, data);
+		await fsp.writeFile(filePath, data, "utf8");
 
-		console.log(`💾 Guardado ${nombre}`);
+		console.log(`💾 Guardado ${safeName}`);
 		res.send({ success: true });
 	} catch (err) {
-		console.error(err);
+		console.error("Error al guardar:", err);
 		res.status(500).send({ error: "No se pudo guardar." });
 	}
 });
