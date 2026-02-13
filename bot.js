@@ -214,7 +214,7 @@ async function createRoom(nombre) {
 app.post("/rooms/create", (req, res) => {
 	const { nombre } = req.body;
 
-	const ok = createRoom(nombre);
+	const ok = true; /* createRoom(nombre); */
 
 	if (!ok) {
 		return res.status(400).send({
