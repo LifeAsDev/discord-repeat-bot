@@ -276,6 +276,14 @@ app.post("/rooms/destroy", async (req, res) => {
 		res.status(500).json({ error: "No se pudo destruir el cuarto" });
 	}
 });
+function loadRoomNames() {
+	if (!fs.existsSync(ROOMS_FILE)) return [];
+	return JSON.parse(fs.readFileSync(ROOMS_FILE));
+}
+
+function saveRoomNames(names) {
+	fs.writeFileSync(ROOMS_FILE, JSON.stringify(names, null, 2));
+}
 let roomNames = loadRoomNames();
 // Listar cuartos activos
 app.get("/rooms", (req, res) => {
@@ -286,15 +294,6 @@ app.get("/", (req, res) => {
 });
 
 const ROOMS_FILE = "./rooms.json";
-
-function loadRoomNames() {
-	if (!fs.existsSync(ROOMS_FILE)) return [];
-	return JSON.parse(fs.readFileSync(ROOMS_FILE));
-}
-
-function saveRoomNames(names) {
-	fs.writeFileSync(ROOMS_FILE, JSON.stringify(names, null, 2));
-}
 
 // --- Inicializar rooms al iniciar el servidor ---
 
