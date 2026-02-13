@@ -304,8 +304,6 @@ async function initRooms() {
 	for (const nombre of roomNames) {
 		if (!rooms[nombre]) {
 			console.log(`[!] Room recreada al iniciar: ${nombre}`);
-
-			createRoom(nombre);
 		}
 	}
 }
