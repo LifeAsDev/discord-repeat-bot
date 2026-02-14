@@ -1508,6 +1508,7 @@ self.C3_ExpressionFuncs = [
 		() => "item",
 		() => "alias",
 		() => "pickItem",
+		() => "killfed",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => v0.GetValue();
@@ -1744,7 +1745,10 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => f0(n1.ExpObject());
 		},
+		() => 1.8,
 		() => 0.9,
+		() => 1.6,
+		() => 24,
 		() => "c",
 		p => {
 			const n0 = p._GetNode(0);
@@ -1820,7 +1824,6 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => n0.ExpObject(n1.ExpInstVar(), 0);
 		},
-		() => 24,
 		() => "open",
 		p => {
 			const n0 = p._GetNode(0);
@@ -1982,6 +1985,7 @@ self.C3_ExpressionFuncs = [
 			return () => f0(f1(f2(), 1, "&"));
 		},
 		() => 0.5,
+		() => 1.4,
 		() => "opacity",
 		() => "tool",
 		() => 0.05,
@@ -2304,6 +2308,8 @@ self.C3_ExpressionFuncs = [
 		},
 		() => -1000,
 		() => -1100,
+		() => -10,
+		() => "tree",
 		p => {
 			const v0 = p._GetNode(0).GetVar();
 			return () => and("recipe.", v0.GetValue());
@@ -2434,6 +2440,7 @@ self.C3_ExpressionFuncs = [
 			return () => Math.round(n0.ExpObject());
 		},
 		() => "fix",
+		() => "clearHit",
 		() => 34,
 		() => "hp",
 		p => {
@@ -2495,6 +2502,19 @@ self.C3_ExpressionFuncs = [
 			const n1 = p._GetNode(1);
 			return () => n0.ExpObject(("startData.peerAlias." + n1.ExpInstVar()));
 		},
+		() => "killFeed",
+		p => {
+			const n0 = p._GetNode(0);
+			const n1 = p._GetNode(1);
+			return () => ((n0.ExpInstVar() + " [color=#ff0000]killed[/color] ") + n1.ExpInstVar());
+		},
+		() => "UI2",
+		() => 960,
+		p => {
+			const v0 = p._GetNode(0).GetVar();
+			return () => (v0.GetValue() * 3);
+		},
+		() => "show",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			return () => ("startData.peerAlias." + f0());
@@ -2559,6 +2579,7 @@ self.C3_ExpressionFuncs = [
 			const v1 = p._GetNode(1).GetVar();
 			return () => Math.round(f0(2, (v1.GetValue() - 3)));
 		},
+		() => -25,
 		() => "html",
 		() => "lastServer",
 		() => "eatmyeoka😮💨",

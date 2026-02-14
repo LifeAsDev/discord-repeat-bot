@@ -98,6 +98,20 @@ const scriptsInEvents = {
 		};
 	},
 
+	async EventConnect_Event17_Act1(runtime, localVars)
+	{
+		runtime.listRoom = [];
+		
+		fetch("https://rustycoon.site/rooms")
+		  .then(res => res.json())
+		  .then(data => {
+		    runtime.listRoom = data.rooms;
+		 runtime.ServerList.updateServers(runtime.listRoom);
+		   })
+		  .catch(err => console.error(err));
+		
+	},
+
 	async EventConnect_Event19_Act1(runtime, localVars)
 	{
 
@@ -138,7 +152,7 @@ const scriptsInEvents = {
 		client.sendMessage(localVars.targetId,localVars.message,localVars.tag);
 	},
 
-	async EventWorld_Event8_Act2(runtime, localVars)
+	async EventWorld_Event9_Act2(runtime, localVars)
 	{
 		const data = await loadRoomData(runtime.globalVars.roomName);
 		
@@ -151,7 +165,7 @@ const scriptsInEvents = {
 		
 	},
 
-	async EventWorld_Event33(runtime, localVars)
+	async EventWorld_Event34(runtime, localVars)
 	{
 		/**
 		 * Generates a random terrain map.
@@ -218,7 +232,7 @@ const scriptsInEvents = {
 		}
 	},
 
-	async EventWorld_Event184_Act3(runtime, localVars)
+	async EventWorld_Event187_Act3(runtime, localVars)
 	{
 		const miniPos = worldToMinimap(
 		  { x: localVars.px, y: localVars.py },
@@ -230,7 +244,7 @@ const scriptsInEvents = {
 		localVars.miniY = miniPos.y;
 	},
 
-	async EventWorld_Event186_Act3(runtime, localVars)
+	async EventWorld_Event189_Act3(runtime, localVars)
 	{
 		const miniPos = worldToMinimap(
 		  { x: localVars.px, y: localVars.py },
@@ -242,7 +256,7 @@ const scriptsInEvents = {
 		localVars.miniY = miniPos.y;
 	},
 
-	async EventWorld_Event428_Act1(runtime, localVars)
+	async EventWorld_Event433_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -304,35 +318,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event519_Act1(runtime, localVars)
+	async EventWorld_Event525_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event523(runtime, localVars)
+	async EventWorld_Event529(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id,alias:localVars.aliasP}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event524(runtime, localVars)
+	async EventWorld_Event530(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event529(runtime, localVars)
+	async EventWorld_Event535(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event535(runtime, localVars)
+	async EventWorld_Event541(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event551_Act2(runtime, localVars)
+	async EventWorld_Event557_Act2(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -348,7 +362,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event552_Act3(runtime, localVars)
+	async EventWorld_Event558_Act3(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -365,12 +379,12 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event657_Act2(runtime, localVars)
+	async EventWorld_Event670_Act2(runtime, localVars)
 	{
 		await saveRoomData(runtime.globalVars.roomName, localVars.worldJson);
 	},
 
-	async EventWorld_Event664_Act1(runtime, localVars)
+	async EventWorld_Event677_Act1(runtime, localVars)
 	{
 		function getRandomTile(tileOptions) {
 			const total = tileOptions.reduce((sum, opt) => sum + opt.probability, 0);
@@ -409,20 +423,6 @@ sendInventory(result);
 		
 		const tileFrame = getRandomTile(tiles);
 		localVars.tileFrame= tileFrame;
-	},
-
-	async EventConnect_Event17_Act1(runtime, localVars)
-	{
-		runtime.listRoom = [];
-		
-		fetch("https://rustycoon.site/rooms")
-		  .then(res => res.json())
-		  .then(data => {
-		    runtime.listRoom = data.rooms;
-		 runtime.ServerList.updateServers(runtime.listRoom);
-		   })
-		  .catch(err => console.error(err));
-		
 	}
 };
 
