@@ -102,16 +102,25 @@ const scriptsInEvents = {
 
 	async EventConnect_Event17_Act1(runtime, localVars)
 	{
-		runtime.listRoom = [];
-		
-		fetch("https://rustycoon.site/rooms")
-		  .then(res => res.json())
-		  .then(data => {
-		    runtime.listRoom = data.rooms;
-		 runtime.ServerList.updateServers(runtime.listRoom);
-		   })
-		  .catch(err => console.error(err));
-		
+runtime.listRoom = [];
+
+const DEV_HOSTS = [
+  "localhost",
+  "127.0.0.1",
+  "preview.construct.net"
+];
+
+const API_BASE = DEV_HOSTS.includes(location.hostname)
+  ? "https://rustycoon.site"
+  : "";
+
+fetch(`${API_BASE}/rooms`)
+  .then(res => res.json())
+  .then(data => {
+    runtime.listRoom = data.rooms;
+    runtime.ServerList.updateServers(runtime.listRoom);
+  })
+  .catch(err => console.error(err));
 	},
 
 	async EventConnect_Event19_Act1(runtime, localVars)
