@@ -191,8 +191,6 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Cnds.PickParent,
 		C3.Plugins.System.Acts.WaitForPreviousActions,
 		C3.Behaviors.Sin.Acts.SetEnabled,
-		C3.Plugins.System.Exps.layoutwidth,
-		C3.Plugins.System.Exps.layoutheight,
 		C3.Plugins.System.Cnds.Repeat,
 		C3.Plugins.Sprite.Exps.LayerName,
 		C3.Behaviors.FedericoCalchera_TriggerTimer.Cnds.Istimerrunning,

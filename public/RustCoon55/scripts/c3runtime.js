@@ -2125,11 +2125,6 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() + 8);
 		},
-		p => {
-			const n0 = p._GetNode(0);
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => C3.clamp(n0.ExpObject(), (-16), (f1() + 16));
-		},
 		() => "cpu3",
 		() => "oven",
 		p => {
