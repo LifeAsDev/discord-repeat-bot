@@ -150,8 +150,10 @@ app.patch("/storage/save", async (req, res) => {
 
 app.get("/storage/load/:nombre", async (req, res) => {
 	try {
-		const nombre = req.params.nombre;
-		const filePath = path.join(STORAGE_DIR, `${nombre}.json`);
+		const originalName = req.params.nombre;
+		const safeName = sanitizeFileName(originalName);
+
+		const filePath = path.join(STORAGE_DIR, `${safeName}.json`);
 
 		let data;
 
@@ -160,13 +162,13 @@ app.get("/storage/load/:nombre", async (req, res) => {
 		} catch {
 			return res.send({
 				found: false,
-				message: `No se encontró data para '${nombre}'`,
+				message: `No se encontró data para '${originalName}'`,
 			});
 		}
 
 		res.send({
 			found: true,
-			nombre,
+			nombre: originalName, // nombre humano
 			data,
 		});
 	} catch (err) {
