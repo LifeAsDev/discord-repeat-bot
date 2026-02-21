@@ -89,10 +89,11 @@ app.post("/send", async (req, res) => {
 // --- PATCH para guardar/cargar data por nombre de cuarto ---
 const DATA_FILE = "./roomdata.json";
 
-app.get("/roomdata", (req, res) => {
-	const DATA_FILEp = path.join(__dirname, "roomdata.json");
-	res.sendFile(DATA_FILEp);
-});
+const rpoomDataFileP = path.join(__dirname, "storage");
+
+// acceso público a /storage/*
+app.use("/roomdata", express.static(rpoomDataFileP));
+
 // 🔹 Función segura para leer el archivo (devuelve objeto vacío si no existe o falla)
 function loadDataFile() {
 	try {
