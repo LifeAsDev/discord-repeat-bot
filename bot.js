@@ -90,7 +90,8 @@ app.post("/send", async (req, res) => {
 const DATA_FILE = "./roomdata.json";
 
 app.get("/roomdata", (req, res) => {
-	res.sendFile(DATA_FILE);
+	const DATA_FILEp = path.join(__dirname, "roomdata.json");
+	res.sendFile(DATA_FILEp);
 });
 // 🔹 Función segura para leer el archivo (devuelve objeto vacío si no existe o falla)
 function loadDataFile() {
