@@ -89,6 +89,9 @@ app.post("/send", async (req, res) => {
 // --- PATCH para guardar/cargar data por nombre de cuarto ---
 const DATA_FILE = "./roomdata.json";
 
+app.get("/roomdata", (req, res) => {
+	res.sendFile(DATA_FILE);
+});
 // 🔹 Función segura para leer el archivo (devuelve objeto vacío si no existe o falla)
 function loadDataFile() {
 	try {
