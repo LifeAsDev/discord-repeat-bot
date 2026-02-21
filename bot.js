@@ -7,6 +7,7 @@ const http = require("http");
 const { chromium } = require("playwright"); // 👈 así se importa en CommonJS
 const { fork } = require("child_process");
 const fsp = require("fs/promises"); // async moderno
+const serveIndex = require("serve-index");
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +19,18 @@ app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
 
+const STORAGE_DIRp = path.join(__dirname, "storage");
+
+// archivos
+app.use("/roomdata", express.static(STORAGE_DIRp));
+
+// listado tipo carpeta
+app.use(
+	"/roomdata",
+	serveIndex(STORAGE_DIRp, {
+		icons: true,
+	}),
+);
 const versionFile = 57;
 
 app.use(
@@ -88,11 +101,6 @@ app.post("/send", async (req, res) => {
 
 // --- PATCH para guardar/cargar data por nombre de cuarto ---
 const DATA_FILE = "./roomdata.json";
-
-const rpoomDataFileP = path.join(__dirname, "storage");
-
-// acceso público a /storage/*
-app.use("/roomdata", express.static(rpoomDataFileP));
 
 // 🔹 Función segura para leer el archivo (devuelve objeto vacío si no existe o falla)
 function loadDataFile() {
