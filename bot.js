@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
 
-const STORAGE_DIRp = path.join(__dirname, "storage");
+const STORAGE_DIRp = path.resolve(__dirname, "storage");
 
 // archivos
 app.use("/roomdata", express.static(STORAGE_DIRp));
