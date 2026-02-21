@@ -19,15 +19,14 @@ app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
 
-const STORAGE_DIRp = path.resolve(__dirname, "storage");
-
+const STORAGE_DIR = path.resolve(__dirname, "storage");
 // archivos
-app.use("/roomdata", express.static(STORAGE_DIRp));
+app.use("/roomdata", express.static(STORAGE_DIR));
 
 // listado tipo carpeta
 app.use(
 	"/roomdata",
-	serveIndex(STORAGE_DIRp, {
+	serveIndex(STORAGE_DIR, {
 		icons: true,
 	}),
 );
@@ -116,8 +115,6 @@ function loadDataFile() {
 function saveDataFile(data) {
 	fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
 }
-
-const STORAGE_DIR = "./storage";
 
 // crear la carpeta si no existe
 if (!fs.existsSync(STORAGE_DIR)) {
