@@ -30,7 +30,7 @@ app.use(
 		icons: true,
 	}),
 );
-const versionFile = 57;
+const versionFile = 58;
 
 app.use(
 	express.static(publicPath, {
@@ -122,7 +122,10 @@ if (!fs.existsSync(STORAGE_DIR)) {
 }
 
 function sanitizeFileName(name) {
-	return name.replace(/[<>:"\/\\|?*]/g, "_");
+	return name
+		.replace(/[<>:"\/\\|?*]/g, "_")
+		.replace(/\s+/g, " ")
+		.trim();
 }
 
 app.patch("/storage/save", async (req, res) => {
