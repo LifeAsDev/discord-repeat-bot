@@ -18,7 +18,16 @@ app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
+const versionFile = 58;
 
+app.use(
+	express.static(publicPath, {
+		etag: false,
+		lastModified: false,
+		setHeaders: (res) =>
+			res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate"),
+	}),
+);
 const STORAGE_DIR = path.resolve(__dirname, "storage");
 // archivos
 app.use("/roomdata", express.static(STORAGE_DIR));
@@ -28,16 +37,6 @@ app.use(
 	"/roomdata",
 	serveIndex(STORAGE_DIR, {
 		icons: true,
-	}),
-);
-const versionFile = 58;
-
-app.use(
-	express.static(publicPath, {
-		etag: false,
-		lastModified: false,
-		setHeaders: (res) =>
-			res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate"),
 	}),
 );
 
