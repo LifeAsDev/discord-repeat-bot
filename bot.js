@@ -18,7 +18,7 @@ app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 const publicPath = path.join(__dirname, "public");
-const versionFile = 58;
+const versionFile = 59;
 
 app.use(
 	express.static(publicPath, {

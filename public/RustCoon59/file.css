@@ -1,0 +1,62 @@
+.bar {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  position: absolute;
+}
+
+/* ===== fondo que evita que se funda ===== */
+.bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;                 /* usa EXACTAMENTE el height del input */
+  border-radius: 6px;
+
+  background: rgba(0,0,0,0.55);
+
+  box-shadow:
+    inset 0 0 10px rgba(0,0,0,0.8),
+    0 0 12px rgba(0,0,0,0.9);
+
+  pointer-events: none;
+  z-index: -1;
+}
+.bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ===== CIRCULO ===== */
+.bar::-webkit-slider-thumb {
+  width: 5%;
+  height: 100%;
+  border-radius: 5px;
+
+  background-color: #ff6a00;
+
+
+
+  cursor: pointer;
+}
+
+/* ===== pista centrada automáticamente ===== */
+.bar::-webkit-slider-runnable-track {
+  height: 100%;              /* proporcional al height del input */
+  border-radius: 4px;
+
+  background: linear-gradient(
+    180deg,
+    #2a1a12,
+    #120c08
+  );
+
+  border: 1px solid #5a3a22;
+}
+
+.bar::-moz-range-track {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(180deg,#2a1a12,#120c08);
+  border: 1px solid #5a3a22;
+}

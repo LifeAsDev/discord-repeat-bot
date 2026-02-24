@@ -90,6 +90,81 @@ function processQueue(runtime) {
 
 const scriptsInEvents = {
 
+	async EventConnect_Event2_Act1(runtime, localVars)
+	{
+
+	},
+
+	async EventConnect_Event2_Act2(runtime, localVars)
+	{
+
+	},
+
+	async EventConnect_Event4(runtime, localVars)
+	{
+		const params = new URLSearchParams(window.location.search);
+		const nombre = params.get("nombre"); 
+		if(nombre) { 
+		runtime.globalVars.mobile = 0;
+		runtime.globalVars.state = "host";
+		runtime.globalVars.realHost = "host";
+		runtime.globalVars.roomName = nombre;
+		runtime.callFunction("connect", "https://rustycoon.site/");
+		} 
+	},
+
+	async EventConnect_Event10_Act2(runtime, localVars)
+	{
+		runtime.lifeAsDevUtils.startDiscordLogin();
+	},
+
+	async EventConnect_Event12_Act3(runtime, localVars)
+	{
+		runtime.ServerList?._render();
+		runtime.ServerList.onSelectServer = (server) => {
+			console.log(server);
+		runtime.callFunction("joinServer",server)
+		};
+	},
+
+	async EventConnect_Event18_Act1(runtime, localVars)
+	{
+runtime.listRoom = [];
+
+const DEV_HOSTS = [
+  "localhost",
+  "127.0.0.1",
+  "preview.construct.net"
+];
+
+const API_BASE = DEV_HOSTS.includes(location.hostname)
+  ? "https://rustycoon.site"
+  : "/connect";
+
+fetch(`${API_BASE}/rooms`)
+  .then(res => res.json())
+  .then(data => {
+    runtime.listRoom = data.rooms;
+    runtime.ServerList.updateServers(runtime.listRoom);
+  })
+  .catch(err => console.error(err));
+	},
+
+	async EventConnect_Event20_Act1(runtime, localVars)
+	{
+
+	},
+
+	async EventConnect_Event22_Act2(runtime, localVars)
+	{
+
+	},
+
+	async EventConnect_Event23(runtime, localVars)
+	{
+
+	},
+
 	async EventWebsocket_Event1_Act1(runtime, localVars)
 	{
 		client.getListRooms();
@@ -115,87 +190,12 @@ const scriptsInEvents = {
 		client.sendMessage(localVars.targetId,localVars.message,localVars.tag);
 	},
 
-	async EventConnect_Event2_Act1(runtime, localVars)
-	{
-
-	},
-
-	async EventConnect_Event2_Act2(runtime, localVars)
-	{
-
-	},
-
-	async EventConnect_Event3(runtime, localVars)
-	{
-		const params = new URLSearchParams(window.location.search);
-		const nombre = params.get("nombre"); 
-		if(nombre) { 
-		runtime.globalVars.mobile = 0;
-		runtime.globalVars.state = "host";
-		runtime.globalVars.realHost = "host";
-		runtime.globalVars.roomName = nombre;
-		runtime.callFunction("connect", "https://rustycoon.site/");
-		} 
-	},
-
-	async EventConnect_Event9_Act2(runtime, localVars)
-	{
-		runtime.lifeAsDevUtils.startDiscordLogin();
-	},
-
-	async EventConnect_Event11_Act3(runtime, localVars)
-	{
-		runtime.ServerList?._render();
-		runtime.ServerList.onSelectServer = (server) => {
-			console.log(server);
-		runtime.callFunction("joinServer",server)
-		};
-	},
-
-	async EventConnect_Event17_Act1(runtime, localVars)
-	{
-runtime.listRoom = [];
-
-const DEV_HOSTS = [
-  "localhost",
-  "127.0.0.1",
-  "preview.construct.net"
-];
-
-const API_BASE = DEV_HOSTS.includes(location.hostname)
-  ? "https://rustycoon.site"
-  : "/connect";
-
-fetch(`${API_BASE}/rooms`)
-  .then(res => res.json())
-  .then(data => {
-    runtime.listRoom = data.rooms;
-    runtime.ServerList.updateServers(runtime.listRoom);
-  })
-  .catch(err => console.error(err));
-	},
-
-	async EventConnect_Event19_Act1(runtime, localVars)
-	{
-
-	},
-
-	async EventConnect_Event21_Act2(runtime, localVars)
-	{
-
-	},
-
-	async EventConnect_Event22(runtime, localVars)
-	{
-
-	},
-
 	async EventWorld_Event8_Act3(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event14_Act1(runtime, localVars)
+	async EventWorld_Event16_Act1(runtime, localVars)
 	{
 		async function getRooms() {
 		  try {
@@ -243,7 +243,7 @@ fetch(`${API_BASE}/rooms`)
 		
 	},
 
-	async EventWorld_Event16_Act17(runtime, localVars)
+	async EventWorld_Event18_Act17(runtime, localVars)
 	{
 		const roomName = localVars.room;
 		const data = await loadRoomData(localVars.room);
@@ -257,13 +257,13 @@ fetch(`${API_BASE}/rooms`)
 		
 	},
 
-	async EventWorld_Event27_Act1(runtime, localVars)
+	async EventWorld_Event29_Act1(runtime, localVars)
 	{
 		    isLoadingRoom = false;
 		    processQueue(runtime);
 	},
 
-	async EventWorld_Event33(runtime, localVars)
+	async EventWorld_Event35(runtime, localVars)
 	{
 		/**
 		 * Generates a random terrain map.
@@ -355,18 +355,6 @@ fetch(`${API_BASE}/rooms`)
 		drawNextRow();
 	},
 
-	async EventWorld_Event198_Act3(runtime, localVars)
-	{
-		const miniPos = worldToMinimap(
-		  { x: localVars.px, y: localVars.py },
-		  { width: 6400, height: 6400 },
-		  { width: 480, height: 480 }
-		);
-		
-		localVars.miniX = miniPos.x;
-		localVars.miniY = miniPos.y;
-	},
-
 	async EventWorld_Event200_Act3(runtime, localVars)
 	{
 		const miniPos = worldToMinimap(
@@ -379,7 +367,19 @@ fetch(`${API_BASE}/rooms`)
 		localVars.miniY = miniPos.y;
 	},
 
-	async EventWorld_Event444_Act1(runtime, localVars)
+	async EventWorld_Event202_Act3(runtime, localVars)
+	{
+		const miniPos = worldToMinimap(
+		  { x: localVars.px, y: localVars.py },
+		  { width: 6400, height: 6400 },
+		  { width: 480, height: 480 }
+		);
+		
+		localVars.miniX = miniPos.x;
+		localVars.miniY = miniPos.y;
+	},
+
+	async EventWorld_Event446_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -441,35 +441,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event536_Act1(runtime, localVars)
+	async EventWorld_Event538_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event540(runtime, localVars)
+	async EventWorld_Event542(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id,alias:localVars.aliasP}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event541(runtime, localVars)
+	async EventWorld_Event543(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event546(runtime, localVars)
+	async EventWorld_Event548(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event552(runtime, localVars)
+	async EventWorld_Event554(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event568_Act2(runtime, localVars)
+	async EventWorld_Event570_Act2(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -485,7 +485,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event569_Act3(runtime, localVars)
+	async EventWorld_Event571_Act3(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -502,12 +502,12 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event684_Act2(runtime, localVars)
+	async EventWorld_Event686_Act2(runtime, localVars)
 	{
 		await saveRoomData(localVars.saveName, localVars.worldJson);
 	},
 
-	async EventWorld_Event692_Act1(runtime, localVars)
+	async EventWorld_Event694_Act1(runtime, localVars)
 	{
 		function getRandomTile(tileOptions) {
 			const total = tileOptions.reduce((sum, opt) => sum + opt.probability, 0);
