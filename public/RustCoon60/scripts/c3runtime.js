@@ -1490,6 +1490,7 @@ self.C3_ExpressionFuncs = [
 		() => "Connection",
 		() => "Peer",
 		() => "Host",
+		() => "tempData.peerAlias",
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() / 32);
@@ -1642,6 +1643,7 @@ self.C3_ExpressionFuncs = [
 			return () => ((and((and((and(and(v0.GetValue(), "|"), v1.GetValue()) + "|"), v2.GetValue()) + "|"), n3.ExpInstVar()) + "|") + v4.GetValue());
 		},
 		() => 12,
+		() => "load",
 		p => {
 			const n0 = p._GetNode(0);
 			return () => n0.ExpInstVar();
@@ -1787,7 +1789,6 @@ self.C3_ExpressionFuncs = [
 		() => 0.9,
 		() => 1.6,
 		() => 24,
-		() => "c",
 		p => {
 			const n0 = p._GetNode(0);
 			return () => (n0.ExpObject() - 32);
@@ -2506,6 +2507,7 @@ self.C3_ExpressionFuncs = [
 			return () => ((v0.GetValue() + "|") + v1.GetValue());
 		},
 		() => "setWorld",
+		() => "bro",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
@@ -2563,22 +2565,21 @@ self.C3_ExpressionFuncs = [
 		() => "show",
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
-			return () => ("startData.peerAlias." + f0());
+			return () => ("tempData.peerAlias." + f0());
 		},
 		p => {
 			const f0 = p._GetNode(0).GetBoundMethod();
 			const f1 = p._GetNode(1).GetBoundMethod();
 			return () => f0(f1(), 2, "||");
 		},
-		p => {
-			const f0 = p._GetNode(0).GetBoundMethod();
-			const f1 = p._GetNode(1).GetBoundMethod();
-			return () => ("roomName " + f0(f1(), 2, "||"));
-		},
 		() => "startData.mapIndex",
 		p => {
 			const n0 = p._GetNode(0);
 			return () => ("startData.peerAlias." + n0.ExpInstVar());
+		},
+		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			return () => ("startData.peerAlias." + f0());
 		},
 		p => {
 			const n0 = p._GetNode(0);
@@ -2588,10 +2589,8 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => n0.ExpObject("startData.peerAlias");
 		},
-		() => "yo",
+		() => "send",
 		() => "getInventory",
-		() => "new",
-		() => "resd",
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
@@ -2622,7 +2621,6 @@ self.C3_ExpressionFuncs = [
 			const n0 = p._GetNode(0);
 			return () => (("startData.playerBox." + n0.ExpInstVar()) + ".y");
 		},
-		() => "res",
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);

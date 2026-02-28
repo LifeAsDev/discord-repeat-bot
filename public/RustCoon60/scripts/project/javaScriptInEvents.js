@@ -113,12 +113,12 @@ const scriptsInEvents = {
 		} 
 	},
 
-	async EventConnect_Event10_Act2(runtime, localVars)
+	async EventConnect_Event11_Act2(runtime, localVars)
 	{
 		runtime.lifeAsDevUtils.startDiscordLogin();
 	},
 
-	async EventConnect_Event12_Act3(runtime, localVars)
+	async EventConnect_Event13_Act3(runtime, localVars)
 	{
 		runtime.ServerList?._render();
 		runtime.ServerList.onSelectServer = (server) => {
@@ -127,7 +127,7 @@ const scriptsInEvents = {
 		};
 	},
 
-	async EventConnect_Event18_Act1(runtime, localVars)
+	async EventConnect_Event19_Act1(runtime, localVars)
 	{
 runtime.listRoom = [];
 
@@ -150,17 +150,17 @@ fetch(`${API_BASE}/rooms`)
   .catch(err => console.error(err));
 	},
 
-	async EventConnect_Event20_Act1(runtime, localVars)
+	async EventConnect_Event21_Act1(runtime, localVars)
 	{
 
 	},
 
-	async EventConnect_Event22_Act2(runtime, localVars)
+	async EventConnect_Event23_Act2(runtime, localVars)
 	{
 
 	},
 
-	async EventConnect_Event23(runtime, localVars)
+	async EventConnect_Event24(runtime, localVars)
 	{
 
 	},
@@ -355,7 +355,7 @@ fetch(`${API_BASE}/rooms`)
 		drawNextRow();
 	},
 
-	async EventWorld_Event200_Act3(runtime, localVars)
+	async EventWorld_Event201_Act3(runtime, localVars)
 	{
 		const miniPos = worldToMinimap(
 		  { x: localVars.px, y: localVars.py },
@@ -367,7 +367,7 @@ fetch(`${API_BASE}/rooms`)
 		localVars.miniY = miniPos.y;
 	},
 
-	async EventWorld_Event202_Act3(runtime, localVars)
+	async EventWorld_Event203_Act3(runtime, localVars)
 	{
 		const miniPos = worldToMinimap(
 		  { x: localVars.px, y: localVars.py },
@@ -379,7 +379,7 @@ fetch(`${API_BASE}/rooms`)
 		localVars.miniY = miniPos.y;
 	},
 
-	async EventWorld_Event446_Act1(runtime, localVars)
+	async EventWorld_Event447_Act1(runtime, localVars)
 	{
 function sanitizeAndFormat(jsonString) {
   try {
@@ -441,35 +441,35 @@ sendInventory(result);
 
 	},
 
-	async EventWorld_Event538_Act1(runtime, localVars)
+	async EventWorld_Event539_Act1(runtime, localVars)
 	{
 		runtime.playersArr = [];
 	},
 
-	async EventWorld_Event542(runtime, localVars)
+	async EventWorld_Event543(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id,alias:localVars.aliasP}
 		runtime.playersArr.push(jsonString);
 		
 	},
 
-	async EventWorld_Event543(runtime, localVars)
+	async EventWorld_Event544(runtime, localVars)
 	{
 		localVars.jsonStringify = JSON.stringify({playersArr:runtime.playersArr,date:localVars.date});
 	},
 
-	async EventWorld_Event548(runtime, localVars)
+	async EventWorld_Event549(runtime, localVars)
 	{
 		const jsonString = {px:localVars.px,py:localVars.py,animationName:localVars.animationName,date:localVars.date,mirror:localVars.mirror,inputs:localVars.inputs,id:localVars.id};
 		localVars.jsonStringify = JSON.stringify(jsonString);
 	},
 
-	async EventWorld_Event554(runtime, localVars)
+	async EventWorld_Event555(runtime, localVars)
 	{
 
 	},
 
-	async EventWorld_Event570_Act2(runtime, localVars)
+	async EventWorld_Event571_Act2(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -485,7 +485,7 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event571_Act3(runtime, localVars)
+	async EventWorld_Event572_Act3(runtime, localVars)
 	{
 		const data = JSON.parse(localVars.jsonStringify);
 		/* localVars.date = data.date;
@@ -502,12 +502,12 @@ sendInventory(result);
 		
 	},
 
-	async EventWorld_Event686_Act2(runtime, localVars)
+	async EventWorld_Event688_Act2(runtime, localVars)
 	{
 		await saveRoomData(localVars.saveName, localVars.worldJson);
 	},
 
-	async EventWorld_Event694_Act1(runtime, localVars)
+	async EventWorld_Event696_Act1(runtime, localVars)
 	{
 		function getRandomTile(tileOptions) {
 			const total = tileOptions.reduce((sum, opt) => sum + opt.probability, 0);
